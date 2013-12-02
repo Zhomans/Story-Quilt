@@ -20,5 +20,12 @@ XMLFILENAME\_name\_type
 
 i.e. activity_main_sessions_listview
 
+### Use Resource XMLs
+i.e. color,string,dimens,etc
+
 ## Class Naming
 > Name_ExtendedClass
+
+##Shared Preferences
+> Preferences name -> StoryQuilt 
+> key name -> name of variable (global throughout app)
