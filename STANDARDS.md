@@ -6,7 +6,6 @@
 
 ## Android XMLs
 ### Naming XML Files:
-=====
 type_name.xml
 
 > types: activity,dialog,etc
@@ -15,7 +14,6 @@ type_name.xml
 i.e. activity\_main.xml, dialog\_session.xml
 
 ### Naming View Ids
-=====
 XMLFILENAME\_name\_type
 
 > type: listview, text, edit, divider, etc
