@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         }
     }
 
-
+    //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    //Options Menu Actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
