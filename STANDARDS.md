@@ -1,8 +1,10 @@
 # Coding Standards
 ## Importing the Project
-> Import > Project
-> Select the build.gradle file on the top level
-> Auto-import
+```
+Import > Project
+Select the build.gradle file on the top level
+Auto-import
+```
 
 ## Android XMLs
 ### Naming XML Files:
