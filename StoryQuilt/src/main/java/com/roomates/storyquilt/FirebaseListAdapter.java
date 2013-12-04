@@ -1,4 +1,4 @@
-package com.firebase.androidchat;
+package com.roomates.storyquilt;
 
 import android.app.Activity;
 import android.util.Log;
