@@ -28,6 +28,7 @@ User
 id 
 name 
 reports 
+posts
 writing[Story Ids] 
 reading[Story Ids] 
 banned[Story Ids]
