@@ -23,19 +23,19 @@ Story
 :priority (num_users)
 
 User
-:id
-:name
-:reports
-:writing[Story Ids]
-:reading[Story Ids]
-:banned[Story Ids]
-:age
-:banned? 
+:id \n
+:name \n 
+:reports \n 
+:writing[Story Ids] \n 
+:reading[Story Ids] \n 
+:banned[Story Ids] \n
+:age \n 
+:banned? \n  
 
-Piece
-:id
-:poster
-:date
-:text
+Piece 
+:id \n 
+:poster \n 
+:date \n 
+:text \n
 
 Serializable Objects for each.
