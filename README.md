@@ -13,29 +13,29 @@ https://trello.com/b/1WRbHdIa/mobproto-storyquilt
 
 ###Firebase Data Structures
 Story
-:id
-:pieces[Piece]
-:title
-:age limit
-:last updated
-:text limit
-:history limit
-:priority (num_users)
+- id 
+- pieces[Piece] 
+- title 
+- age limit 
+- last updated 
+- text limit 
+- history limit 
+- priority (num_users) 
 
 User
-:id \n
-:name \n 
-:reports \n 
-:writing[Story Ids] \n 
-:reading[Story Ids] \n 
-:banned[Story Ids] \n
-:age \n 
-:banned? \n  
+- id 
+- name 
+- reports 
+- writing[Story Ids] 
+- reading[Story Ids] 
+- banned[Story Ids]
+- age 
+- banned? 
 
 Piece 
-:id \n 
-:poster \n 
-:date \n 
-:text \n
+- id 
+- poster
+- date
+- text
 
 Serializable Objects for each.
