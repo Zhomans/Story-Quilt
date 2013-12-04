@@ -26,4 +26,9 @@ public class PieceClass {
     public String getText(){
         return this.text;
     }
+
+    //Setting the id from Firebase
+    public void setId(String value){
+        this.id = value;
+    }
 }

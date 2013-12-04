@@ -44,4 +44,9 @@ public class UserClass {
     public String[] getReading(){
         return this.reading;
     }
+
+    //Setting the id from Firebase
+    public void setId(String value){
+        this.id = value;
+    }
 }
