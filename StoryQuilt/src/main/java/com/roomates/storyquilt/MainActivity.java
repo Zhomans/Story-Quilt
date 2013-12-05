@@ -38,13 +38,13 @@ public class MainActivity extends Activity {
 
         //Check if logged in
         username = getUserName();
-        if (username.isEmpty()) goToUserLogin();
-
+        if (username == null) {
+            goToUserLogin();
+        }
         //Set up MainActivity Views
         setListViews();
         setFireBaseRefs();
         setListAdapters();
-
     }
     
     /**Methods for Managing Account Info
