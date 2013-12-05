@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -28,7 +27,7 @@ public class MainActivity extends Activity {
     StoryAdapter writingAdapter, readingAdapter;
 
     //Firebase
-    Firebase mainRef = new Firebase("https://storyquilt.firebaseio.com");
+    Firebase mainRef;
     Firebase writingRef, readingRef;
 
 
@@ -39,7 +38,8 @@ public class MainActivity extends Activity {
 
         //Check if logged in
         username = getUserName();
-        if (username == null) {
+        username = "fake_username"; // Hard coded
+        if (username.equals("")) {
             goToUserLogin();
         }
         //Set up MainActivity Views
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
     */
     //Method for getting username
     private String getUserName(){
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("username", null);
+        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("username", "");
     }
 
     //Method for saving username
@@ -81,6 +81,7 @@ public class MainActivity extends Activity {
 
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
+        mainRef = new Firebase("https://storyquilt.firebaseio.com");
         readingRef = mainRef.child("users").child("reading");
         writingRef = mainRef.child("users").child("writing");
     }
@@ -110,8 +111,9 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.create_story) { //Create a new Story
+            Intent createStory = new Intent(MainActivity.this, CreateStoryActivity.class);
+            startActivity(createStory);
         }
         return super.onOptionsItemSelected(item);
     }

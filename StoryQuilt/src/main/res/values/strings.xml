@@ -2,13 +2,20 @@
 <resources>
     <string name="app_name">StoryQuilt</string>
     <string name="action_settings">Settings</string>
+
+    <!--Create Story-->
     <string name="storyTitlePrompt">Story Title</string>
     <string name="languageFilter">Language Filter:</string>
     <string name="create">Create</string>
     <string name="starterText">Once upon a time...</string>
     <string name="historyLength">History length: default</string>
     <string name="submissionLength">Submission length: default</string>
+
+    <!--MainActivity XML-->
     <string name = "activity_main_writing_title">Writing</string>
     <string name = "activity_main_reading_title">Reading</string>
+
+    <!--MainActivity Menu-->
+    <string name = "create_story">Create</string>
 </resources>
 
