@@ -9,10 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends Activity {
     //Intent Request Codes
@@ -28,7 +25,7 @@ public class MainActivity extends Activity {
     StoryAdapter writingAdapter, readingAdapter;
 
     //Firebase
-    Firebase mainRef = new Firebase("https://storyquilt.firebaseio.com");
+    Firebase mainRef;
     Firebase writingRef, readingRef;
 
     @Override
@@ -80,6 +77,7 @@ public class MainActivity extends Activity {
 
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
+        mainRef = new Firebase("https://storyquilt.firebaseio.com");
         readingRef = mainRef.child("users").child("reading");
         writingRef = mainRef.child("users").child("writing");
     }
