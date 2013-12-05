@@ -9,10 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -33,7 +30,7 @@ public class MainActivity extends Activity {
     StoryAdapter writingAdapter, readingAdapter;
 
     //Firebase
-    Firebase mainRef = new Firebase("https://storyquilt.firebaseio.com");
+    Firebase mainRef;
     Firebase writingRef, readingRef;
     
 
@@ -86,6 +83,7 @@ public class MainActivity extends Activity {
 
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
+        mainRef = new Firebase("https://storyquilt.firebaseio.com");
         readingRef = mainRef.child("users").child("reading");
         writingRef = mainRef.child("users").child("writing");
     }
