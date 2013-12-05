@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">StoryQuilt</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="storyTitlePrompt">Story Title</string>
     <string name="languageFilter">Language Filter:</string>
@@ -10,5 +8,7 @@
     <string name="starterText">Once upon a time...</string>
     <string name="historyLength">History length: default</string>
     <string name="submissionLength">Submission length: default</string>
+    <string name = "activity_main_writing_title">Writing</string>
+    <string name = "activity_main_reading_title">Reading</string>
 </resources>
 
