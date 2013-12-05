@@ -22,7 +22,8 @@ import com.google.android.gms.plus.PlusClient;
 /**
  * Created by chris on 12/4/13.
  */
-public class LoginActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener{
+public class LoginActivity extends Activity implements ConnectionCallbacks,
+        OnConnectionFailedListener, View.OnClickListener{
 
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
     private static final String TAG = "LoginActivity";
@@ -34,6 +35,7 @@ public class LoginActivity extends Activity implements ConnectionCallbacks, OnCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setActions("http://schemas.google.com/AddActivity", "http://schemas.google.com/BuyActivity")
                 .setScopes("PLUS_LOGIN")  // Space separated list of scopes
@@ -41,7 +43,27 @@ public class LoginActivity extends Activity implements ConnectionCallbacks, OnCo
         // Progress bar to be displayed if the connection failure is not resolved.
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
+
     }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
+    }
+
+
 
     @Override
     protected void onStart() {
