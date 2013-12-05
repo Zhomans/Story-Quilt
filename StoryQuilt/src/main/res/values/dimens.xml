@@ -9,4 +9,11 @@
     <!--Activity-->
     <dimen name = "activity_divider_height">10dp</dimen>
 
+    <!--Story View-->
+    <dimen name = "activity_story_title_font">26sp</dimen>
+    <dimen name = "activity_story_postsLater_font">26sp</dimen>
+    <dimen name = "activity_story_postsLater_paddingTop">8dp</dimen>
+    <dimen name = "activity_story_divider_height">1dp</dimen>
+    <dimen name = "activity_story_divider_width">350dp</dimen>
+
     </resources>
