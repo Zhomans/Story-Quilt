@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/activity_story_title_font"
+        android:id="@+id/activity_story_title_textview"
+        android:layout_alignParentTop="true"
+        android:text="Once Upon A Time..."/>
+
+    <View
+        android:layout_width="@dimen/activity_story_divider_width"
+        android:layout_height="@dimen/activity_story_divider_height"
+        android:background="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/activity_story_title_textview"
+        android:id="@+id/activity_story_divider_view"></View>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/activity_story_postsLater_font"
+        android:id="@+id/activity_story_postsLater_textview"
+        android:layout_below="@id/activity_story_divider_view"
+        android:text="...56 Posts Later..."
+        android:paddingTop="@dimen/activity_story_postsLater_paddingTop"/>
+
+
+    
+</RelativeLayout>
