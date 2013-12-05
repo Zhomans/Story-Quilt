@@ -1,17 +1,23 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     //Intent Request Codes
@@ -39,8 +45,14 @@ public class MainActivity extends Activity {
         //Check if logged in
         username = getUserName();
         username = "fake_username"; // Hard coded
-        if (username.equals("")) {
-            goToUserLogin();
+        if (username.equals("fake_username")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            //set the view
+            builder.setView(this.getLayoutInflater().inflate(R.layout.login_dialog,null));
+
+            // Set up the buttons
+            builder.show();
         }
         //Set up MainActivity Views
         setListViews();
