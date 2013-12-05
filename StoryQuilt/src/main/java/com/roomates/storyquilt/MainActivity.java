@@ -30,11 +30,10 @@ public class MainActivity extends Activity {
 
         //Check if logged in
         username = getUserName();
-        if (username.isEmpty()) goToUserLogin();
-
+        if (username == null) {
+            goToUserLogin();
+        }
         //Set up MainActivity Views
-
-
     }
     
     /**Methods for Managing Account Info
