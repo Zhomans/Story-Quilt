@@ -12,10 +12,9 @@ public class CreateStoryActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_create);
 
-        //Set up MainActivity Views
-
+        //Set up Activity Views
 
     }
 
