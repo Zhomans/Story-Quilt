@@ -7,11 +7,11 @@ public class UserClass {
     String id, name;
     int age, reports, posts;
     boolean isBanned;
-    String[] writing, reading;
+    StoryClass[] writing, reading;
 
 
     public UserClass(){} //Firebase required constructor
-    public UserClass(String name, int age, int reports, int posts, boolean isBanned, String[] writing, String[] reading){
+    public UserClass(String name, int age, int reports, int posts, boolean isBanned, StoryClass[] writing, StoryClass[] reading){
         this.name = name;
         this.age = age;
         this.reports = reports;
@@ -38,10 +38,10 @@ public class UserClass {
     public boolean getIsBanned(){
         return this.isBanned;
     }
-    public String[] getWriting(){
+    public StoryClass[] getWriting(){
         return this.writing;
     }
-    public String[] getReading(){
+    public StoryClass[] getReading(){
         return this.reading;
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -21,7 +22,14 @@ public class MainActivity extends Activity {
     String username;
 
     //MainActivity Views
+    ListView writing, reading;
 
+    //ListAdapters
+    StoryAdapter writingAdapter, readingAdapter;
+
+    //Firebase
+    Firebase mainRef = new Firebase("https://storyquilt.firebaseio.com");
+    Firebase writingRef, readingRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,9 @@ public class MainActivity extends Activity {
         if (username.isEmpty()) goToUserLogin();
 
         //Set up MainActivity Views
-
+        setListViews();
+        setFireBaseRefs();
+        setListAdapters();
 
     }
     
@@ -58,6 +68,30 @@ public class MainActivity extends Activity {
         startActivityForResult(getLogin, LOGIN);
     }
 
+    /**
+        Methods for Handling List Views
+
+     */
+    //Grab ListViews from the XML
+    private void setListViews(){
+        writing = (ListView) findViewById(R.id.activity_main_writing_listview);
+        reading = (ListView) findViewById(R.id.activity_main_reading_listview);
+    }
+
+    //Get Firebase Refs for Reading and Writing
+    private void setFireBaseRefs(){
+        readingRef = mainRef.child("users").child("reading");
+        writingRef = mainRef.child("users").child("writing");
+    }
+
+    //Create and Set ArrayAdapters for the ListViews
+    private void setListAdapters(){
+        writingAdapter = new StoryAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
+        readingAdapter = new StoryAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
+
+        writing.setAdapter(writingAdapter);
+        reading.setAdapter(readingAdapter);
+    }
 
     //Options Menu
     @Override
