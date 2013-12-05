@@ -35,5 +35,5 @@ android {
 
 dependencies {
     compile files('src/main/libs/firebase.jar')
-    compile 'com.google.android.gms:play-services:3.1.36'
+    compile 'com.google.android.gms:play-services:4.0.30'
 }
