@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.plus.PlusClient;
+
 public class MainActivity extends Activity {
     //Intent Request Codes
     private final int LOGIN = 0; //Request code for logging in and getting username
@@ -27,6 +32,7 @@ public class MainActivity extends Activity {
     //Firebase
     Firebase mainRef;
     Firebase writingRef, readingRef;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
