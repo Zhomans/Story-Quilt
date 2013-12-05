@@ -3,4 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--Font Sizes-->
+    <dimen name = "activity_title_font">26sp</dimen>
+
+    <!--Activity-->
+    <dimen name = "activity_divider_height">10dp</dimen>
+
     </resources>

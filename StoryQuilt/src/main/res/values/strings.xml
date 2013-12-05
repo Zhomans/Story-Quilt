@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">StoryQuilt</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name = "activity_main_writing_title">Writing</string>
+    <string name = "activity_main_reading_title">Reading</string>
 
 </resources>
