@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     private final int SIGNOUT = 1; //Request code for logging in and getting email
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
+    private View signInButton;
 
     //User's name from the google account
 
@@ -54,7 +55,12 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setContentView(R.layout.activity_main);
 
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(this);
+
+        if (getEmail().equals("") || getEmail().equals("readonly")) {
+            signInButton.setVisibility(View.VISIBLE);
+        }
 
         mPlusClient = new PlusClient.Builder(this, this, this)
                 //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
@@ -68,7 +74,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         } else if (getEmail().equals("")) {
                 setEmail("readonly");
-                signIn();
+//                signIn();
         }
 
         //Set up MainActivity Views
@@ -193,6 +199,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Google+ Connection successful
     @Override
     public void onConnected(Bundle connectionHint) {
+        signInButton.setVisibility(View.GONE);
         mConnectionProgressDialog.dismiss();
         String personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
         if (!getEmail().equals(mPlusClient.getAccountName())) {
@@ -201,6 +208,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setEmail(mPlusClient.getAccountName());
         setPersonFirstName(personFirstName);
         updateSignOutandInButtonVisibility();
+
     }
 
     //Google+ Connection Disconnected
