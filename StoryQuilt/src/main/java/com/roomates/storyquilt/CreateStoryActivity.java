@@ -15,9 +15,22 @@ public class CreateStoryActivity extends Activity{
         setContentView(R.layout.activity_create);
 
         //Set up Activity Views
-
+        bindViews();
     }
 
+    /**
+     Binding Views for CreateStory from XML
+     */
+    void bindViews(){
+        findViewById(R.id.activity_create_storyTitle_textfield);
+        findViewById(R.id.activity_create_starterText_textfield);
+
+        findViewById(R.id.activity_create_historyLength_seekBar);
+        findViewById(R.id.activity_create_submissionLength_seekBar);
+        findViewById(R.id.activity_create_languageFilter_toggleButton);
+
+        find
+    }
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
