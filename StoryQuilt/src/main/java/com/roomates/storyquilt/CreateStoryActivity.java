@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.Date;
+
 /**
  * Created by chris on 12/4/13.
  */
@@ -63,7 +65,7 @@ public class CreateStoryActivity extends Activity{
     }
 
     //Setup Seek Bars
-    private void setupSeekBars(){
+    private void setupSeekBars()s{
         historyLength.setMax(HISTORY_MAX);
         historyLength.setProgress(HISTORY_DEFAULT);
         submissionLength.setMax(SUBMISSION_MAX);
@@ -112,10 +114,25 @@ public class CreateStoryActivity extends Activity{
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Grab Text
                 String title =String.valueOf(storyTitle.getText());
                 String starter = String.valueOf(starterText.getText());
+
+                //Check if title exists
                 if (title.equals("")) title = starter;
-                //if (starter.split(" ") )
+
+                //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces
+                new StoryClass(String.valueOf(System.currentTimeMillis()),
+                                title,
+                                (languageFilter.isChecked())? 13:0,
+                                (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
+                                submissionLength.getProgress(),
+                                new PieceClass[] {new PieceClass(
+                                                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
+                                                            String.valueOf(System.currentTimeMillis()),
+                                                            String.valueOf(starterText.getText())
+                                                            )}
+                                );
 
             }
         });
