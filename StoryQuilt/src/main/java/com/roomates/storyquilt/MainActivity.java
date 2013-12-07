@@ -60,14 +60,17 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mPlusClient = new PlusClient.Builder(this, this, this)
+                //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
+                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
+                .build();
+        mConnectionProgressDialog = new ProgressDialog(this);
+        mConnectionProgressDialog.setMessage("Signing in...");
 
         //Check if logged in
         googlePlusClient();
         username = getUserName(); //getUserName();
-        if (username.equals("")) {
-            setUserName("readonly");
-            signIn();
-        } else if (username.equals("readonly")) {
+        if (username.equals("readonly")) {
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         }
 
@@ -77,17 +80,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setListAdapters();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mPlusClient.disconnect();
-    }
 
     /**Methods for Managing Account Info
         getUserName()
@@ -113,16 +105,45 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         mConnectionProgressDialog = new ProgressDialog(this);
     }
 
-    /**
-        Methods for Handling List Views
-
-     */
-    //Grab ListViews from the XML
-    private void setListViews(){
-        writing = (ListView) findViewById(R.id.activity_main_writing_listview);
-        reading = (ListView) findViewById(R.id.activity_main_reading_listview);
+    //Signing In to Google+
+    public void signIn() {
+        if (!mPlusClient.isConnected()) { //Create a new Story
+            Log.i("testing","hello");
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
     }
 
+    //Signing Out of Google+
+    public void signOut() {
+        Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
+        if (mPlusClient.isConnected()) {
+            mPlusClient.clearDefaultAccount();
+            mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
+                @Override
+                public void onAccessRevoked(ConnectionResult connectionResult) {
+                    // mPlusClient is now disconnected and access has been revoked.
+                    // Trigger app logic to comply with the developer policies
+                }
+            });
+            setUserName("readonly");
+            mPlusClient.disconnect();
+            mPlusClient.connect();
+            Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
+        }
+        updateSignOutandInButtonVisibility();
+    }
+
+    //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i("connectionresult",result.toString());
@@ -144,6 +165,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         mConnectionResult = result;
     }
 
+    //Google+ Connection successful
     @Override
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
@@ -153,50 +175,40 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         updateSignOutandInButtonVisibility();
     }
 
+    //Google+ Connection Disconnected
     @Override
     public void onDisconnected() {
         Log.d(TAG, "disconnected");
     }
 
-    public void signIn() {
-        if (!mPlusClient.isConnected()) { //Create a new Story
-            Log.i("testing","hello");
-            if (mConnectionResult == null) {
-                mConnectionProgressDialog.show();
-            } else {
-                try {
-                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-                } catch (IntentSender.SendIntentException e) {
-                    // Try connecting again.
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-            }
-        }
-    }
-
-    public void signOut() {
-        Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
-        if (mPlusClient.isConnected()) {
-            mPlusClient.clearDefaultAccount();
-            mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
-                @Override
-                public void onAccessRevoked(ConnectionResult connectionResult) {
-                    // mPlusClient is now disconnected and access has been revoked.
-                    // Trigger app logic to comply with the developer policies
-                }
-            });
-            setUserName("readonly");
-            mPlusClient.disconnect();
-            mPlusClient.connect();
-            Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
-        }
-        updateSignOutandInButtonVisibility();
-    }
-
+    //Google+ Access Revoked
     public void onAccessRevoked(ConnectionResult status) {
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
+    }
+
+    //Visisbility of Login Button
+    public void updateSignOutandInButtonVisibility() {
+        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
+        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
+        if (getUserName().equals("") || getUserName().equals("readonly")) {
+            signOutItem.setVisible(false);
+            signInItem.setVisible(true);
+        } else {
+            signOutItem.setVisible(true);
+            signInItem.setVisible(false);
+        }
+        Log.i("usernameu",getUserName());
+    }
+
+    /**
+        Methods for Handling List Views
+
+     */
+    //Grab ListViews from the XML
+    private void setListViews(){
+        writing = (ListView) findViewById(R.id.activity_main_writing_listview);
+        reading = (ListView) findViewById(R.id.activity_main_reading_listview);
     }
 
     //Get Firebase Refs for Reading and Writing
@@ -215,6 +227,31 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         reading.setAdapter(readingAdapter);
     }
 
+    /**
+     * Activity Methods
+     */
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPlusClient.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (username.equals("")) {
+            setUserName("readonly");
+            signIn();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlusClient.disconnect();
+    }
+
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -224,19 +261,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         this.menu = menu;
         updateSignOutandInButtonVisibility();
         return true;
-    }
-
-    public void updateSignOutandInButtonVisibility() {
-        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getUserName().equals("") || getUserName().equals("readonly")) {
-            signOutItem.setVisible(false);
-            signInItem.setVisible(true);
-        } else {
-            signOutItem.setVisible(true);
-            signInItem.setVisible(false);
-        }
-        Log.i("usernameu",getUserName());
     }
 
     //Options Menu Actions

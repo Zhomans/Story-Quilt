@@ -24,5 +24,6 @@
     <!--Create Story-->
     <dimen name = "activity_create_seekbar_padding">20dp</dimen>
     <dimen name = "activity_story_button_padding">10dp</dimen>
+    <dimen name = "activity_create_text_margin">5dp</dimen>
 
     </resources>
