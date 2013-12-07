@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,18 +16,20 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
 
 public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
     //Intent Request Codes
-    private final int LOGIN = 0; //Request code for logging in and getting username
-    private final int SIGNOUT = 1; //Request code for logging in and getting username
+    private final int LOGIN = 0; //Request code for logging in and getting email
+    private final int SIGNOUT = 1; //Request code for logging in and getting email
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
+    private View signInButton;
 
     //User's name from the google account
-    String username;
 
     //the settings/actionbar menu
     Menu menu;
@@ -51,18 +54,27 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
+        signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(this);
+
+        if (getEmail().equals("") || getEmail().equals("readonly")) {
+            signInButton.setVisibility(View.VISIBLE);
+        }
+
         mPlusClient = new PlusClient.Builder(this, this, this)
                 //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
-                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
+                .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
 
         //Check if logged in
-        googlePlusClient();
-        username = getUserName(); //getUserName();
-        if (username.equals("readonly")) {
+        if (getEmail().equals("readonly")) {
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
+        } else if (getEmail().equals("")) {
+                setEmail("readonly");
+//                signIn();
         }
 
         //Set up MainActivity Views
@@ -71,29 +83,57 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setListAdapters();
     }
 
+    @Override
 
-    /**Methods for Managing Account Info
-        getUserName()
-        setUserName()
-        gotoUserLogin()
-    */
-    //Method for getting username
-    private String getUserName(){
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("username", "");
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
     }
 
-    //Method for saving username
-    private void setUserName(String value){
-        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("username", value).commit();
+    protected void onStart() {
+        super.onStart();
+        mPlusClient.connect();
     }
 
-    //Check for User Login
-    private void googlePlusClient(){
-        mPlusClient = new PlusClient.Builder(this, this, this)
-                .setActions("http://schemas.google.com/CreateActivity")
-                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
-                .build();
-        mConnectionProgressDialog = new ProgressDialog(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlusClient.disconnect();
+    }
+
+    //Method for getting email
+    private String getEmail(){
+        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "");
+    }
+
+    //Method for saving email
+    private void setEmail(String value){
+        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("email", value).commit();
+    }
+
+    private String getPersonFirstName(){
+        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
+    }
+
+    //Method for saving email
+    private void setPersonFirstName(String value){
+        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("personFirstName", value).commit();
     }
 
     //Signing In to Google+
@@ -126,7 +166,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
                     // Trigger app logic to comply with the developer policies
                 }
             });
-            setUserName("readonly");
+            setEmail("readonly");
             mPlusClient.disconnect();
             mPlusClient.connect();
             Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
@@ -159,11 +199,16 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Google+ Connection successful
     @Override
     public void onConnected(Bundle connectionHint) {
+        signInButton.setVisibility(View.GONE);
         mConnectionProgressDialog.dismiss();
-        username = mPlusClient.getAccountName();
-        Toast.makeText(this, username + " connected!", Toast.LENGTH_LONG).show();
-        setUserName(username);
+        String personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
+        if (!getEmail().equals(mPlusClient.getAccountName())) {
+            Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
+        }
+        setEmail(mPlusClient.getAccountName());
+        setPersonFirstName(personFirstName);
         updateSignOutandInButtonVisibility();
+
     }
 
     //Google+ Connection Disconnected
@@ -182,14 +227,14 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     public void updateSignOutandInButtonVisibility() {
         MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
         MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getUserName().equals("") || getUserName().equals("readonly")) {
+        if (getEmail().equals("") || getEmail().equals("readonly")) {
             signOutItem.setVisible(false);
             signInItem.setVisible(true);
         } else {
             signOutItem.setVisible(true);
             signInItem.setVisible(false);
         }
-        Log.i("usernameu",getUserName());
+        Log.i("usernameu", getEmail());
     }
 
     /**
@@ -221,27 +266,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     /**
      * Activity Methods
      */
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (username.equals("")) {
-            setUserName("readonly");
-            signIn();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mPlusClient.disconnect();
-    }
 
     //Options Menu
     @Override
@@ -278,34 +302,12 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("requestcode", Integer.toString(requestCode));
         switch (requestCode){
-/*            case LOGIN: //Activity Result for Login Screen
-                Log.i("requestcode", Integer.toString(requestCode));
-                if (resultCode == RESULT_OK){
-                    username = data.getStringExtra("username");
-                    setUserName(username); //Save the username in sharedPreferences
-                    updateSignOutandInButtonVisibility();
-                    Log.i("LoginResult", "Logged in as " + username);
-                } else { Log.i("LoginResult", "Failed to Login");
-                    Toast.makeText(MainActivity.this, "Failed to login to Google account. You can only read stories.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case SIGNOUT:
-                if (resultCode == RESULT_OK){
-                    setUserName("readonly");
-                    updateSignOutandInButtonVisibility();
-                    Toast.makeText(MainActivity.this, "Signout Successful", Toast.LENGTH_SHORT).show();
-                } else { Log.i("SignoutResult", "Failed to signout");
-                    Toast.makeText(MainActivity.this, "Failed to signout of Google account. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-                break;*/
             case REQUEST_CODE_RESOLVE_ERR:
                 if (resultCode == RESULT_OK) {
                     mConnectionResult = null;
                     mPlusClient.connect();
                 }
         }
-        Log.i("username",getUserName());
+        Log.i("email",getEmail());
     }
-
-
 }
