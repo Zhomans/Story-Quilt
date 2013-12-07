@@ -5,64 +5,88 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/activity_create_storyTitle_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/storyTitlePrompt"
-        android:id="@+id/activity_create_storyTitle_textview"
         android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
         android:gravity="center_horizontal" />
 
     <EditText
+        android:id="@+id/activity_create_storyTitle_textfield"
+        android:layout_below = "@id/activity_create_storyTitle_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/activity_create_storyTitle_textfield"
         android:layout_gravity="center_horizontal" />
 
     <TextView
+        android:id="@+id/activity_create_submissionLength_textview"
+        android:layout_below = "@id/activity_create_storyTitle_textfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/submissionLength"
-        android:id="@+id/activity_create_submissionLength_textview" />
+         />
 
     <SeekBar
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/activity_create_submissionLength_seekBar"
+        android:layout_width="fill_parent"
+        android:padding = "@dimen/activity_create_seekbar_padding"
+        android:layout_below = "@id/activity_create_submissionLength_textview"
+        android:layout_height="wrap_content"
         android:indeterminate="false" />
 
     <TextView
+        android:id="@+id/activity_create_historyLength_textview"
+        android:layout_below = "@id/activity_create_submissionLength_seekBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/historyLength"
-        android:id="@+id/activity_create_submissionLength_textview" />
+        />
 
     <SeekBar
+        android:id="@+id/activity_create_historyLength_seekBar"
+        android:layout_below = "@id/activity_create_historyLength_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/activity_create_historyLength_seekBar"
+        android:padding = "@dimen/activity_create_seekbar_padding"
         android:indeterminate="false" />
 
     <ToggleButton
+        android:id="@+id/activity_create_languageFilter_toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/languageFilter"
-        android:id="@+id/activity_create_languageFilter_toggleButton"
+        android:layout_below = "@id/activity_create_historyLength_seekBar"
         android:checked="true"
         android:layout_alignParentRight="true"/>
 
+    <TextView
+        android:id="@+id/activity_create_languageFilter_textview"
+        android:layout_alignBottom = "@id/activity_create_languageFilter_toggleButton"
+        android:layout_marginBottom = "15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/languageFilter"
+        />
+
     <EditText
+        android:id="@+id/activity_create_starterText_textfield"
+        android:layout_below = "@id/activity_create_languageFilter_toggleButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/starterText"
-        android:text="@string/starterText" />
+        android:hint="@string/starterText" />
 
     <Button
+        android:id="@+id/activity_main_create_button"
+        android:layout_below = "@id/activity_create_starterText_textfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create"
-        android:id="@+id/activity_main_create_button"
+        android:layout_margin = "@dimen/activity_story_button_padding"
         android:layout_gravity="center_horizontal" />
 </RelativeLayout>
