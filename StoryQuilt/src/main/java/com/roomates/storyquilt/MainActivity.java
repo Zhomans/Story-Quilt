@@ -80,26 +80,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setListAdapters();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (username.equals("")) {
-            setUserName("readonly");
-            signIn();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mPlusClient.disconnect();
-    }
 
     /**Methods for Managing Account Info
         getUserName()
@@ -250,6 +230,28 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     /**
      * Activity Methods
      */
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPlusClient.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (username.equals("")) {
+            setUserName("readonly");
+            signIn();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlusClient.disconnect();
+    }
+
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
