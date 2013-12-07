@@ -67,9 +67,12 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
         //Check if logged in
-        username = ""; //getUserName();
+        username = getUserName(); //getUserName();
         if (username.equals("")) {
+            setUserName("readonly");
             signIn();
+        } else if (username.equals("readonly")) {
+            Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         }
         //Set up MainActivity Views
         setListViews();
@@ -122,6 +125,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
+        Log.i("connectionresult",result.toString());
         if (mConnectionProgressDialog.isShowing()) {
             // The user clicked the sign-in button already. Start to resolve
             // connection errors. Wait until onConnected() to dismiss the
@@ -259,7 +263,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("requestcode", Integer.toString(requestCode));
         switch (requestCode){
-            case LOGIN: //Activity Result for Login Screen
+/*            case LOGIN: //Activity Result for Login Screen
                 Log.i("requestcode", Integer.toString(requestCode));
                 if (resultCode == RESULT_OK){
                     username = data.getStringExtra("username");
@@ -278,7 +282,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
                 } else { Log.i("SignoutResult", "Failed to signout");
                     Toast.makeText(MainActivity.this, "Failed to signout of Google account. Please try again.", Toast.LENGTH_SHORT).show();
                 }
-                break;
+                break;*/
             case REQUEST_CODE_RESOLVE_ERR:
                 if (resultCode == RESULT_OK) {
                     mConnectionResult = null;
