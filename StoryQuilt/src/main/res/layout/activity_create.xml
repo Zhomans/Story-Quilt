@@ -59,6 +59,8 @@
 
     <ToggleButton
         android:id="@+id/activity_create_languageFilter_toggleButton"
+        android:background = "@android:color/holo_blue_bright"
+        android:layout_marginRight = "@dimen/activity_story_button_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/languageFilter"
@@ -85,6 +87,9 @@
 
     <Button
         android:id="@+id/activity_create_create_button"
+        android:background = "@android:color/holo_blue_bright"
+        android:textColor = "@android:color/primary_text_light"
+        android:padding = "10dp"
         android:layout_below = "@id/activity_create_starterText_textfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -15,6 +15,11 @@
     <dimen name = "activity_story_postsLater_paddingTop">8dp</dimen>
     <dimen name = "activity_story_divider_height">1dp</dimen>
     <dimen name = "activity_story_divider_width">350dp</dimen>
+    <dimen name = "activity_story_title_paddingTop">8dp</dimen>
+    <dimen name = "activity_story_edittext_width">300dp</dimen>
+    <dimen name = "activity_story_button_width">26dp</dimen>
+    <dimen name = "activity_story_button_height">26dp</dimen>
+    <dimen name = "activity_story_recentPosts_maxHeight">500dp</dimen>
 
     <!--Create Story-->
     <dimen name = "activity_create_seekbar_padding">20dp</dimen>

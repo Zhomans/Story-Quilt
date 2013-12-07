@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     ListView writing, reading;
 
     //ListAdapters
-    StoryAdapter writingAdapter, readingAdapter;
+    StoryListAdapter writingAdapter, readingAdapter;
 
     //Firebase
     Firebase mainRef;
@@ -90,11 +90,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         mPlusClient.disconnect();
     }
 
-    /**Methods for Managing Account Info
-        getUserName()
-        setUserName()
-        gotoUserLogin()
-    */
     //Method for getting email
     private String getEmail(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "");
@@ -112,15 +107,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Method for saving email
     private void setPersonFirstName(String value){
         getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("personFirstName", value).commit();
-    }
-
-    //Check for User Login
-    private void googlePlusClient(){
-/*        mPlusClient = new PlusClient.Builder(this, this, this)
-                //.setActions("http://schemas.google.com/CreateActivity")
-                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
-                .build();
-        mConnectionProgressDialog = new ProgressDialog(this);*/
     }
 
     //Signing In to Google+
@@ -241,8 +227,8 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
-        readingAdapter = new StoryAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
+        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
+        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
 
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);
@@ -251,6 +237,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     /**
      * Activity Methods
      */
+
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -286,26 +273,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("requestcode", Integer.toString(requestCode));
         switch (requestCode){
-/*            case LOGIN: //Activity Result for Login Screen
-                Log.i("requestcode", Integer.toString(requestCode));
-                if (resultCode == RESULT_OK){
-                    email = data.getStringExtra("email");
-                    setUserName(email); //Save the email in sharedPreferences
-                    updateSignOutandInButtonVisibility();
-                    Log.i("LoginResult", "Logged in as " + email);
-                } else { Log.i("LoginResult", "Failed to Login");
-                    Toast.makeText(MainActivity.this, "Failed to login to Google account. You can only read stories.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case SIGNOUT:
-                if (resultCode == RESULT_OK){
-                    setUserName("readonly");
-                    updateSignOutandInButtonVisibility();
-                    Toast.makeText(MainActivity.this, "Signout Successful", Toast.LENGTH_SHORT).show();
-                } else { Log.i("SignoutResult", "Failed to signout");
-                    Toast.makeText(MainActivity.this, "Failed to signout of Google account. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-                break;*/
             case REQUEST_CODE_RESOLVE_ERR:
                 if (resultCode == RESULT_OK) {
                     mConnectionResult = null;
