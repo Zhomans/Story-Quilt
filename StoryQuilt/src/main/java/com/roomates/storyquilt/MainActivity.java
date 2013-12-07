@@ -62,6 +62,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
 
         //Check if logged in
+        googlePlusClient();
         username = getUserName(); //getUserName();
         if (username.equals("")) {
             setUserName("readonly");
@@ -69,6 +70,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         } else if (username.equals("readonly")) {
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         }
+
         //Set up MainActivity Views
         setListViews();
         setFireBaseRefs();
@@ -103,9 +105,9 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     }
 
     //Check for User Login
-    private void goToUserLogin(){
+    private void googlePlusClient(){
         mPlusClient = new PlusClient.Builder(this, this, this)
-                .setActions("http://schemas.google.com/CreateActivity") //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
+                .setActions("http://schemas.google.com/CreateActivity")
                 .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
         mConnectionProgressDialog = new ProgressDialog(this);
