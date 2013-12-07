@@ -21,13 +21,14 @@ import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
 
 
 import java.util.ArrayList;
 
 public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
     //Intent Request Codes
     private final int LOGIN = 0; //Request code for logging in and getting username
     private final int SIGNOUT = 1; //Request code for logging in and getting username
@@ -60,6 +61,9 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
         mPlusClient = new PlusClient.Builder(this, this, this)
                 //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
                 .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
@@ -78,6 +82,23 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setListViews();
         setFireBaseRefs();
         setListAdapters();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
     }
 
 
@@ -315,6 +336,4 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         }
         Log.i("username",getUserName());
     }
-
-
 }
