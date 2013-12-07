@@ -32,8 +32,7 @@ public class StoryViewActivity extends Activity {
 
         //Get Current Story
         //XXX Empty Story
-        ArrayList<PieceClass> emptyPieces = new ArrayList<PieceClass>();
-        StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, emptyPieces);
+        StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, new PieceClass[]{});
 
         thisStory = emptyStory;
 

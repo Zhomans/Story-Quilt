@@ -9,10 +9,10 @@ public class StoryClass {
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
-    ArrayList<PieceClass> pieces;
+    PieceClass[] pieces;
 
     public StoryClass(){} //Firebase required constructor
-    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<PieceClass> pieces){
+    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces){
         this.lastUpdated = lastUpdated;
         this.title = title;
         this.ageLimit = ageLimit;
@@ -44,7 +44,7 @@ public class StoryClass {
     public long getPriority(){
         return this.priority;
     }
-    public ArrayList<PieceClass> getPieces(){
+    public PieceClass[] getPieces(){
         return this.pieces;
     }
 
@@ -59,7 +59,7 @@ public class StoryClass {
     }
 
     //Get Length of StoryClass (by Posts)
-    public int getLength() { return this.pieces.size(); }
+    public int getLength() { return this.pieces.length; }
 
     //Get Full Text of a Story
     public String getFullStory() {

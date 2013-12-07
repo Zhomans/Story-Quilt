@@ -6,6 +6,14 @@
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame">
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
     <View
         android:id = "@+id/activity_main_centerOnMe"
         android:layout_width = "0dp"
@@ -16,10 +24,10 @@
         android:id = "@+id/activity_main_writing_title"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
-        android:layout_alignParentTop = "true"
         android:textSize = "@dimen/activity_title_font"
         android:text = "@string/activity_main_writing_title"
-        />
+        android:layout_below="@+id/sign_in_button"
+        android:layout_alignParentLeft="true" />
 
     <ListView
         android:id = "@+id/activity_main_writing_listview"
@@ -33,10 +41,10 @@
         android:id = "@+id/activity_main_reading_title"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
-        android:layout_below = "@id/activity_main_centerOnMe"
         android:textSize = "@dimen/activity_title_font"
         android:text = "@string/activity_main_reading_title"
-        />
+        android:layout_below="@+id/activity_main_centerOnMe"
+        android:layout_alignParentLeft="true" />
 
     <ListView
         android:id = "@+id/activity_main_reading_listview"

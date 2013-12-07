@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,16 +16,18 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
 
 public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
     //Intent Request Codes
     private final int LOGIN = 0; //Request code for logging in and getting email
     private final int SIGNOUT = 1; //Request code for logging in and getting email
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
+    private View signInButton;
 
     //User's name from the google account
 
@@ -51,6 +54,14 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
+        signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(this);
+
+        if (getEmail().equals("") || getEmail().equals("readonly")) {
+            signInButton.setVisibility(View.VISIBLE);
+        }
+
         mPlusClient = new PlusClient.Builder(this, this, this)
                 //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
@@ -63,7 +74,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         } else if (getEmail().equals("")) {
                 setEmail("readonly");
-                signIn();
+//                signIn();
         }
 
         //Set up MainActivity Views
@@ -73,6 +84,23 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     }
 
     @Override
+
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
+    }
+
     protected void onStart() {
         super.onStart();
         mPlusClient.connect();
@@ -81,7 +109,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -172,6 +199,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Google+ Connection successful
     @Override
     public void onConnected(Bundle connectionHint) {
+        signInButton.setVisibility(View.GONE);
         mConnectionProgressDialog.dismiss();
         String personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
         if (!getEmail().equals(mPlusClient.getAccountName())) {
@@ -180,6 +208,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setEmail(mPlusClient.getAccountName());
         setPersonFirstName(personFirstName);
         updateSignOutandInButtonVisibility();
+
     }
 
     //Google+ Connection Disconnected
@@ -205,7 +234,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
             signOutItem.setVisible(true);
             signInItem.setVisible(false);
         }
-        Log.i("usernameu",getEmail());
+        Log.i("usernameu", getEmail());
     }
 
     /**
@@ -281,6 +310,4 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         }
         Log.i("email",getEmail());
     }
-
-
 }
