@@ -29,7 +29,7 @@ public class CreateStoryActivity extends Activity{
         findViewById(R.id.activity_create_submissionLength_seekBar);
         findViewById(R.id.activity_create_languageFilter_toggleButton);
 
-        find
+        findViewById(R.id.activity_create_create_button);
     }
     //Options Menu
     @Override
