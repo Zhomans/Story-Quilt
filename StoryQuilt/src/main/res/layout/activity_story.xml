@@ -11,7 +11,8 @@
         android:textSize="@dimen/activity_story_title_font"
         android:id="@+id/activity_story_title_textview"
         android:layout_alignParentTop="true"
-        android:text="Once Upon A Time..."/>
+        android:text="Once Upon A Time..."
+        android:paddingTop="@dimen/activity_story_title_paddingTop"/>
 
     <View
         android:layout_width="@dimen/activity_story_divider_width"
@@ -29,8 +30,34 @@
         android:id="@+id/activity_story_postsLater_textview"
         android:layout_below="@id/activity_story_divider_view"
         android:text="...56 Posts Later..."
-        android:paddingTop="@dimen/activity_story_postsLater_paddingTop"/>
+        android:paddingTop="@dimen/activity_story_postsLater_paddingTop"
+        android:textColor="@android:color/holo_blue_dark"/>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_story_recentPosts_textview"
+        android:layout_below="@id/activity_story_postsLater_textview"
+        android:text="...And then everyone died..."
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:maxHeight="@dimen/activity_story_recentPosts_maxHeight"
+        android:textSize="@dimen/activity_story_title_font"/>
 
+    <EditText
+        android:layout_width="@dimen/activity_story_edittext_width"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_story_edittext"
+        android:layout_below="@id/activity_story_recentPosts_textview"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="@dimen/activity_story_button_width"
+        android:layout_height="@dimen/activity_story_button_height"
+        android:id="@+id/activity_story_button"
+        android:layout_alignBottom="@+id/activity_story_edittext"
+        android:layout_toRightOf="@+id/activity_story_edittext"
+        android:background = "@android:color/holo_blue_bright"
+        android:textColor = "@android:color/primary_text_light"/>
     
 </RelativeLayout>
