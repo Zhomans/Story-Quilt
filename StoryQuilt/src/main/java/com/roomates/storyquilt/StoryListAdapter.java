@@ -9,9 +9,9 @@ import com.firebase.client.Query;
 /**
  * Created by chris on 12/4/13.
  */
-public class StoryAdapter extends FirebaseListAdapter<StoryClass> {
+public class StoryListAdapter extends FirebaseListAdapter<StoryClass> {
     //Constructor for the adapter
-    public StoryAdapter(Query ref, Activity activity, int layout){
+    public StoryListAdapter(Query ref, Activity activity, int layout){
         super(ref, StoryClass.class, layout, activity);
     }
 
