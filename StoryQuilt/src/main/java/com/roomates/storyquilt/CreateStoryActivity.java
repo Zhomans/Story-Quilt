@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 /**
@@ -15,17 +16,19 @@ import android.widget.ToggleButton;
  */
 public class CreateStoryActivity extends Activity{
     //Views
+    TextView historyDisplay, submissionDisplay;
     EditText storyTitle, starterText;
     SeekBar historyLength, submissionLength;
     ToggleButton languageFilter;
     Button create;
 
     //Max SeekBar Limits
-    final private int SUBMISSION_MAX = 50; //Words
-    final private int SUBMISSION_DEFAULT = 3;//Word slider default
+    int SUBMISSION_MAX = 50; //Words
+    int SUBMISSION_DEFAULT = 3;//Word slider default
 
-    final private int HISTORY_MAX = 100;
-    final private int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
+    int HISTORY_MAX = 100;
+    int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
+    double HISTORY_TICK = 0.2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +47,13 @@ public class CreateStoryActivity extends Activity{
     /**
      Setting up Views for CreateStory from XML
      */
+    //Binding Create Story Views
     private void bindViews(){
         storyTitle = (EditText)findViewById(R.id.activity_create_storyTitle_textfield);
         starterText = (EditText)findViewById(R.id.activity_create_starterText_textfield);
+
+        submissionDisplay = (TextView)findViewById(R.id.activity_create_submissionLength_textview);
+        historyDisplay = (TextView)findViewById(R.id.activity_create_historyLength_textview);
 
         historyLength = (SeekBar)findViewById(R.id.activity_create_historyLength_seekBar);
         submissionLength = (SeekBar)findViewById(R.id.activity_create_submissionLength_seekBar);
@@ -55,16 +62,34 @@ public class CreateStoryActivity extends Activity{
         create = (Button)findViewById(R.id.activity_create_create_button);
     }
 
+    //Setup Seek Bars
     private void setupSeekBars(){
         historyLength.setMax(HISTORY_MAX);
         historyLength.setProgress(HISTORY_DEFAULT);
         submissionLength.setMax(SUBMISSION_MAX);
         submissionLength.setProgress(SUBMISSION_DEFAULT);
 
+        submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                historyDisplay.setText("History Length: " + progress + " words");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         historyLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                long value = Math.round(progress * HISTORY_TICK * submissionLength.getProgress());
+                historyDisplay.setText("History Length: " + value + " words");
             }
 
             @Override
