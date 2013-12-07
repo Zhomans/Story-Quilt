@@ -25,6 +25,7 @@ public class StoryClass {
     public String getId(){
         return this.id;
     }
+
     public String getLastUpdated(){
         return this.lastUpdated;
     }
@@ -43,7 +44,9 @@ public class StoryClass {
     public long getPriority(){
         return this.priority;
     }
-    public ArrayList<PieceClass> getPieces(){ return this.pieces; }
+    public ArrayList<PieceClass> getPieces(){
+        return this.pieces;
+    }
 
     //Setting the priority based on viewers and posters
     public void setPriority(int num_viewers, int num_posters){
