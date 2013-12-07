@@ -39,6 +39,8 @@ public class StoryViewActivity extends Activity {
         //Populate Activity Views' Text
         populateViews();
 
+        //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
+
         //Add Button
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,10 +49,19 @@ public class StoryViewActivity extends Activity {
                 if (newPostText != null){
                     if (checkWordCount(newPostText.toString())){
                         //Other filters
-                        //Create Piece
+                        PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                         //Add Piece to Story
+                        //Makes you a writer if you aren't yet
                     };
                 }
+            }
+        });
+
+        //Quit Button
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Makes you a reader in the story, instead of a writer
             }
         });
     }
@@ -73,10 +84,13 @@ public class StoryViewActivity extends Activity {
      */
     void populateViews(){
         storyTitle.setText(thisStory.getTitle());
-        quitButton.setText("... "+thisStory.getLength()+" Posts Later ...");
+        quitButton.setText("... "+String.valueOf(thisStory.getLength())+" Posts Later ...");
         recentPosts.setText(thisStory.getRecentPosts());
     }
 
+    /**
+     Checks Input str Word Count. true If Not Greater Than Text Limit.
+     */
     boolean checkWordCount(String str){
         return thisStory.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
     }
