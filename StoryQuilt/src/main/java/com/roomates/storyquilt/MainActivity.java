@@ -1,30 +1,21 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
-
-
-import java.util.ArrayList;
 
 public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener {
@@ -44,7 +35,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     ListView writing, reading;
 
     //ListAdapters
-    StoryAdapter writingAdapter, readingAdapter;
+    StoryListAdapter writingAdapter, readingAdapter;
 
     //Firebase
     Firebase mainRef;
@@ -220,8 +211,8 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
-        readingAdapter = new StoryAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
+        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
+        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
 
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);

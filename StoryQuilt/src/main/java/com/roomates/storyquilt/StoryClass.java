@@ -4,14 +4,13 @@ package com.roomates.storyquilt;
  * Created by chris on 12/4/13.
  */
 public class StoryClass {
-    String id, text, lastUpdated, title;
+    String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
-    String[] pieces;
+    PieceClass[] pieces;
 
     public StoryClass(){} //Firebase required constructor
-    public StoryClass(String text, String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, String[] pieces){
-        this.text = text;
+    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces){
         this.lastUpdated = lastUpdated;
         this.title = title;
         this.ageLimit = ageLimit;
@@ -23,9 +22,6 @@ public class StoryClass {
     //Firebase Get Methods
     public String getId(){
         return this.id;
-    }
-    public String getText(){
-        return this.text;
     }
     public String getLastUpdated(){
         return this.lastUpdated;
@@ -45,7 +41,7 @@ public class StoryClass {
     public long getPriority(){
         return this.priority;
     }
-    public String[] getPieces(){
+    public PieceClass[] getPieces(){
         return this.pieces;
     }
 
