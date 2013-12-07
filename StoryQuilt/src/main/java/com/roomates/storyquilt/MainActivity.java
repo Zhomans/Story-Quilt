@@ -60,12 +60,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPlusClient = new PlusClient.Builder(this, this, this)
-                //.setActions("http://schemas.google.com/CreateActivity") //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
-                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
-                .build();
-        mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Signing in...");
+
         //Check if logged in
         username = getUserName(); //getUserName();
         if (username.equals("")) {
@@ -109,8 +104,11 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     //Check for User Login
     private void goToUserLogin(){
-        Intent getLogin = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(getLogin, LOGIN);
+        mPlusClient = new PlusClient.Builder(this, this, this)
+                .setActions("http://schemas.google.com/CreateActivity") //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
+                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
+                .build();
+        mConnectionProgressDialog = new ProgressDialog(this);
     }
 
     /**
