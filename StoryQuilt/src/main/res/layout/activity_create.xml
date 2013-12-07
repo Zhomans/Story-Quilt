@@ -24,6 +24,7 @@
     <TextView
         android:id="@+id/activity_create_submissionLength_textview"
         android:layout_below = "@id/activity_create_storyTitle_textfield"
+        android:layout_marginLeft = "@dimen/activity_create_text_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -41,6 +42,7 @@
     <TextView
         android:id="@+id/activity_create_historyLength_textview"
         android:layout_below = "@id/activity_create_submissionLength_seekBar"
+        android:layout_marginLeft = "@dimen/activity_create_text_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -67,22 +69,22 @@
     <TextView
         android:id="@+id/activity_create_languageFilter_textview"
         android:layout_alignBottom = "@id/activity_create_languageFilter_toggleButton"
+        android:layout_marginLeft = "@dimen/activity_create_text_margin"
         android:layout_marginBottom = "15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/languageFilter"
-        />
+        android:text="@string/languageFilter"/>
 
     <EditText
         android:id="@+id/activity_create_starterText_textfield"
         android:layout_below = "@id/activity_create_languageFilter_toggleButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/starterText" />
+        android:hint="@string/starterText"/>
 
     <Button
-        android:id="@+id/activity_main_create_button"
+        android:id="@+id/activity_create_create_button"
         android:layout_below = "@id/activity_create_starterText_textfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

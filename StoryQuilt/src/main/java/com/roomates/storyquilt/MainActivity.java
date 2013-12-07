@@ -250,6 +250,9 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         reading.setAdapter(readingAdapter);
     }
 
+    /**
+     * Activity Methods
+     */
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
