@@ -6,4 +6,12 @@
         android:title="@string/create_story"
         android:orderInCategory="100"
         android:showAsAction="always" />
+
+    <item android:id="@+id/gPlusSignOut"
+        android:title="@string/gPlusSignOut"
+        android:orderInCategory="100" />
+
+    <item android:id="@+id/gPlusSignIn"
+        android:title="@string/gPlusSignIn"
+        android:orderInCategory="100" />
 </menu>

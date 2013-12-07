@@ -11,18 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.common.*;
-import com.google.android.gms.common.GooglePlayServicesClient.*;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.plus.PlusClient;
 
 /**
  * Created by chris on 12/4/13.
  */
-public class LoginActivity extends Activity implements ConnectionCallbacks,
+public class LoginActivity extends Activity implements ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         OnConnectionFailedListener, View.OnClickListener{
 
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
@@ -35,15 +33,45 @@ public class LoginActivity extends Activity implements ConnectionCallbacks,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        mPlusClient = new PlusClient.Builder(this, this, this)
-                .setActions("http://schemas.google.com/AddActivity", "http://schemas.google.com/BuyActivity")
-                .setScopes("PLUS_LOGIN")  // Space separated list of scopes
-                .build();
-        // Progress bar to be displayed if the connection failure is not resolved.
-        mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Signing in...");
 
+        mPlusClient = new PlusClient.Builder(this, this, this)
+                //.setActions("http://schemas.google.com/CreateActivity") //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
+                .setScopes(Scopes.PLUS_LOGIN)  // Space separated list of scopes
+                .build();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            if(extras.getString("signout")!=null){
+                signOut();
+            }
+        }else{
+            findViewById(R.id.sign_in_button).setOnClickListener(this);
+            // Progress bar to be displayed if the connection failure is not resolved.
+            mConnectionProgressDialog = new ProgressDialog(this);
+            mConnectionProgressDialog.setMessage("Signing in...");
+        }
+    }
+
+    public void signOut(){
+        mPlusClient.connect();
+        mPlusClient.clearDefaultAccount();
+        mPlusClient.revokeAccessAndDisconnect(this);
+        mPlusClient.disconnect();
+        mPlusClient.connect();
+        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+        setResult(RESULT_OK, mainActivityIntent);
+        finish();
+    }
+
+    @Override
+    public void onAccessRevoked(ConnectionResult status) {
+// mPlusClient is now disconnected and access has been revoked.
+// We should now delete any data we need to comply with the
+// developer properties. To reset ourselves to the original state,
+// we should now connect again. We don't have to disconnect as that
+// happens as part of the call.
+        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("username", "readonly").commit();
+        mPlusClient.connect();
     }
 
     @Override
@@ -62,8 +90,6 @@ public class LoginActivity extends Activity implements ConnectionCallbacks,
             }
         }
     }
-
-
 
     @Override
     protected void onStart() {
@@ -106,7 +132,10 @@ public class LoginActivity extends Activity implements ConnectionCallbacks,
     @Override
     public void onConnected(Bundle connectionHint) {
         String accountName = mPlusClient.getAccountName();
-        Toast.makeText(this, accountName + " is connected.", Toast.LENGTH_LONG).show();
+        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainActivityIntent.putExtra("username", accountName);
+        setResult(RESULT_OK, mainActivityIntent);
+        finish();
     }
 
     @Override
@@ -116,7 +145,6 @@ public class LoginActivity extends Activity implements ConnectionCallbacks,
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

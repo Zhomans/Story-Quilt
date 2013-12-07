@@ -17,5 +17,8 @@
 
     <!--MainActivity Menu-->
     <string name = "create_story">Create</string>
+    <string name = "gPlusSignOut">Sign Out</string>
+    <string name = "gPlusSignIn">Sign In</string>
+
 </resources>
 
