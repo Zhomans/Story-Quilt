@@ -65,7 +65,7 @@ public class CreateStoryActivity extends Activity{
     }
 
     //Setup Seek Bars
-    private void setupSeekBars()s{
+    private void setupSeekBars(){
         historyLength.setMax(HISTORY_MAX);
         historyLength.setProgress(HISTORY_DEFAULT);
         submissionLength.setMax(SUBMISSION_MAX);
