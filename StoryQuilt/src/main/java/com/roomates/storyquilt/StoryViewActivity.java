@@ -2,6 +2,8 @@ package com.roomates.storyquilt;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -37,6 +39,21 @@ public class StoryViewActivity extends Activity {
 
         //Populate Activity Views' Text
         populateViews();
+
+        //Add Button
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Editable newPostText = newPost.getText();
+                if (newPostText != null){
+                    if (checkWordCount(newPostText.toString())){
+                        //Other filters
+                        //Create Piece
+                        //Add Piece to Story
+                    };
+                }
+            }
+        });
     }
 
     /**
@@ -61,6 +78,9 @@ public class StoryViewActivity extends Activity {
         recentPosts.setText(thisStory.getRecentPosts());
     }
 
+    boolean checkWordCount(String str){
+        return thisStory.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
+    }
 
 
 }

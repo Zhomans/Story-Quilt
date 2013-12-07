@@ -65,12 +65,13 @@ public class StoryClass {
     public String getFullStory() {
         String fullText = "";
         for (PieceClass piece : this.pieces) {
-            fullText.concat(piece.getText());
+            fullText.concat(piece.getText()+" ");
         }
         return fullText;
     }
 
     //Get Recent Posts of Story
+    //XXX Possibly refactor to make more efficient. Use split?
     public String getRecentPosts() {
         //XXX Could refactor to take in FullStory so it doesn't need to recalculate
         String fullText = this.getFullStory();
