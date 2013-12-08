@@ -50,7 +50,7 @@ public class JoinStoryActivity extends Activity {
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        popularAdapter = new StoryListAdapter(popularRef, JoinStoryActivity.this, R.layout.listitem_main_story));
+        popularAdapter = new StoryListAdapter(popularRef, JoinStoryActivity.this, R.layout.listitem_main_story);
         nascentAdapter = new StoryListAdapter(nascentRef, JoinStoryActivity.this, R.layout.listitem_main_story);
 
         popular.setAdapter(popularAdapter);
