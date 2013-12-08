@@ -49,7 +49,6 @@ public class MainActivity extends GooglePlusActivity {
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);

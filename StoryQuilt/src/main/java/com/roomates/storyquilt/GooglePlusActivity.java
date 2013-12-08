@@ -29,8 +29,8 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String previousEmail;
-    String personFirstName;
+    String previousEmail = "";
+    String personFirstName = "";
 
 
 
@@ -43,7 +43,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlusClient = new PlusClient.Builder(this, this, this)
-                //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
         mConnectionProgressDialog = new ProgressDialog(this);
