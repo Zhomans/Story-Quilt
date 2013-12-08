@@ -1,6 +1,7 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -31,6 +32,7 @@ public class StoryViewActivity extends Activity {
         bindViews();
 
         //Get Current Story
+        getStory();
         //XXX Empty Story
         StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, new PieceClass[]{});
 
@@ -69,7 +71,7 @@ public class StoryViewActivity extends Activity {
     /**
      Binding Views for StoryView from XML
      */
-    void bindViews(){
+    private void bindViews(){
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
 
         addButton = (Button)findViewById(R.id.activity_story_button);
@@ -82,7 +84,7 @@ public class StoryViewActivity extends Activity {
     /**
       Populating Views for StoryView from XML
      */
-    void populateViews(){
+    private void populateViews(){
         storyTitle.setText(thisStory.getTitle());
         quitButton.setText("... "+String.valueOf(thisStory.getLength())+" Posts Later ...");
         recentPosts.setText(thisStory.getRecentPosts());
@@ -91,8 +93,16 @@ public class StoryViewActivity extends Activity {
     /**
      Checks Input str Word Count. true If Not Greater Than Text Limit.
      */
-    boolean checkWordCount(String str){
+    private boolean checkWordCount(String str){
         return thisStory.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
+    }
+
+    /**
+     * Get Story from Intent
+     */
+    private void getStory(){
+        Intent inStory = getIntent();
+        StoryClass story = (StoryClass) inStory.getSerializableExtra("story");
     }
 
 
