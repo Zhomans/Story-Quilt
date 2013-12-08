@@ -253,7 +253,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
+        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_story);
         readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_story);
 
         writing.setAdapter(writingAdapter);

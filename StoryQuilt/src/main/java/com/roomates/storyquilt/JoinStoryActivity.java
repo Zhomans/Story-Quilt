@@ -34,7 +34,6 @@ public class JoinStoryActivity extends Activity {
 
     /**
         Methods for Handling List Views
-
      */
     //Grab ListViews from the XML
     private void setListViews(){
