@@ -51,6 +51,9 @@ public class MainActivity extends GooglePlusActivity {
     public void onCreateExtended(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
 
+        previousEmail = getEmail();
+        personFirstName = getPersonFirstName();
+        
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
