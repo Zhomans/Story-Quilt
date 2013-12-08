@@ -18,7 +18,6 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
-import com.google.android.gms.plus.model.people.Person;
 
 public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
@@ -255,7 +254,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
         writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_writing);
-        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_reading);
+        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_story);
 
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);
@@ -285,6 +284,9 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
             case R.id.create_story: //Create a new Story
                 Intent createStory = new Intent(MainActivity.this, CreateStoryActivity.class);
                 startActivity(createStory);
+
+            case R.id.join_story: //Join an Existing Story
+                Intent joinStory = new Intent(MainActivity.this, JoinStoryActivity.class);
 
             case R.id.gPlusSignIn: //Sign in Google+
                 signOut();
