@@ -78,7 +78,7 @@ public class CreateStoryActivity extends Activity{
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                submissionDisplay.setText("History Length: " + progress + " words");
+                submissionDisplay.setText("Submission Length: " + progress + " words");
             }
 
             @Override

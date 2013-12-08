@@ -268,7 +268,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         this.menu = menu;
@@ -282,16 +281,16 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.create_story) { //Create a new Story
-            Intent createStory = new Intent(MainActivity.this, CreateStoryActivity.class);
-            startActivity(createStory);
-        }
-        if (id == R.id.gPlusSignOut) { //Create a new Stor
-            signOut();
-        }
-        if (id == R.id.gPlusSignIn) { //Create a new Story
-            signIn();
+        switch (item.getItemId()) {
+            case R.id.create_story: //Create a new Story
+                Intent createStory = new Intent(MainActivity.this, CreateStoryActivity.class);
+                startActivity(createStory);
+
+            case R.id.gPlusSignIn: //Sign in Google+
+                signOut();
+
+            case R.id.gPlusSignOut:
+                signIn();
         }
         return super.onOptionsItemSelected(item);
     }
