@@ -1,0 +1,186 @@
+package com.roomates.storyquilt;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.plus.PlusClient;
+
+/**
+ * Created by chris on 12/8/13.
+ */
+public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
+        GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
+
+    //google plus api
+    private ProgressDialog mConnectionProgressDialog;
+    private PlusClient mPlusClient;
+    private ConnectionResult mConnectionResult;
+
+    //Request Codes for intents
+    private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
+
+    //Managing Periodic Connection Status and user Info
+    String previousEmail;
+    String personFirstName;
+
+    //On Create For Activity
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPlusClient = new PlusClient.Builder(this, this, this)
+                //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
+                .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
+                .build();
+        mConnectionProgressDialog = new ProgressDialog(this);
+        mConnectionProgressDialog.setMessage("Signing in...");
+
+        onCreateExtended(savedInstanceState);
+    }
+
+    //Google+ Connection successful
+    public void onConnected(Bundle connectionHint) {
+        mConnectionProgressDialog.dismiss();
+        personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
+        if (!previousEmail.equals(mPlusClient.getAccountName())) {
+            Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
+            previousEmail = mPlusClient.getAccountName();
+        }
+        onConnectionStatusChanged();
+    }
+    //Google+ Connection Disconnected
+    public void onDisconnected() {
+        Log.d("GooglePlusActivity", "disconnected");
+    }
+
+    //Google+ Connection Failed
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i("GooglePlusAcitivity Connection Failed",result.toString());
+        if (mConnectionProgressDialog.isShowing()) {
+            // The user clicked the sign-in button already. Start to resolve
+            // connection errors. Wait until onConnected() to dismiss the
+            // connection dialog.
+            if (result.hasResolution()) {
+                try {
+                    result.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    mPlusClient.connect();
+                }
+            }
+        }
+
+        // Save the intent so that we can start an activity when the user clicks
+        // the sign-in button.
+        mConnectionResult = result;
+    }
+
+    //On GooglePlus AccessRevoked
+    public void onAccessRevoked(ConnectionResult status) {
+        // mPlusClient is now disconnected and access has been revoked.
+        // Trigger app logic to comply with the developer policies
+    }
+
+    //Signing In to Google+
+    public void signIn() {
+        if (!mPlusClient.isConnected()) { //Create a new Story
+            Log.i("testing","hello");
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
+    }
+
+    //Signing Out of Google+
+    public void signOut() {
+        Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
+        if (mPlusClient.isConnected()) {
+            mPlusClient.clearDefaultAccount();
+            mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
+                @Override
+                public void onAccessRevoked(ConnectionResult connectionResult) {
+                    // mPlusClient is now disconnected and access has been revoked.
+                    // Trigger app logic to comply with the developer policies
+                }
+            });
+
+            mPlusClient.disconnect();
+            mPlusClient.connect();
+            Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
+        }
+        onConnectionStatusChanged();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+            if (mConnectionResult == null) {
+                mConnectionProgressDialog.show();
+            } else {
+                try {
+                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+                } catch (IntentSender.SendIntentException e) {
+                    // Try connecting again.
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.i("requestcode", Integer.toString(requestCode));
+        switch (requestCode){
+            case REQUEST_CODE_RESOLVE_ERR:
+                if (resultCode == RESULT_OK) {
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+        }
+        Log.i("email", previousEmail);
+
+        onActivityResultExtended(requestCode, resultCode, data);
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPlusClient.connect();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlusClient.disconnect();
+    }
+
+
+    /**
+     * Methods to be implemented by inheritee
+     */
+    public abstract void onConnectionStatusChanged();
+    public abstract void onActivityResultExtended(int requestCode, int resultCode, Intent data);
+    public abstract void onCreateExtended(Bundle savedInstanceState);
+}

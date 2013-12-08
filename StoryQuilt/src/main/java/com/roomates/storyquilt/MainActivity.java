@@ -1,9 +1,6 @@
 package com.roomates.storyquilt;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,22 +10,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.plus.PlusClient;
 
-public class MainActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
-        GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
+public class MainActivity extends GooglePlusActivity {
     //Intent Request Codes
-    private final int LOGIN = 0; //Request code for logging in and getting email
-    private final int SIGNOUT = 1; //Request code for logging in and getting email
-    private static final String TAG = "MainActivity";
-    private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
-    private View signInButton;
-
-    //User's name from the google account
+    View signInButton;
 
     //the settings/actionbar menu
     Menu menu;
@@ -42,13 +28,30 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     //Firebase
     Firebase writingRef, readingRef;
 
-    //google plus api
-    private ProgressDialog mConnectionProgressDialog;
-    private PlusClient mPlusClient;
-    private ConnectionResult mConnectionResult;
+    /**
+     * Required by GooglePlusActivity
+     */
+    public void onConnectionStatusChanged() {
+        //These are saved in GooglePlusActivity
+        setEmail(previousEmail);
+        setPersonFirstName(personFirstName);
 
+        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
+        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
+        if (getEmail().equals("") || getEmail().equals("readonly")) {
+            signOutItem.setVisible(false);
+            signInItem.setVisible(true);
+        } else {
+            signOutItem.setVisible(true);
+            signInItem.setVisible(false);
+        }
+        Log.i("username", getEmail());
+    }
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
+    @Override
+    public void onCreateExtended(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -60,18 +63,11 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
             signInButton.setVisibility(View.VISIBLE);
         }
 
-        mPlusClient = new PlusClient.Builder(this, this, this)
-                //.setActions("http://schemas.google.com/CreateActivity"); //my (Mac-I) phone always crashes on this saying : "java.lang.NoSuchMethodError: Lcom/google/android/gms/plus/PlusClient$Builder;.setActions"
-                .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
-                .build();
-        mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Signing in...");
-
         //Check if logged in
         if (getEmail().equals("readonly")) {
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         } else if (getEmail().equals("")) {
-                setEmail("readonly");
+            setEmail("readonly");
 //                signIn();
         }
 
@@ -81,158 +77,21 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         setListAdapters();
     }
 
-    @Override
 
-    public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
-            if (mConnectionResult == null) {
-                mConnectionProgressDialog.show();
-            } else {
-                try {
-                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-                } catch (IntentSender.SendIntentException e) {
-                    // Try connecting again.
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-            }
-        }
-    }
-
-    protected void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mPlusClient.disconnect();
-    }
-
-    //Method for getting email
+    /**
+    Method for managing user Info
+     */
     private String getEmail(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "");
     }
-
-    //Method for saving email
     private void setEmail(String value){
         getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("email", value).commit();
     }
-
     private String getPersonFirstName(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
     }
-
-    //Method for saving email
     private void setPersonFirstName(String value){
         getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("personFirstName", value).commit();
-    }
-
-    //Signing In to Google+
-    public void signIn() {
-        if (!mPlusClient.isConnected()) { //Create a new Story
-            Log.i("testing","hello");
-            if (mConnectionResult == null) {
-                mConnectionProgressDialog.show();
-            } else {
-                try {
-                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-                } catch (IntentSender.SendIntentException e) {
-                    // Try connecting again.
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-            }
-        }
-    }
-
-    //Signing Out of Google+
-    public void signOut() {
-        Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
-        if (mPlusClient.isConnected()) {
-            mPlusClient.clearDefaultAccount();
-            mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
-                @Override
-                public void onAccessRevoked(ConnectionResult connectionResult) {
-                    // mPlusClient is now disconnected and access has been revoked.
-                    // Trigger app logic to comply with the developer policies
-                }
-            });
-            setEmail("readonly");
-            mPlusClient.disconnect();
-            mPlusClient.connect();
-            Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
-        }
-        updateSignOutandInButtonVisibility();
-    }
-
-    //Google+ Connection Failed
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.i("connectionresult",result.toString());
-        if (mConnectionProgressDialog.isShowing()) {
-            // The user clicked the sign-in button already. Start to resolve
-            // connection errors. Wait until onConnected() to dismiss the
-            // connection dialog.
-            if (result.hasResolution()) {
-                try {
-                    result.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-                } catch (IntentSender.SendIntentException e) {
-                    mPlusClient.connect();
-                }
-            }
-        }
-
-        // Save the intent so that we can start an activity when the user clicks
-        // the sign-in button.
-        mConnectionResult = result;
-    }
-
-    //Google+ Connection successful
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        signInButton.setVisibility(View.GONE);
-        mConnectionProgressDialog.dismiss();
-        String personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
-        if (!getEmail().equals(mPlusClient.getAccountName())) {
-            Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
-        }
-        setEmail(mPlusClient.getAccountName());
-        setPersonFirstName(personFirstName);
-        updateSignOutandInButtonVisibility();
-
-    }
-
-    //Google+ Connection Disconnected
-    @Override
-    public void onDisconnected() {
-        Log.d(TAG, "disconnected");
-    }
-
-    //Google+ Access Revoked
-    public void onAccessRevoked(ConnectionResult status) {
-        // mPlusClient is now disconnected and access has been revoked.
-        // Trigger app logic to comply with the developer policies
-    }
-
-    //Visisbility of Login Button
-    public void updateSignOutandInButtonVisibility() {
-        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getEmail().equals("") || getEmail().equals("readonly")) {
-            signOutItem.setVisible(false);
-            signInItem.setVisible(true);
-        } else {
-            signOutItem.setVisible(true);
-            signInItem.setVisible(false);
-        }
-        Log.i("usernameu", getEmail());
     }
 
     /**
@@ -270,7 +129,7 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         this.menu = menu;
-        updateSignOutandInButtonVisibility();
+        onConnectionStatusChanged();
         return true;
     }
 
@@ -295,18 +154,5 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
                 signIn();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i("requestcode", Integer.toString(requestCode));
-        switch (requestCode){
-            case REQUEST_CODE_RESOLVE_ERR:
-                if (resultCode == RESULT_OK) {
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-        }
-        Log.i("email",getEmail());
     }
 }
