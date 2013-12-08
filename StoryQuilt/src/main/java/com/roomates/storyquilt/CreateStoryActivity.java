@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.util.Date;
+import com.firebase.client.Firebase;
 
 /**
  * Created by chris on 12/4/13.
@@ -31,6 +31,10 @@ public class CreateStoryActivity extends Activity{
     int HISTORY_MAX = 100;
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
     double HISTORY_TICK = 0.2;
+
+    //Firebase Refs
+    Firebase storyRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +118,7 @@ public class CreateStoryActivity extends Activity{
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Create Firebase Ref
                 //Grab Text
                 String title =String.valueOf(storyTitle.getText());
                 String starter = String.valueOf(starterText.getText());
@@ -122,7 +127,7 @@ public class CreateStoryActivity extends Activity{
                 if (title.equals("")) title = starter;
 
                 //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces
-                new StoryClass(String.valueOf(System.currentTimeMillis()),
+                StoryClass curStory = new StoryClass(String.valueOf(System.currentTimeMillis()),
                                 title,
                                 (languageFilter.isChecked())? 13:0,
                                 (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
@@ -133,6 +138,16 @@ public class CreateStoryActivity extends Activity{
                                                             String.valueOf(starterText.getText())
                                                             )}
                                 );
+
+                //Push to Firebase
+                storyRef = FireConnection.create("stories");
+                storyRef.push();
+                curStory.setId(storyRef.getName());
+                storyRef.setValue(curStory);
+
+                //End Activity
+                finish();
+
 
             }
         });

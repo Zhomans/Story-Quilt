@@ -41,7 +41,6 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
     StoryListAdapter writingAdapter, readingAdapter;
 
     //Firebase
-    Firebase mainRef;
     Firebase writingRef, readingRef;
 
     //google plus api
@@ -249,9 +248,8 @@ public class MainActivity extends Activity implements GooglePlayServicesClient.C
 
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
-        mainRef = new Firebase("https://storyquilt.firebaseio.com");
-        readingRef = mainRef.child("users").child("reading");
-        writingRef = mainRef.child("users").child("writing");
+        readingRef = FireConnection.create("users", "reading");
+        writingRef = FireConnection.create("users", "writing");
     }
 
     //Create and Set ArrayAdapters for the ListViews

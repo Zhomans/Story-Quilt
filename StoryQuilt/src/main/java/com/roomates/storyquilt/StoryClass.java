@@ -1,6 +1,5 @@
 package com.roomates.storyquilt;
 
-import java.util.ArrayList;
 
 /**
  * Created by chris on 12/4/13.
