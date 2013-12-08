@@ -20,19 +20,25 @@ import com.google.android.gms.plus.PlusClient;
 public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
 
-    //google plus api
+    //Google Plus API Classes Used
     private ProgressDialog mConnectionProgressDialog;
     private PlusClient mPlusClient;
     private ConnectionResult mConnectionResult;
 
-    //Request Codes for intents
+    //Request Codes for Intents
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
-    //Managing Periodic Connection Status and user Info
+    //Managing Periodic Connection Status and User Info
     String previousEmail;
     String personFirstName;
 
-    //On Create For Activity
+
+
+    /**
+     * Methods for Activity
+     * onCreate, onActivityResult, onStart, onPause, onResume
+     * More can be implemented from inheritee
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +51,40 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
 
         onCreateExtended(savedInstanceState);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.i("requestcode", Integer.toString(requestCode));
+        switch (requestCode){
+            case REQUEST_CODE_RESOLVE_ERR:
+                if (resultCode == RESULT_OK) {
+                    mConnectionResult = null;
+                    mPlusClient.connect();
+                }
+        }
+        Log.i("email", previousEmail);
 
+        onActivityResultExtended(requestCode, resultCode, data);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPlusClient.connect();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlusClient.disconnect();
+    }
+
+
+
+    /**
+     * Methods required by GooglePlusAPI
+     */
     //Google+ Connection successful
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
@@ -60,7 +99,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
     }
-
     //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -82,13 +120,17 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         // the sign-in button.
         mConnectionResult = result;
     }
-
     //On GooglePlus AccessRevoked
     public void onAccessRevoked(ConnectionResult status) {
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
     }
 
+
+
+    /**
+     * Signing in and out
+     */
     //Signing In to Google+
     public void signIn() {
         if (!mPlusClient.isConnected()) { //Create a new Story
@@ -106,7 +148,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             }
         }
     }
-
     //Signing Out of Google+
     public void signOut() {
         Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
@@ -127,6 +168,11 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         onConnectionStatusChanged();
     }
 
+
+
+    /**
+     * Required by View.onClickListener
+     */
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
@@ -144,37 +190,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i("requestcode", Integer.toString(requestCode));
-        switch (requestCode){
-            case REQUEST_CODE_RESOLVE_ERR:
-                if (resultCode == RESULT_OK) {
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-        }
-        Log.i("email", previousEmail);
-
-        onActivityResultExtended(requestCode, resultCode, data);
-    }
-
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mPlusClient.disconnect();
-    }
 
 
     /**
