@@ -47,10 +47,7 @@ public class MainActivity extends GooglePlusActivity {
         }
         Log.i("username", getEmail());
     }
-    
-    @Override
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
-    @Override
     public void onCreateExtended(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -68,7 +65,7 @@ public class MainActivity extends GooglePlusActivity {
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
         } else if (getEmail().equals("")) {
             setEmail("readonly");
-//                signIn();
+            //signIn();
         }
 
         //Set up MainActivity Views
@@ -77,9 +74,8 @@ public class MainActivity extends GooglePlusActivity {
         setListAdapters();
     }
 
-
     /**
-    Method for managing user Info
+     * Method for managing user Info
      */
     private String getEmail(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "");
@@ -95,21 +91,18 @@ public class MainActivity extends GooglePlusActivity {
     }
 
     /**
-        Methods for Handling List Views
-
+     * Methods for Handling List Views
      */
     //Grab ListViews from the XML
     private void setListViews(){
         writing = (ListView) findViewById(R.id.activity_main_writing_listview);
         reading = (ListView) findViewById(R.id.activity_main_reading_listview);
     }
-
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
         readingRef = FireConnection.create("users", "reading");
         writingRef = FireConnection.create("users", "writing");
     }
-
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
         writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_story);
@@ -122,8 +115,7 @@ public class MainActivity extends GooglePlusActivity {
     /**
      * Activity Methods
      */
-
-    //Options Menu
+    //Options Menu Setup
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -132,8 +124,6 @@ public class MainActivity extends GooglePlusActivity {
         onConnectionStatusChanged();
         return true;
     }
-
-    //Options Menu Actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
