@@ -6,14 +6,6 @@
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
-
     <View
         android:id = "@+id/activity_main_centerOnMe"
         android:layout_width = "0dp"
