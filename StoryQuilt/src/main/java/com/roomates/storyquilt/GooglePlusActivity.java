@@ -19,7 +19,6 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by chris on 12/8/13.
@@ -38,7 +37,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String previousEmail = "";
+    String personEmail = "";
     String personFirstName = "";
     Integer personAge = 0;
     Firebase users = new Firebase("https://story-quilt.firebaseIO.com/users/");
@@ -71,7 +70,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                     mPlusClient.connect();
                 }
         }
-        Log.i("email", previousEmail);
+        Log.i("email", personEmail);
         onActivityResultExtended(requestCode, resultCode, data);
     }
     @Override
@@ -99,18 +98,18 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
         personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
-        if (!previousEmail.equals(mPlusClient.getAccountName())) {
+        if (!personEmail.equals(mPlusClient.getAccountName())) {
             Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
-            previousEmail = mPlusClient.getAccountName();
+            personEmail = mPlusClient.getAccountName();
             personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
 
-            Firebase firebase_user = users.child(previousEmail.replace(".", ""));
+            Firebase firebase_user = users.child(personEmail.replace(".", ""));
             firebase_user.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Object value = snapshot.getValue();
                     if (value == null) {
-                        UserClass user = new UserClass(previousEmail.replace(".", ""), personFirstName, personAge,
+                        UserClass user = new UserClass(personEmail.replace(".", ""), personFirstName, personAge,
                                 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
                         FireConnection.pushUserToList(FireConnection.create("users"), user);
                     } else {

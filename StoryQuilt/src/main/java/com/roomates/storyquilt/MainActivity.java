@@ -32,29 +32,25 @@ public class MainActivity extends GooglePlusActivity {
      * Required by GooglePlusActivity
      */
     public void onConnectionStatusChanged() {
-        //These are saved in GooglePlusActivity
-        setEmail(previousEmail);
+        //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
+        setEmail(personEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
+
+        //Choose which content to show: SignIn or Main Activity
         chooseContentView();
-        Log.i("Google", String.valueOf(mPlusClient.isConnected()));
+
+        //Set Action Settings Sign in or SignOut
         if (menu != null) {
-            MenuItem signOutItem =  menu.findItem(R.id.gPlusSignOut);
-            MenuItem signInItem =  menu.findItem(R.id.gPlusSignIn);
-            if (!mPlusClient.isConnected()) {
-                signOutItem.setVisible(false);
-                signInItem.setVisible(true);
-            } else {
-                signOutItem.setVisible(true);
-                signInItem.setVisible(false);
-            }
+            Boolean visibility = mPlusClient.isConnected();
+            (menu.findItem(R.id.gPlusSignOut)).setVisible(visibility);
+            (menu.findItem(R.id.gPlusSignIn)).setVisible(!visibility);
         }
-        Log.i("username", getEmail());
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
-        previousEmail = getEmail();
+        personEmail = getEmail();
         onConnectionStatusChanged();
     }
     public void chooseContentView() {
@@ -73,7 +69,7 @@ public class MainActivity extends GooglePlusActivity {
             setListAdapters();
         }
     }
-    
+
 
     /**
      * Method for managing user Info
