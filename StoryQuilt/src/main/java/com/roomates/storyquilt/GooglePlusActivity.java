@@ -22,6 +22,10 @@ import java.util.ArrayList;
 
 /**
  * Created by chris on 12/8/13.
+ *
+ * A general abstract class that implements GooglePlus Account Signin for Android Apps.
+ * Activities extend this abstract class and implement methods declared at the bottom of
+ * file.
  */
 public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
