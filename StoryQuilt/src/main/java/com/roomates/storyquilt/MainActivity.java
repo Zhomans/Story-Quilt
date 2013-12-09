@@ -36,27 +36,29 @@ public class MainActivity extends GooglePlusActivity {
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
+        isSignedIn = mPlusClient.isConnected();
         chooseContentView();
-/*        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getEmail().equals("readonly")) {
+        MenuItem signOutItem =  menu.findItem(R.id.gPlusSignOut);
+        MenuItem signInItem =  menu.findItem(R.id.gPlusSignIn);
+        if (!isSignedIn) {
             signOutItem.setVisible(false);
             signInItem.setVisible(true);
         } else {
             signOutItem.setVisible(true);
             signInItem.setVisible(false);
-        }*/
+        }
         Log.i("username", getEmail());
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
+        previousEmail = getEmail();
         chooseContentView();
     }
 
     public void chooseContentView() {
         signInButtonId = R.id.sign_in_button;
-        if (getEmail().equals("readonly")) {
+        if (!isSignedIn) {
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(signInButtonId)).setSize(SignInButton.SIZE_WIDE);

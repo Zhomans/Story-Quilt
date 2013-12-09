@@ -24,17 +24,19 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
 
     //Google Plus API Classes Used
     private ProgressDialog mConnectionProgressDialog;
-    private PlusClient mPlusClient;
+    public PlusClient mPlusClient;
     private ConnectionResult mConnectionResult;
 
     //Request Codes for Intents
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String previousEmail = "readonly";
+    String previousEmail = "";
     String personFirstName = "";
     Integer personAge = 0;
 
+    //Boolean IsSignedIn
+    boolean isSignedIn;
 
     /**
      * Methods for Activity
@@ -50,7 +52,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                 .build();
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
-
+        isSignedIn = mPlusClient.isConnected();
 
     }
     @Override
@@ -102,14 +104,14 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
-        previousEmail = "readonly";
+        isSignedIn = mPlusClient.isConnected();
         onConnectionStatusChanged();
     }
     //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i("GooglePlusAcitivity Connection Failed",result.toString());
-        previousEmail = "readonly";
+        isSignedIn = mPlusClient.isConnected();
         if (mConnectionProgressDialog.isShowing()) {
             // The user clicked the sign-in button already. Start to resolve
             // connection errors. Wait until onConnected() to dismiss the
@@ -131,7 +133,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public void onAccessRevoked(ConnectionResult status) {
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
-        previousEmail = "readonly";
+        isSignedIn = mPlusClient.isConnected();
     }
 
 
@@ -154,6 +156,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                     mPlusClient.connect();
                 }
             }
+            isSignedIn = mPlusClient.isConnected();
         }
     }
     //Signing Out of Google+
@@ -173,7 +176,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             mPlusClient.connect();
             Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
         }
-        previousEmail = "readonly";
+        isSignedIn = false;
         onConnectionStatusChanged();
     }
 
