@@ -13,6 +13,8 @@ import android.widget.ToggleButton;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
+
 /**
  * Created by chris on 12/4/13.
  */
@@ -123,17 +125,19 @@ public class CreateStoryActivity extends Activity{
                 //Check if title exists
                 if (title.equals("")) title = starter;
 
+                ArrayList<PieceClass> curPieces = new ArrayList<PieceClass>();
+                curPieces.add(new PieceClass(
+                        getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
+                        String.valueOf(System.currentTimeMillis()),
+                        String.valueOf(starterText.getText())
+                ));
                 //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces
                 StoryClass curStory = new StoryClass(String.valueOf(System.currentTimeMillis()),
                                 title,
                                 (languageFilter.isChecked())? 13:0,
                                 (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
                                 submissionLength.getProgress(),
-                                new PieceClass[] {new PieceClass(
-                                                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
-                                                            String.valueOf(System.currentTimeMillis()),
-                                                            String.valueOf(starterText.getText())
-                                                            )}
+                                curPieces
                                 );
 
                 //Push to Firebase
