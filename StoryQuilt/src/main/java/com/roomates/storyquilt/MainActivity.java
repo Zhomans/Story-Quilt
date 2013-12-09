@@ -16,6 +16,8 @@ public class MainActivity extends GooglePlusActivity {
     //Intent Request Codes
     View signInButton;
 
+    //Passing the InstanceState around
+    /*Bundle curInstanceState;*/
     //the settings/actionbar menu
     Menu menu;
 
@@ -33,9 +35,11 @@ public class MainActivity extends GooglePlusActivity {
      */
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity
+        /*super.onCreate(curInstanceState);*/
+        super.onCreate(null);
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
-
+        setPersonAge(personAge);
         MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
         MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
         if (getEmail().equals("readonly")) {
@@ -49,10 +53,9 @@ public class MainActivity extends GooglePlusActivity {
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
-        previousEmail = getEmail();
-        personFirstName = getPersonFirstName();
+        //curInstanceState = savedInstanceState;
 
-        if (getEmail().equals("readonly")) {
+        if (previousEmail.equals("readonly")) {
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);

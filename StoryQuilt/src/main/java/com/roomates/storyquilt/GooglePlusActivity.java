@@ -93,6 +93,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
             previousEmail = mPlusClient.getAccountName();
             personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
+            Log.i("PersonAge", String.valueOf(personAge));
         }
         onConnectionStatusChanged();
     }
@@ -167,6 +168,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             mPlusClient.connect();
             Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
         }
+        previousEmail = "readonly";
         onConnectionStatusChanged();
     }
 

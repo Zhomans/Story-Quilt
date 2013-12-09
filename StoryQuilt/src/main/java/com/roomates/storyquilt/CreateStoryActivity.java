@@ -144,7 +144,7 @@ public class CreateStoryActivity extends Activity{
                 Firebase pushRef = storyRef.push();
                 curStory.setId(pushRef.getName());
                 pushRef.setValue(curStory);
-                
+
                 //End Activity
                 finish();
 
