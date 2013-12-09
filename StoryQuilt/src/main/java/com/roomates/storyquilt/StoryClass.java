@@ -1,12 +1,13 @@
 package com.roomates.storyquilt;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by chris on 12/4/13.
  */
-public class StoryClass {
+public class StoryClass implements Serializable{
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;

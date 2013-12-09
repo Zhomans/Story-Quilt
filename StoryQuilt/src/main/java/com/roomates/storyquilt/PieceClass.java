@@ -1,9 +1,11 @@
 package com.roomates.storyquilt;
 
+import java.io.Serializable;
+
 /**
  * Created by chris on 12/4/13.
  */
-public class PieceClass {
+public class PieceClass implements Serializable{
     String id, poster, date, text;
 
     public PieceClass(){} //Firebase required constructor

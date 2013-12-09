@@ -1,11 +1,12 @@
 package com.roomates.storyquilt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by chris on 12/4/13.
  */
-public class UserClass {
+public class UserClass implements Serializable{
     String email, name;
     int age, reports, posts;
     boolean isBanned;

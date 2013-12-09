@@ -110,6 +110,7 @@ public class CreateStoryActivity extends Activity{
     }
 
     /**
+     * Methods for binding events to Create Story Button
      * On Creating a story...
      */
 
