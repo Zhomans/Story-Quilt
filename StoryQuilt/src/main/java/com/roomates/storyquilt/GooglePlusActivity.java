@@ -105,13 +105,13 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             previousEmail = mPlusClient.getAccountName();
             personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
 
-            Firebase firebase_user = users.child(previousEmail);
+            Firebase firebase_user = users.child(previousEmail.replace(".", ""));
             firebase_user.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Object value = snapshot.getValue();
                     if (value == null) {
-                        UserClass user = new UserClass(previousEmail, personFirstName, personAge,
+                        UserClass user = new UserClass(previousEmail.replace(".", ""), personFirstName, personAge,
                                 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
                         FireConnection.pushUserToList(FireConnection.create("users"), user);
                     } else {

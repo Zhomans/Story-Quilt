@@ -43,29 +43,35 @@ public class MainActivity extends GooglePlusActivity {
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
         previousEmail = getEmail();
-        chooseContentView();
+        onConnectionStatusChanged();
     }
 
     public void chooseContentView() {
-        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
         signInButtonId = R.id.sign_in_button;
         if (getEmail().equals("readonly")) {
             setContentView(R.layout.activity_login);
-            signOutItem.setVisible(false);
-            signInItem.setVisible(true);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(signInButtonId)).setSize(SignInButton.SIZE_WIDE);
             signInButton = findViewById(signInButtonId);
             signInButton.setOnClickListener(this);
         } else {
             setContentView(R.layout.activity_main);
-            signOutItem.setVisible(true);
-            signInItem.setVisible(false);
             //Set up MainActivity Views
             setListViews();
             setFireBaseRefs();
             setListAdapters();
+        }
+
+        if (menu != null) {
+            MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
+            MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
+            if (getEmail().equals("readonly")) {
+                signOutItem.setVisible(false);
+                signInItem.setVisible(true);
+            } else {
+                signOutItem.setVisible(true);
+                signInItem.setVisible(false);
+            }
         }
     }
     /**
