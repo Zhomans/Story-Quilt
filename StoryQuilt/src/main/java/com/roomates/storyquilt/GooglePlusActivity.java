@@ -62,7 +62,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                 }
         }
         Log.i("email", previousEmail);
-
         onActivityResultExtended(requestCode, resultCode, data);
     }
     @Override
