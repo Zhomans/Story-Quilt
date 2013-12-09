@@ -44,9 +44,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     Firebase users = new Firebase("https://story-quilt.firebaseIO.com/users/");
     UserClass user;
 
-    //Boolean IsSignedIn
-    boolean isSignedIn;
-
     /**
      * Methods for Activity
      * onCreate, onActivityResult, onStart, onPause, onResume
@@ -58,7 +55,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
-        isSignedIn = mPlusClient.isConnected();
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
         onCreateExtended(savedInstanceState);
@@ -133,14 +129,12 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
-        isSignedIn = mPlusClient.isConnected();
         onConnectionStatusChanged();
     }
     //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i("GooglePlusAcitivity Connection Failed",result.toString());
-        isSignedIn = mPlusClient.isConnected();
         if (mConnectionProgressDialog.isShowing()) {
             // The user clicked the sign-in button already. Start to resolve
             // connection errors. Wait until onConnected() to dismiss the
@@ -152,8 +146,8 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                     mPlusClient.connect();
                 }
             }
+            mConnectionProgressDialog.dismiss();
         }
-
         // Save the intent so that we can start an activity when the user clicks
         // the sign-in button.
         mConnectionResult = result;
@@ -162,7 +156,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public void onAccessRevoked(ConnectionResult status) {
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
-        isSignedIn = mPlusClient.isConnected();
     }
 
 
@@ -172,20 +165,24 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     //Signing In to Google+
     public void signIn() {
+        mPlusClient.disconnect();
         if (!mPlusClient.isConnected()) { //Create a new Story
             Log.i("testing","hello");
             if (mConnectionResult == null) {
                 mConnectionProgressDialog.show();
+                mPlusClient.connect();
+                Log.i("signin","Debug2");
             } else {
                 try {
+                    Log.i("signin","Debug3");
                     mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
                 } catch (IntentSender.SendIntentException e) {
                     // Try connecting again.
                     mConnectionResult = null;
+                    //signIn();
                     mPlusClient.connect();
                 }
             }
-            isSignedIn = mPlusClient.isConnected();
         }
     }
     //Signing Out of Google+
@@ -202,10 +199,9 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             });
 
             mPlusClient.disconnect();
-            mPlusClient.connect();
+            //mPlusClient.connect();
             Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
         }
-        isSignedIn = false;
         onConnectionStatusChanged();
     }
 
@@ -216,18 +212,8 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     @Override
     public void onClick(View view) {
-        if (view.getId() == signInButtonId && !mPlusClient.isConnected()) {
-            if (mConnectionResult == null) {
-                mConnectionProgressDialog.show();
-            } else {
-                try {
-                    mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-                } catch (IntentSender.SendIntentException e) {
-                    // Try connecting again.
-                    mConnectionResult = null;
-                    mPlusClient.connect();
-                }
-            }
+        if (view.getId() == signInButtonId) {
+            signIn();
         }
     }
 

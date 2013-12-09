@@ -36,12 +36,12 @@ public class MainActivity extends GooglePlusActivity {
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
-        isSignedIn = mPlusClient.isConnected();
         chooseContentView();
+        Log.i("Google", String.valueOf(mPlusClient.isConnected()));
         if (menu != null) {
             MenuItem signOutItem =  menu.findItem(R.id.gPlusSignOut);
             MenuItem signInItem =  menu.findItem(R.id.gPlusSignIn);
-            if (!isSignedIn) {
+            if (!mPlusClient.isConnected()) {
                 signOutItem.setVisible(false);
                 signInItem.setVisible(true);
             } else {
@@ -60,7 +60,7 @@ public class MainActivity extends GooglePlusActivity {
 
     public void chooseContentView() {
         signInButtonId = R.id.sign_in_button;
-        if (!isSignedIn) {
+        if (!mPlusClient.isConnected()) {
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(signInButtonId)).setSize(SignInButton.SIZE_WIDE);
