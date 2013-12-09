@@ -9,6 +9,8 @@
     <!--Activity-->
     <dimen name = "activity_divider_height">10dp</dimen>
 
+    <!--Activity Signin-->
+    <dimen name = "activity_signin_text_font">14sp</dimen>
     <!--Story View-->
     <dimen name = "activity_story_title_font">26sp</dimen>
     <dimen name = "activity_story_postsLater_font">26sp</dimen>

@@ -15,6 +15,11 @@
     <string name = "activity_main_writing_title">Writing</string>
     <string name = "activity_main_reading_title">Reading</string>
 
+
+    <!--SignIn Activity XML-->
+    <string name = "activity_signin_readonly">Read Only Mode</string>
+
+
     <!--MainActivity Menu-->
     <string name = "create_story">Create</string>
     <string name = "join_story">Join</string>

@@ -57,7 +57,6 @@ public class MainActivity extends GooglePlusActivity {
         previousEmail = getEmail();
         onConnectionStatusChanged();
     }
-
     public void chooseContentView() {
         signInButtonId = R.id.sign_in_button;
         if (!mPlusClient.isConnected()) {
@@ -74,6 +73,8 @@ public class MainActivity extends GooglePlusActivity {
             setListAdapters();
         }
     }
+    
+
     /**
      * Method for managing user Info
      */

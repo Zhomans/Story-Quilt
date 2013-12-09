@@ -3,11 +3,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <View
+        android:id = "@+id/center_on_me"
+        android:layout_height = "0"
+        android:layout_width = "0"
+        android:layout_centerInParent="true"/>
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom = "5dp"
+        android:layout_above = "@id/center_on_me"/>
+    <Button
+        android:id = "@+id/read_only_mode_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop = "5dp"
+        android:layout_below = "@id/center_on_me"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:text = "@string/activity_signin_readonly"
+        android:textSize = "@dimen/activity_signin_text_font"
+        android:paddingLeft = "10dp"
+        android:paddingRight = "10dp"
+        android:textColor = "@android:color/white"
+        android:background = "#df3f1d"
+            />
 
 </RelativeLayout>
