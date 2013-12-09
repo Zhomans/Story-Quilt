@@ -36,7 +36,7 @@ public class MainActivity extends GooglePlusActivity {
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity
         /*super.onCreate(curInstanceState);*/
-        super.onCreate(null);
+        chooseContentView();
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
@@ -54,7 +54,10 @@ public class MainActivity extends GooglePlusActivity {
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
+        chooseContentView();
+    }
 
+    public void chooseContentView() {
         if (previousEmail.equals("readonly")) {
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
@@ -69,7 +72,6 @@ public class MainActivity extends GooglePlusActivity {
             setListAdapters();
         }
     }
-
     /**
      * Method for managing user Info
      */

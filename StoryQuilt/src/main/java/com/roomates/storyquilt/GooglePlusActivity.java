@@ -77,7 +77,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onStop() {
         super.onStop();
-        //mPlusClient.disconnect();
+        mPlusClient.disconnect();
     }
 
 

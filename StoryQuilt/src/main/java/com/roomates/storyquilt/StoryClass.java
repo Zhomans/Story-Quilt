@@ -24,7 +24,6 @@ public class StoryClass {
     public String getId(){
         return this.id;
     }
-
     public String getLastUpdated(){
         return this.lastUpdated;
     }
