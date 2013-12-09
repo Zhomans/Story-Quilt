@@ -10,21 +10,29 @@ import java.util.HashMap;
  * Created by chris on 12/9/13.
  */
 public class UserHandler {
-    //SharedPreferences Mode
+    //SharedPreferences Private Mode
     int MODE_PRIVATE = Activity.MODE_PRIVATE;
+
+    //Handling the User
     User user;
+
+    //Passing the activity for context
     Activity activity;
 
     public UserHandler(Activity activity){
         this.activity = activity;
     }
 
-    //Set the User for this Handler
+     /**
+     * Set the User
+     */
     public void setUser(String email){
         this.user = FireConnection.getUserAt(FireConnection.create("user", User.formatEmail(email)));
     }
 
-    //Firebase Methods
+    /**
+     * Firebase Information
+     */
     public void addUserToFirebase(HashMap<String, String> userInfo){
         user = FireConnection.getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
         if (user == null){
@@ -42,7 +50,9 @@ public class UserHandler {
     }
     public void updateUserInFirebase(User user){/*To-DO*/}
 
-    //Manage User Information
+    /**
+     * Manage User Information
+     */
     public String getEmail(){
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
     }
