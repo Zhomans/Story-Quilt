@@ -89,8 +89,14 @@ public class MainActivity extends GooglePlusActivity {
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
     }
     private void setPersonFirstName(String value){
-        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("personFirstName", value).commit();
+        getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("personFirstName", value).commit();
     }
+    private Integer getPersonAge() {
+        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getInt("personAge", 0);
+    }
+    private void setPersonAge(Integer value) {
+        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putInt("personAge", value).commit();
+    } 
 
     /**
      * Methods for Handling List Views

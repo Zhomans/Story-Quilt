@@ -31,7 +31,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Managing Periodic Connection Status and User Info
     String previousEmail = "";
     String personFirstName = "";
-
+    Integer personAge = 0;
 
 
     /**
@@ -92,6 +92,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         if (!previousEmail.equals(mPlusClient.getAccountName())) {
             Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
             previousEmail = mPlusClient.getAccountName();
+            personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
         }
         onConnectionStatusChanged();
     }
