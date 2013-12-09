@@ -16,7 +16,14 @@ public class FireConnection {
         return firebase;
     }
 
+    //Pushes Story to List
     public static void pushStoryToList(Firebase firebase, StoryClass value){
+        Firebase ref = firebase.push();
+        value.setId(ref.getName());
+        ref.setValue(value);
+    }
+    //Pushes User to List
+    public static void pushUserToList(Firebase firebase, UserClass value){
         Firebase ref = firebase.push();
         value.setId(ref.getName());
         ref.setValue(value);
