@@ -9,10 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
+
+import java.util.Map;
 
 /**
  * Created by chris on 12/8/13.
@@ -32,6 +38,8 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     String previousEmail = "";
     String personFirstName = "";
     Integer personAge = 0;
+    Firebase users = new Firebase("https://story-quily.firebaseIO.com/users/");
+    UserClass user;
 
 
     /**
@@ -77,7 +85,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onStop() {
         super.onStop();
-        //mPlusClient.disconnect();
+        mPlusClient.disconnect();
     }
 
 
@@ -93,7 +101,26 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
             previousEmail = mPlusClient.getAccountName();
             personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
-            Log.i("PersonAge", String.valueOf(personAge));
+
+            Firebase firebase_user = users.child(previousEmail);
+            firebase_user.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    Object value = snapshot.getValue();
+                    if (value == null) {
+                        UserClass user = new UserClass(previousEmail, personFirstName, personAge,
+                                0, 0, false, new StoryClass[0], new StoryClass[0]);
+                        FireConnection.pushUserToList(FireConnection.create("users"), user);
+                    } else {
+                        //user already exists
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError e) {
+                    Log.e("Firebase Error", e.getMessage());
+                }
+            });
         }
         onConnectionStatusChanged();
     }

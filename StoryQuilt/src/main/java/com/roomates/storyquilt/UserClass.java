@@ -4,14 +4,15 @@ package com.roomates.storyquilt;
  * Created by chris on 12/4/13.
  */
 public class UserClass {
-    String id, name;
+    String email, name;
     int age, reports, posts;
     boolean isBanned;
     StoryClass[] writing, reading;
 
 
     public UserClass(){} //Firebase required constructor
-    public UserClass(String name, int age, int reports, int posts, boolean isBanned, StoryClass[] writing, StoryClass[] reading){
+    public UserClass(String email, String name, int age, int reports, int posts, boolean isBanned, StoryClass[] writing, StoryClass[] reading){
+        this.email = email;
         this.name = name;
         this.age = age;
         this.reports = reports;
@@ -22,7 +23,7 @@ public class UserClass {
     }
 
     //Firebase Get Methods
-    public String getId() {return this.id;}
+    public String getId() {return this.email;}
     public String getName(){
         return this.name;
     }
@@ -47,6 +48,6 @@ public class UserClass {
 
     //Setting the id from Firebase
     public void setId(String value){
-        this.id = value;
+        this.email = value;
     }
 }
