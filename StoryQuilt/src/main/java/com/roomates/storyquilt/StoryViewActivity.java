@@ -42,7 +42,7 @@ public class StoryViewActivity extends Activity {
         //Get Current User to Check for Reader or Writer
         //getUser();
         //XXX Empty User
-        UserClass emptyUser = new UserClass("Me", 20, 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
+        UserClass emptyUser = new UserClass("email", "Me", 20, 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
         currentUser = emptyUser;
 
         //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
