@@ -41,6 +41,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        onCreateExtended(savedInstanceState);
         super.onCreate(savedInstanceState);
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
@@ -48,7 +49,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
 
-        onCreateExtended(savedInstanceState);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -93,7 +94,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             previousEmail = mPlusClient.getAccountName();
         }
         onConnectionStatusChanged();
-    }
+    }c
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");

@@ -53,7 +53,7 @@ public class MainActivity extends GooglePlusActivity {
 
         previousEmail = getEmail();
         personFirstName = getPersonFirstName();
-        
+
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
