@@ -19,7 +19,8 @@ import com.google.android.gms.plus.PlusClient;
  */
 public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
-
+    //Signin Button
+    int signInButtonId;
     //Google Plus API Classes Used
     private ProgressDialog mConnectionProgressDialog;
     private PlusClient mPlusClient;
@@ -29,7 +30,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String previousEmail = "";
+    String previousEmail = "readonly";
     String personFirstName = "";
     Integer personAge = 0;
 
@@ -77,7 +78,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onStop() {
         super.onStop();
-        //mPlusClient.disconnect();
+        mPlusClient.disconnect();
     }
 
 
@@ -179,7 +180,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+        if (view.getId() == signInButtonId && !mPlusClient.isConnected()) {
             if (mConnectionResult == null) {
                 mConnectionProgressDialog.show();
             } else {
