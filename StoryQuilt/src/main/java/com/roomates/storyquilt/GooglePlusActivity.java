@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
-    //Signin Button
+    //SignIn Button Id from Activity
     int signInButtonId;
 
     //Google Plus API Classes Used
@@ -40,8 +40,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     String personEmail = "";
     String personFirstName = "";
     Integer personAge = 0;
-    Firebase users = new Firebase("https://story-quilt.firebaseIO.com/users/");
-    UserClass user;
 
     /**
      * Methods for Activity
@@ -102,26 +100,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
             personEmail = mPlusClient.getAccountName();
             personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
-
-            Firebase firebase_user = users.child(personEmail.replace(".", ""));
-            firebase_user.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    Object value = snapshot.getValue();
-                    if (value == null) {
-                        UserClass user = new UserClass(personEmail.replace(".", ""), personFirstName, personAge,
-                                0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
-                        FireConnection.pushUserToList(FireConnection.create("users"), user);
-                    } else {
-                        //user already exists
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError e) {
-                    Log.e("Firebase Error", e.getMessage());
-                }
-            });
         }
         onConnectionStatusChanged();
     }
@@ -156,7 +134,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
     }
-
 
 
     /**
@@ -205,7 +182,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     }
 
 
-
     /**
      * Required by View.onClickListener
      */
@@ -215,8 +191,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             signIn();
         }
     }
-
-
 
     /**
      * Methods to be implemented by inheritee

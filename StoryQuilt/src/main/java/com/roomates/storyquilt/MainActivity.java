@@ -10,8 +10,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.SignInButton;
+
+import java.util.ArrayList;
 
 public class MainActivity extends GooglePlusActivity {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
@@ -34,7 +39,7 @@ public class MainActivity extends GooglePlusActivity {
         setEmail(personEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
-
+        addUserToFirebase();
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 
@@ -98,6 +103,27 @@ public class MainActivity extends GooglePlusActivity {
     /**
      * Method for managing user Info
      */
+    private void addUserToFirebase(){
+        Firebase firebase_user =FireConnection.create("users",personEmail.replace(".", ""));
+        firebase_user.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Object value = snapshot.getValue();
+                if (value == null) {
+                    UserClass user = new UserClass(personEmail.replace(".", ""), personFirstName, personAge,
+                            0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
+                    FireConnection.pushUserToList(FireConnection.create("users"), user);
+                } else {
+                    //user already exists
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError e) {
+                Log.e("Firebase Error", e.getMessage());
+            }
+        });
+    }
     private String getEmail(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
     }
