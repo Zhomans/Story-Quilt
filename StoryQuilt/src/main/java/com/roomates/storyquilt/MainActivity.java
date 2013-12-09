@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,10 +14,7 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.common.SignInButton;
 
 public class MainActivity extends GooglePlusActivity {
-    //Intent Request Codes
-    View signInButton;
-
-    //the settings/actionbar menu
+    //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
 
     //MainActivity Views
@@ -37,39 +35,65 @@ public class MainActivity extends GooglePlusActivity {
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
 
-        //Choose which content to show: SignIn or Main Activity
+        //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 
         //Set Action Settings Sign in or SignOut
+
         if (menu != null) {
             Boolean visibility = mPlusClient.isConnected();
             (menu.findItem(R.id.gPlusSignOut)).setVisible(visibility);
             (menu.findItem(R.id.gPlusSignIn)).setVisible(!visibility);
         }
     }
-    public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
+    public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
     public void onCreateExtended(Bundle savedInstanceState) {
-        //curInstanceState = savedInstanceState;
-        personEmail = getEmail();
-        onConnectionStatusChanged();
-    }
-    public void chooseContentView() {
+        //Setting the Button Id for both GooglePlusActivity and MainActivity
         signInButtonId = R.id.sign_in_button;
-        if (!mPlusClient.isConnected()) {
-            setContentView(R.layout.activity_login);
-            Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
-            ((SignInButton) findViewById(signInButtonId)).setSize(SignInButton.SIZE_WIDE);
-            signInButton = findViewById(signInButtonId);
-            signInButton.setOnClickListener(this);
-        } else {
-            setContentView(R.layout.activity_main);
-            //Set up MainActivity Views
-            setListViews();
-            setFireBaseRefs();
-            setListAdapters();
-        }
+
+        //Get Person Email (previously logged in)
+        personEmail = getEmail();
+
+        //Choose Content View to Show
+        chooseContentView();
     }
 
+    /**
+     * Manages Setting Content View based on LogIn State
+     */
+    //Choose SetContentView Content
+    public void chooseContentView() {
+        if (!mPlusClient.isConnected()) {
+            setContentView(R.layout.activity_login);
+            setUpLoginViews();
+        } else {
+            setContentView(R.layout.activity_main);
+            //Set up MainPage Views
+            setUpMainPageViews();
+        }
+    }
+    //LogIn Views
+    public void setUpLoginViews(){
+        //Set up SignInButton
+        SignInButton signInButton = (SignInButton) findViewById(signInButtonId);
+        signInButton.setOnClickListener(this);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        //Set up ReadOnly Button
+
+        Button readOnly = (Button) findViewById(R.id.activity_signin_readonly);
+        readOnly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Do Stuff Here
+            }
+        });
+    }
+    //MainPage views
+    private void setUpMainPageViews(){
+        setListViews();
+        setFireBaseRefs();
+        setListAdapters();
+    }
 
     /**
      * Method for managing user Info
@@ -124,7 +148,6 @@ public class MainActivity extends GooglePlusActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         this.menu = menu;
-        onConnectionStatusChanged();
         return true;
     }
     @Override

@@ -5,8 +5,8 @@
 
     <View
         android:id = "@+id/center_on_me"
-        android:layout_height = "0"
-        android:layout_width = "0"
+        android:layout_height = "0dp"
+        android:layout_width = "0dp"
         android:layout_centerInParent="true"/>
 
     <com.google.android.gms.common.SignInButton
@@ -17,7 +17,7 @@
         android:layout_marginBottom = "5dp"
         android:layout_above = "@id/center_on_me"/>
     <Button
-        android:id = "@+id/read_only_mode_button"
+        android:id = "@+id/activity_signin_readonly"
         android:layout_centerHorizontal="true"
         android:layout_marginTop = "5dp"
         android:layout_below = "@id/center_on_me"
