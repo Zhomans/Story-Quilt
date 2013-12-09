@@ -36,26 +36,25 @@ public class MainActivity extends GooglePlusActivity {
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity
         /*super.onCreate(curInstanceState);*/
-        super.onCreate(null);
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
-        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getEmail().equals("readonly")) {
-            signOutItem.setVisible(false);
-            signInItem.setVisible(true);
-        } else {
-            signOutItem.setVisible(true);
-            signInItem.setVisible(false);
-        }
+        chooseContentView();
         Log.i("username", getEmail());
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
+        previousEmail = getEmail();
+        chooseContentView();
+    }
 
+    public void chooseContentView() {
+        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
+        MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
         if (previousEmail.equals("readonly")) {
+            signOutItem.setVisible(false);
+            signInItem.setVisible(true);
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
@@ -63,13 +62,14 @@ public class MainActivity extends GooglePlusActivity {
             signInButton.setOnClickListener(this);
         } else {
             setContentView(R.layout.activity_main);
+            signOutItem.setVisible(true);
+            signInItem.setVisible(false);
             //Set up MainActivity Views
             setListViews();
             setFireBaseRefs();
             setListAdapters();
         }
     }
-
     /**
      * Method for managing user Info
      */

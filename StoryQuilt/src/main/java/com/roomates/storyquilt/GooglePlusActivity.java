@@ -18,6 +18,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -25,7 +26,8 @@ import java.util.Map;
  */
 public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
-
+    //Signin Button
+    int signInButtonId;
     //Google Plus API Classes Used
     private ProgressDialog mConnectionProgressDialog;
     private PlusClient mPlusClient;
@@ -35,7 +37,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String previousEmail = "";
+    String previousEmail = "readonly";
     String personFirstName = "";
     Integer personAge = 0;
     Firebase users = new Firebase("https://story-quily.firebaseIO.com/users/");
@@ -109,7 +111,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                     Object value = snapshot.getValue();
                     if (value == null) {
                         UserClass user = new UserClass(previousEmail, personFirstName, personAge,
-                                0, 0, false, new StoryClass[0], new StoryClass[0]);
+                                0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
                         FireConnection.pushUserToList(FireConnection.create("users"), user);
                     } else {
                         //user already exists
@@ -206,7 +208,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+        if (view.getId() == signInButtonId && !mPlusClient.isConnected()) {
             if (mConnectionResult == null) {
                 mConnectionProgressDialog.show();
             } else {
