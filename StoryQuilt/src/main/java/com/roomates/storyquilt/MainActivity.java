@@ -39,7 +39,7 @@ public class MainActivity extends GooglePlusActivity {
         userHandler.setEmail(userInfo.get("personName"));
         userHandler.setPersonFirstName(userInfo.get("personEmail"));
         userHandler.setPersonAge(Integer.valueOf(userInfo.get("personAge")));
-        addUserToFirebase();
+        userHandler.addUserToFirebase(userInfo);
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 
@@ -108,24 +108,7 @@ public class MainActivity extends GooglePlusActivity {
         setFireBaseRefs();
         setListAdapters();
     }
-    /**
-     * Method for managing user Info
-     */
-    private void addUserToFirebase(){
-        user = FireConnection.getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
-        if (user == null){
-            FireConnection.pushUserToList(
-                    new User(
-                            userInfo.get("personEmail"),
-                            userInfo.get("personName"),
-                            Integer.valueOf(userInfo.get("personAge")),
-                            0,
-                            0,
-                            false,
-                            new ArrayList<Story>(),
-                            new ArrayList<Story>()));
-        }
-    }
+
 
     /**
      * Methods for Handling List Views
