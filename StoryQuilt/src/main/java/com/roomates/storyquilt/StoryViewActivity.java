@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by zach on 12/7/13.
@@ -23,6 +24,7 @@ public class StoryViewActivity extends Activity {
     TextView storyTitle, recentPosts;
 
     StoryClass thisStory;
+    UserClass currentUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,38 +36,52 @@ public class StoryViewActivity extends Activity {
         //Get Current Story
         getStory();
         //XXX Empty Story
-        StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, new PieceClass[]{});
-
+        StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, new ArrayList<PieceClass>());
         thisStory = emptyStory;
 
-        //Populate Activity Views' Text
-        populateViews();
+        //Get Current User to Check for Reader or Writer
+        //getUser();
+        //XXX Empty User
+        UserClass emptyUser = new UserClass("Me", 20, 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
+        currentUser = emptyUser;
 
         //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
+        if (currentUser.isReader(thisStory)) {
+            //If Reader
 
-        //Add Button
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Editable newPostText = newPost.getText();
-                if (newPostText != null){
-                    if (checkWordCount(newPostText.toString())){
-                        //Other filters
-                        PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                        //Add Piece to Story
-                        //Makes you a writer if you aren't yet
-                    };
+
+
+
+        } else {
+            //If Writer or New
+
+            //Populate Activity Views' Text
+            populateViews();
+
+            //Add Button
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Editable newPostText = newPost.getText();
+                    if (newPostText != null){
+                        if (checkWordCount(newPostText.toString())){
+                            //Other filters
+                            PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            //Add Piece to Story
+                            //Makes you a writer if you aren't yet
+                        };
+                    }
                 }
-            }
-        });
+            });
 
-        //Quit Button
-        quitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Makes you a reader in the story, instead of a writer
-            }
-        });
+            //Quit Button
+            quitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Makes you a reader in the story, instead of a writer
+                }
+            });
+        }
     }
 
     /**
@@ -91,7 +107,7 @@ public class StoryViewActivity extends Activity {
     }
 
     /**
-     Checks Input str Word Count. true If Not Greater Than Text Limit.
+     Checks Input str Word Count. true If Not Greater Than Text Limit
      */
     private boolean checkWordCount(String str){
         return thisStory.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
@@ -104,6 +120,5 @@ public class StoryViewActivity extends Activity {
         Intent inStory = getIntent();
         StoryClass story = (StoryClass) inStory.getSerializableExtra("story");
     }
-
 
 }
