@@ -40,7 +40,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     String previousEmail = "readonly";
     String personFirstName = "";
     Integer personAge = 0;
-    Firebase users = new Firebase("https://story-quily.firebaseIO.com/users/");
+    Firebase users = new Firebase("https://story-quilt.firebaseIO.com/users/");
     UserClass user;
 
 
