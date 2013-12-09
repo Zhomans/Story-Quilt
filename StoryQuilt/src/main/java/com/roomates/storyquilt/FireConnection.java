@@ -15,4 +15,10 @@ public class FireConnection {
         }
         return firebase;
     }
+
+    public static void pushStoryToList(Firebase firebase, StoryClass value){
+        Firebase ref = firebase.push();
+        value.setId(ref.getName());
+        ref.setValue(value);
+    }
 }

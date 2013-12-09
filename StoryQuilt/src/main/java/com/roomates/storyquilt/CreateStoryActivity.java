@@ -32,9 +32,6 @@ public class CreateStoryActivity extends Activity{
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
     double HISTORY_TICK = 0.2;
 
-    //Firebase Refs
-    Firebase storyRef;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,10 +137,7 @@ public class CreateStoryActivity extends Activity{
                                 );
 
                 //Push to Firebase
-                storyRef = FireConnection.create("stories");
-                Firebase pushRef = storyRef.push();
-                curStory.setId(pushRef.getName());
-                pushRef.setValue(curStory);
+                FireConnection.pushStoryToList(FireConnection.create("stories"), curStory);
 
                 //End Activity
                 finish();
