@@ -38,14 +38,16 @@ public class MainActivity extends GooglePlusActivity {
         setPersonAge(personAge);
         isSignedIn = mPlusClient.isConnected();
         chooseContentView();
-        MenuItem signOutItem =  menu.findItem(R.id.gPlusSignOut);
-        MenuItem signInItem =  menu.findItem(R.id.gPlusSignIn);
-        if (!isSignedIn) {
-            signOutItem.setVisible(false);
-            signInItem.setVisible(true);
-        } else {
-            signOutItem.setVisible(true);
-            signInItem.setVisible(false);
+        if (menu != null) {
+            MenuItem signOutItem =  menu.findItem(R.id.gPlusSignOut);
+            MenuItem signInItem =  menu.findItem(R.id.gPlusSignIn);
+            if (!isSignedIn) {
+                signOutItem.setVisible(false);
+                signInItem.setVisible(true);
+            } else {
+                signOutItem.setVisible(true);
+                signInItem.setVisible(false);
+            }
         }
         Log.i("username", getEmail());
     }
@@ -53,7 +55,7 @@ public class MainActivity extends GooglePlusActivity {
     public void onCreateExtended(Bundle savedInstanceState) {
         //curInstanceState = savedInstanceState;
         previousEmail = getEmail();
-        chooseContentView();
+        onConnectionStatusChanged();
     }
 
     public void chooseContentView() {
