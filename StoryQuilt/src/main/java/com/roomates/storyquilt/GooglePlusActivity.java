@@ -28,6 +28,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
     //Signin Button
     int signInButtonId;
+
     //Google Plus API Classes Used
     private ProgressDialog mConnectionProgressDialog;
     private PlusClient mPlusClient;
@@ -129,12 +130,14 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
+        previousEmail = "readonly";
         onConnectionStatusChanged();
     }
     //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i("GooglePlusAcitivity Connection Failed",result.toString());
+        previousEmail = "readonly";
         if (mConnectionProgressDialog.isShowing()) {
             // The user clicked the sign-in button already. Start to resolve
             // connection errors. Wait until onConnected() to dismiss the
@@ -156,6 +159,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public void onAccessRevoked(ConnectionResult status) {
         // mPlusClient is now disconnected and access has been revoked.
         // Trigger app logic to comply with the developer policies
+        previousEmail = "readonly";
     }
 
 
