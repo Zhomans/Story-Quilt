@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  * Created by chris on 12/4/13.
  */
-public class PieceClass implements Serializable{
+public class Piece implements Serializable{
     String id, poster, date, text;
 
-    public PieceClass(){} //Firebase required constructor
-    public PieceClass(String poster, String date, String text){
+    public Piece(){} //Firebase required constructor
+    public Piece(String poster, String date, String text){
         this.poster = poster;
         this.date = date;
         this.text = text;

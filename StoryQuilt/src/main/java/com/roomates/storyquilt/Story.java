@@ -7,14 +7,14 @@ import java.util.ArrayList;
 /**
  * Created by chris on 12/4/13.
  */
-public class StoryClass implements Serializable{
+public class Story implements Serializable{
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
-    ArrayList<PieceClass> pieces;
+    ArrayList<Piece> pieces;
 
-    public StoryClass(){} //Firebase required constructor
-    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<PieceClass> pieces){
+    public Story(){} //Firebase required constructor
+    public Story(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<Piece> pieces){
         this.lastUpdated = lastUpdated;
         this.title = title;
         this.ageLimit = ageLimit;
@@ -45,7 +45,7 @@ public class StoryClass implements Serializable{
     public long getPriority(){
         return this.priority;
     }
-    public ArrayList<PieceClass> getPieces(){
+    public ArrayList<Piece> getPieces(){
         return this.pieces;
     }
 
@@ -59,13 +59,13 @@ public class StoryClass implements Serializable{
         this.id = value;
     }
 
-    //Get Length of StoryClass (by Posts)
+    //Get Length of Story (by Posts)
     public int getLength() { return this.pieces.size(); }
 
     //Get Full Text of a Story
     public String getFullStory() {
         String fullText = "";
-        for (PieceClass piece : this.pieces) {
+        for (Piece piece : this.pieces) {
             fullText.concat(piece.getText()+" ");
         }
         return fullText;
@@ -88,12 +88,12 @@ public class StoryClass implements Serializable{
     }
 
     //Add Piece to Story
-    public void addPiece(PieceClass newPiece) {
+    public void addPiece(Piece newPiece) {
         this.pieces.add(newPiece);
     }
 
     //Check Most Recent Post for Given User
-    public boolean checkMostRecentPoster(UserClass user){
+    public boolean checkMostRecentPoster(User user){
         return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getId());
     }
 }

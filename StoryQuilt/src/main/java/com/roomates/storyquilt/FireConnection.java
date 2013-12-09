@@ -11,7 +11,7 @@ import com.firebase.client.ValueEventListener;
  */
 public class FireConnection {
     final static String url = "https://storyquilt.firebaseio.com";
-    static UserClass user;
+    static User user;
 
     //Creates firebase ref given a tuple of children
     public static Firebase create(String... children) {
@@ -23,23 +23,25 @@ public class FireConnection {
     }
 
     //Pushes Story to List
-    public static void pushStoryToList(Firebase firebase, StoryClass value){
+    public static void pushStoryToList(Firebase firebase, Story value){
         Firebase ref = firebase.push();
         value.setId(ref.getName());
         ref.setValue(value);
     }
     //Pushes User to List
-    public static void pushUserToList(UserClass value){
-        create("users",UserClass.formatEmail(value.email)).setValue(value);
+    public static void pushUserToList(User value){
+        create("users", User.formatEmail(value.email)).setValue(value);
     }
 
-    public static UserClass getUserAt(Firebase firebase){
-        firebase.addListenerForSingleValueEvent(new ValueEventListener(){
+    public static User getUserAt(Firebase firebase){
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                user = snapshot.getValue(UserClass.class);
+                user = snapshot.getValue(User.class);
             }
-            public void onCancelled(FirebaseError error){}
+
+            public void onCancelled(FirebaseError error) {
+            }
         });
         return user;
     }

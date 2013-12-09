@@ -2,28 +2,25 @@ package com.roomates.storyquilt;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.SignInButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends GooglePlusActivity {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
 
     //Current User
-    UserClass user;
+    User user;
+    UserHandler userHandler;
 
     //MainActivity Views
     ListView writing, reading;
@@ -39,9 +36,9 @@ public class MainActivity extends GooglePlusActivity {
      */
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
-        setEmail(personEmail);
-        setPersonFirstName(personFirstName);
-        setPersonAge(personAge);
+        userHandler.setEmail(userInfo.get("personName"));
+        userHandler.setPersonFirstName(userInfo.get("personEmail"));
+        userHandler.setPersonAge(Integer.valueOf(userInfo.get("personAge")));
         addUserToFirebase();
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
@@ -59,11 +56,20 @@ public class MainActivity extends GooglePlusActivity {
         //Setting the Button Id for both GooglePlusActivity and MainActivity
         signInButtonId = R.id.sign_in_button;
 
+        //Setting User Handler
+        userHandler = new UserHandler(this);
         //Get Person Email (previously logged in)
-        personEmail = getEmail();
+        previousEmail = userHandler.getEmail();
 
         //Choose Content View to Show
         chooseContentView();
+    }
+    public HashMap<String,String> getUserInformation(){
+        HashMap<String, String> userInfo = new HashMap<String, String>();
+        userInfo.put("personName", mPlusClient.getCurrentPerson().getName().getGivenName());
+        userInfo.put("personEmail", mPlusClient.getAccountName());
+        userInfo.put("personAge", String.valueOf(mPlusClient.getCurrentPerson().getAgeRange().getMin()));
+        return userInfo;
     }
 
     /**
@@ -102,43 +108,24 @@ public class MainActivity extends GooglePlusActivity {
         setFireBaseRefs();
         setListAdapters();
     }
-
     /**
      * Method for managing user Info
      */
     private void addUserToFirebase(){
-        user = FireConnection.getUserAt(FireConnection.create("users", UserClass.formatEmail(personEmail)));
+        user = FireConnection.getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
         if (user == null){
             FireConnection.pushUserToList(
-                    new UserClass(
-                            personEmail,
-                            personFirstName,
-                            personAge,
+                    new User(
+                            userInfo.get("personEmail"),
+                            userInfo.get("personName"),
+                            Integer.valueOf(userInfo.get("personAge")),
                             0,
                             0,
                             false,
-                            new ArrayList<StoryClass>(),
-                            new ArrayList<StoryClass>()));
+                            new ArrayList<Story>(),
+                            new ArrayList<Story>()));
         }
     }
-    private String getEmail(){
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
-    }
-    private void setEmail(String value){
-        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("email", value).commit();
-    }
-    private String getPersonFirstName(){
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
-    }
-    private void setPersonFirstName(String value){
-        getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("personFirstName", value).commit();
-    }
-    private Integer getPersonAge() {
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getInt("personAge", 0);
-    }
-    private void setPersonAge(Integer value) {
-        getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putInt("personAge", value).commit();
-    } 
 
     /**
      * Methods for Handling List Views
@@ -186,6 +173,7 @@ public class MainActivity extends GooglePlusActivity {
 
             case R.id.join_story: //Join an Existing Story
                 Intent joinStory = new Intent(MainActivity.this, JoinStoryActivity.class);
+                startActivity(joinStory);
                 break;
 
             case R.id.gPlusSignIn: //Sign in Google+

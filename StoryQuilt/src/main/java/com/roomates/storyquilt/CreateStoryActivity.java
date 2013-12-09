@@ -11,8 +11,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.firebase.client.Firebase;
-
 import java.util.ArrayList;
 
 /**
@@ -126,14 +124,14 @@ public class CreateStoryActivity extends Activity{
                 //Check if title exists
                 if (title.equals("")) title = starter;
 
-                ArrayList<PieceClass> curPieces = new ArrayList<PieceClass>();
-                curPieces.add(new PieceClass(
+                ArrayList<Piece> curPieces = new ArrayList<Piece>();
+                curPieces.add(new Piece(
                         getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
                         String.valueOf(System.currentTimeMillis()),
                         String.valueOf(starterText.getText())
                 ));
-                //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces
-                StoryClass curStory = new StoryClass(String.valueOf(System.currentTimeMillis()),
+                //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
+                Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
                                 title,
                                 (languageFilter.isChecked())? 13:0,
                                 (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),

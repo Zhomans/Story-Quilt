@@ -8,17 +8,17 @@ import java.util.ArrayList;
 /**
  * Created by chris on 12/4/13.
  */
-public class UserClass implements Serializable{
+public class User implements Serializable{
     String email, name;
     int age, reports, posts;
     boolean isBanned;
-    ArrayList<StoryClass> writing, reading;
+    ArrayList<Story> writing, reading;
 
 
-    public UserClass(){} //Firebase required constructor
+    public User(){} //Firebase required constructor
 
-    public UserClass(String email, String name, int age, int reports, int posts, boolean isBanned,
-                     ArrayList<StoryClass> writing, ArrayList<StoryClass> reading){
+    public User(String email, String name, int age, int reports, int posts, boolean isBanned,
+                ArrayList<Story> writing, ArrayList<Story> reading){
         this.email = email;
         this.name = name;
         this.age = age;
@@ -46,10 +46,10 @@ public class UserClass implements Serializable{
     public boolean getIsBanned(){
         return this.isBanned;
     }
-    public ArrayList<StoryClass> getWriting(){
+    public ArrayList<Story> getWriting(){
         return this.writing;
     }
-    public ArrayList<StoryClass> getReading(){ return this.reading; }
+    public ArrayList<Story> getReading(){ return this.reading; }
 
     //Setting the id from Firebase
     public void setId(String value){
@@ -59,21 +59,21 @@ public class UserClass implements Serializable{
     /**
      * Become Writer from New
      */
-    public void becomeWriter(StoryClass story){
+    public void becomeWriter(Story story){
         this.getWriting().add(story);
     }
 
     /**
      * Become Reader from New
      */
-    public void becomeReader(StoryClass story){
+    public void becomeReader(Story story){
         this.getReading().add(story);
     }
 
     /**
      * Become Reader from Writer
      */
-    public void becomeReaderFromWriter(StoryClass story){
+    public void becomeReaderFromWriter(Story story){
         this.getWriting().remove(story);
         this.getReading().add(story);
     }
@@ -81,14 +81,14 @@ public class UserClass implements Serializable{
     /**
      * Check User's Status as Reader
      */
-    public boolean isReader(StoryClass story) {
+    public boolean isReader(Story story) {
         return this.getReading().contains(story);
     }
 
     /**
      * Check User's Status as Writer
      */
-    public boolean isWriter(StoryClass story) {
+    public boolean isWriter(Story story) {
         return this.getWriting().contains(story);
     }
 

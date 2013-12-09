@@ -7,12 +7,9 @@ import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by zach on 12/7/13.
@@ -23,8 +20,8 @@ public class StoryViewActivity extends Activity {
     Button addButton, quitButton;
     TextView storyTitle, recentPosts;
 
-    StoryClass thisStory;
-    UserClass currentUser;
+    Story thisStory;
+    User currentUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +33,13 @@ public class StoryViewActivity extends Activity {
         //Get Current Story
         getStory();
         //XXX Empty Story
-        StoryClass emptyStory = new StoryClass("Now", "Empty Story", 2, 2, 2, new ArrayList<PieceClass>());
+        Story emptyStory = new Story("Now", "Empty Story", 2, 2, 2, new ArrayList<Piece>());
         thisStory = emptyStory;
 
         //Get Current User to Check for Reader or Writer
         //getUser();
         //XXX Empty User
-        UserClass emptyUser = new UserClass("email", "Me", 20, 0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
+        User emptyUser = new User("email", "Me", 20, 0, 0, false, new ArrayList<Story>(), new ArrayList<Story>());
         currentUser = emptyUser;
 
         //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
@@ -75,7 +72,7 @@ public class StoryViewActivity extends Activity {
                                 //Other filters
 
                                 //Add new Piece
-                                PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                                Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                                 thisStory.addPiece(newPiece);
 
                                 //Make User a Writer if New
@@ -151,7 +148,7 @@ public class StoryViewActivity extends Activity {
      */
     private void getStory(){
         Intent inStory = getIntent();
-        StoryClass story = (StoryClass) inStory.getSerializableExtra("story");
+        Story story = (Story) inStory.getSerializableExtra("story");
     }
 
 }

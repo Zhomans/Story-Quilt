@@ -19,6 +19,7 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.plus.PlusClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by chris on 12/8/13.
@@ -41,9 +42,10 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 
     //Managing Periodic Connection Status and User Info
-    String personEmail = "";
-    String personFirstName = "";
-    Integer personAge = 0;
+    String previousEmail = "";
+
+    //User Information Extracted From OnConnected
+    HashMap<String, String> userInfo;
 
     /**
      * Methods for Activity
@@ -53,6 +55,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userInfo = new HashMap<String, String>();
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
@@ -63,8 +66,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
 
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i("requestcode", Integer.toString(requestCode));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case REQUEST_CODE_RESOLVE_ERR:
                 if (resultCode == RESULT_OK) {
@@ -72,7 +74,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
                     mPlusClient.connect();
                 }
         }
-        Log.i("email", personEmail);
         onActivityResultExtended(requestCode, resultCode, data);
     }
     @Override
@@ -99,11 +100,9 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection successful
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
-        personFirstName = mPlusClient.getCurrentPerson().getName().getGivenName();
-        if (!personEmail.equals(mPlusClient.getAccountName())) {
-            Toast.makeText(this, personFirstName + ", you connected!", Toast.LENGTH_LONG).show();
-            personEmail = mPlusClient.getAccountName();
-            personAge = mPlusClient.getCurrentPerson().getAgeRange().getMin();
+        userInfo = getUserInformation();
+        if (!previousEmail.equals(mPlusClient.getAccountName())) {
+            Toast.makeText(this, mPlusClient.getCurrentPerson().getName().getGivenName() + ", you connected!", Toast.LENGTH_LONG).show();
         }
         onConnectionStatusChanged();
     }
@@ -202,4 +201,5 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public abstract void onConnectionStatusChanged();
     public abstract void onActivityResultExtended(int requestCode, int resultCode, Intent data);
     public abstract void onCreateExtended(Bundle savedInstanceState);
+    public abstract HashMap<String,String> getUserInformation();
 }
