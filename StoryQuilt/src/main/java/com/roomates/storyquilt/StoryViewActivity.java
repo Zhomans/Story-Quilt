@@ -65,11 +65,23 @@ public class StoryViewActivity extends Activity {
                     Editable newPostText = newPost.getText();
                     if (newPostText != null){
                         if (checkWordCount(newPostText.toString())){
+                            //Check to see if last post is by this user and don't let them if they are
+
                             //Other filters
+
+                            //Add new Piece
                             PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                            //Add Piece to Story
-                            //Makes you a writer if you aren't yet
-                        };
+                            thisStory.addPiece(newPiece);
+
+                            //Make User a Writer if New
+                            if (!currentUser.isWriter(thisStory)){
+                                currentUser.becomeWriter(thisStory);
+                            }
+
+                            //Refresh Views
+                        } else {
+                            //Display Error box stating that over word limit
+                        }
                     }
                 }
             });
@@ -79,6 +91,14 @@ public class StoryViewActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     //Makes you a reader in the story, instead of a writer
+
+                    //XXX Add in confirmation Dialog box
+                    if (currentUser.isWriter(thisStory)) {
+                        currentUser.becomeReaderFromWriter(thisStory);
+                    } else {
+                        currentUser.becomeReader(thisStory);
+                    }
+                    //XXX Update views to Reader
                 }
             });
         }

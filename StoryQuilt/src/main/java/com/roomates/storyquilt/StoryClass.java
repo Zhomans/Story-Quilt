@@ -85,4 +85,8 @@ public class StoryClass {
         }
         return recentWords;
     }
+
+    public void addPiece(PieceClass newPiece) {
+        this.pieces.add(newPiece);
+    }
 }
