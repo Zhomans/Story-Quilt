@@ -8,6 +8,7 @@ import com.firebase.client.Firebase;
 public class FireConnection {
     final static String url = "https://storyquilt.firebaseio.com";
 
+    //Creates firebase ref given a tuple of children
     public static Firebase create(String... children) {
         Firebase firebase = new Firebase(url);
         for (String child : children){
