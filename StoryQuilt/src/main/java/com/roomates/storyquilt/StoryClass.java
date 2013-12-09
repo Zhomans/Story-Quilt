@@ -85,4 +85,14 @@ public class StoryClass {
         }
         return recentWords;
     }
+
+    //Add Piece to Story
+    public void addPiece(PieceClass newPiece) {
+        this.pieces.add(newPiece);
+    }
+
+    //Check Most Recent Post for Given User
+    public boolean checkMostRecentPoster(UserClass user){
+        return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getId());
+    }
 }

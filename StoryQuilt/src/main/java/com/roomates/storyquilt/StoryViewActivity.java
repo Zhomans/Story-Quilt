@@ -49,6 +49,8 @@ public class StoryViewActivity extends Activity {
         if (currentUser.isReader(thisStory)) {
             //If Reader
 
+            //Populate Activity Views' Text
+            populateViewsAsReader();
 
 
 
@@ -56,20 +58,36 @@ public class StoryViewActivity extends Activity {
             //If Writer or New
 
             //Populate Activity Views' Text
-            populateViews();
+            populateViewsAsWriter();
 
             //Add Button
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Editable newPostText = newPost.getText();
-                    if (newPostText != null){
-                        if (checkWordCount(newPostText.toString())){
-                            //Other filters
-                            PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                            //Add Piece to Story
-                            //Makes you a writer if you aren't yet
-                        };
+
+                    //Check to see if last post is by this user and don't let them if they are
+                    if (thisStory.checkMostRecentPoster(currentUser)){
+                        //Display Error box stating that you can't post twice in a row.
+                    } else {
+                        if (newPostText != null){
+                            if (checkWordCount(newPostText.toString())){
+                                //Other filters
+
+                                //Add new Piece
+                                PieceClass newPiece = new PieceClass(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                                thisStory.addPiece(newPiece);
+
+                                //Make User a Writer if New
+                                if (!currentUser.isWriter(thisStory)){
+                                    currentUser.becomeWriter(thisStory);
+                                }
+
+                                //Refresh Views
+                            } else {
+                                //Display Error box stating that over word limit
+                            }
+                        }
                     }
                 }
             });
@@ -79,6 +97,14 @@ public class StoryViewActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     //Makes you a reader in the story, instead of a writer
+
+                    //XXX Add in confirmation Dialog box
+                    if (currentUser.isWriter(thisStory)) {
+                        currentUser.becomeReaderFromWriter(thisStory);
+                    } else {
+                        currentUser.becomeReader(thisStory);
+                    }
+                    //XXX Update views to Reader
                 }
             });
         }
@@ -100,10 +126,17 @@ public class StoryViewActivity extends Activity {
     /**
       Populating Views for StoryView from XML
      */
-    private void populateViews(){
+    private void populateViewsAsWriter(){
         storyTitle.setText(thisStory.getTitle());
         quitButton.setText("... "+String.valueOf(thisStory.getLength())+" Posts Later ...");
         recentPosts.setText(thisStory.getRecentPosts());
+    }
+    private void populateViewsAsReader(){
+        storyTitle.setText(this.getTitle());
+        quitButton.setVisibility(View.INVISIBLE);
+        recentPosts.setText(thisStory.getFullStory());
+        newPost.setVisibility(View.INVISIBLE);
+        addButton.setVisibility(View.INVISIBLE);
     }
 
     /**
