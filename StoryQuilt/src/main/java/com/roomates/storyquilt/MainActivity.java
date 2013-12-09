@@ -38,7 +38,7 @@ public class MainActivity extends GooglePlusActivity {
 
         MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
         MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
-        if (getEmail().equals("") || getEmail().equals("readonly")) {
+        if (getEmail().equals("readonly")) {
             signOutItem.setVisible(false);
             signInItem.setVisible(true);
         } else {
@@ -49,39 +49,29 @@ public class MainActivity extends GooglePlusActivity {
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
     public void onCreateExtended(Bundle savedInstanceState) {
-
-
         previousEmail = getEmail();
         personFirstName = getPersonFirstName();
 
-        if (getEmail().equals("") || getEmail().equals("readonly")) {
+        if (getEmail().equals("readonly")) {
             setContentView(R.layout.activity_login);
+            Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
             ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
             signInButton = findViewById(R.id.sign_in_button);
-
             signInButton.setOnClickListener(this);
         } else {
             setContentView(R.layout.activity_main);
+            //Set up MainActivity Views
+            setListViews();
+            setFireBaseRefs();
+            setListAdapters();
         }
-
-        //Check if logged in
-        if (getEmail().equals("readonly")) {
-            Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
-        } else if (getEmail().equals("")) {
-            setEmail("readonly");
-        }
-
-        //Set up MainActivity Views
-        setListViews();
-        setFireBaseRefs();
-        setListAdapters();
     }
 
     /**
      * Method for managing user Info
      */
     private String getEmail(){
-        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "");
+        return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
     }
     private void setEmail(String value){
         getSharedPreferences("StoryQuilt",MODE_PRIVATE).edit().putString("email", value).commit();
@@ -142,15 +132,19 @@ public class MainActivity extends GooglePlusActivity {
             case R.id.create_story: //Create a new Story
                 Intent createStory = new Intent(MainActivity.this, CreateStoryActivity.class);
                 startActivity(createStory);
+                break;
 
             case R.id.join_story: //Join an Existing Story
                 Intent joinStory = new Intent(MainActivity.this, JoinStoryActivity.class);
+                break;
 
             case R.id.gPlusSignIn: //Sign in Google+
-                signOut();
+                signIn();
+                break;
 
             case R.id.gPlusSignOut:
-                signIn();
+                signOut();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

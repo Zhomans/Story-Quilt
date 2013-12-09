@@ -41,8 +41,8 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        onCreateExtended(savedInstanceState);
         super.onCreate(savedInstanceState);
+        onCreateExtended(savedInstanceState);
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
@@ -77,7 +77,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onStop() {
         super.onStop();
-        mPlusClient.disconnect();
+        //mPlusClient.disconnect();
     }
 
 
@@ -99,6 +99,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
+        onConnectionStatusChanged();
     }
     //Google+ Connection Failed
     @Override
