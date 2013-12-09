@@ -1,6 +1,8 @@
 package com.roomates.storyquilt;
 
 
+import java.util.ArrayList;
+
 /**
  * Created by chris on 12/4/13.
  */
@@ -8,10 +10,10 @@ public class StoryClass {
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
-    PieceClass[] pieces;
+    ArrayList<PieceClass> pieces;
 
     public StoryClass(){} //Firebase required constructor
-    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, PieceClass[] pieces){
+    public StoryClass(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<PieceClass> pieces){
         this.lastUpdated = lastUpdated;
         this.title = title;
         this.ageLimit = ageLimit;
@@ -43,7 +45,7 @@ public class StoryClass {
     public long getPriority(){
         return this.priority;
     }
-    public PieceClass[] getPieces(){
+    public ArrayList<PieceClass> getPieces(){
         return this.pieces;
     }
 
@@ -58,7 +60,7 @@ public class StoryClass {
     }
 
     //Get Length of StoryClass (by Posts)
-    public int getLength() { return this.pieces.length; }
+    public int getLength() { return this.pieces.size(); }
 
     //Get Full Text of a Story
     public String getFullStory() {
