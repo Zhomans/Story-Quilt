@@ -16,8 +16,6 @@ public class MainActivity extends GooglePlusActivity {
     //Intent Request Codes
     View signInButton;
 
-    //Passing the InstanceState around
-    /*Bundle curInstanceState;*/
     //the settings/actionbar menu
     Menu menu;
 
@@ -35,12 +33,11 @@ public class MainActivity extends GooglePlusActivity {
      */
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity
-        /*super.onCreate(curInstanceState);*/
-        chooseContentView();
         setEmail(previousEmail);
         setPersonFirstName(personFirstName);
         setPersonAge(personAge);
-        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
+        chooseContentView();
+/*        MenuItem signOutItem = (MenuItem) menu.findItem(R.id.gPlusSignOut);
         MenuItem signInItem = (MenuItem) menu.findItem(R.id.gPlusSignIn);
         if (getEmail().equals("readonly")) {
             signOutItem.setVisible(false);
@@ -48,7 +45,7 @@ public class MainActivity extends GooglePlusActivity {
         } else {
             signOutItem.setVisible(true);
             signInItem.setVisible(false);
-        }
+        }*/
         Log.i("username", getEmail());
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){}
@@ -58,11 +55,12 @@ public class MainActivity extends GooglePlusActivity {
     }
 
     public void chooseContentView() {
-        if (previousEmail.equals("readonly")) {
+        signInButtonId = R.id.sign_in_button;
+        if (getEmail().equals("readonly")) {
             setContentView(R.layout.activity_login);
             Toast.makeText(this, "You may only read stories, please sign in to contribute", Toast.LENGTH_LONG).show();
-            ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
-            signInButton = findViewById(R.id.sign_in_button);
+            ((SignInButton) findViewById(signInButtonId)).setSize(SignInButton.SIZE_WIDE);
+            signInButton = findViewById(signInButtonId);
             signInButton.setOnClickListener(this);
         } else {
             setContentView(R.layout.activity_main);
