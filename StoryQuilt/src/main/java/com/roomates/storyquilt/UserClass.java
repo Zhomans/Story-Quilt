@@ -1,5 +1,7 @@
 package com.roomates.storyquilt;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -90,5 +92,10 @@ public class UserClass implements Serializable{
         return this.getWriting().contains(story);
     }
 
+    //Format Email to Firebase Friendly format
+    public static String formatEmail(String email){
+        Log.i("Email", email.substring(0, email.length() - 10).replace(".",""));
+        return email.substring(0, email.length() - 10).replace(".","");
+    }
 
 }

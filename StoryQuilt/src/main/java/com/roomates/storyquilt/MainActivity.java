@@ -22,6 +22,9 @@ public class MainActivity extends GooglePlusActivity {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
 
+    //Current User
+    UserClass user;
+
     //MainActivity Views
     ListView writing, reading;
 
@@ -104,25 +107,19 @@ public class MainActivity extends GooglePlusActivity {
      * Method for managing user Info
      */
     private void addUserToFirebase(){
-        Firebase firebase_user =FireConnection.create("users",personEmail.replace(".", ""));
-        firebase_user.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Object value = snapshot.getValue();
-                if (value == null) {
-                    UserClass user = new UserClass(personEmail.replace(".", ""), personFirstName, personAge,
-                            0, 0, false, new ArrayList<StoryClass>(), new ArrayList<StoryClass>());
-                    FireConnection.pushUserToList(FireConnection.create("users"), user);
-                } else {
-                    //user already exists
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError e) {
-                Log.e("Firebase Error", e.getMessage());
-            }
-        });
+        user = FireConnection.getUserAt(FireConnection.create("users", UserClass.formatEmail(personEmail)));
+        if (user == null){
+            FireConnection.pushUserToList(
+                    new UserClass(
+                            personEmail,
+                            personFirstName,
+                            personAge,
+                            0,
+                            0,
+                            false,
+                            new ArrayList<StoryClass>(),
+                            new ArrayList<StoryClass>()));
+        }
     }
     private String getEmail(){
         return getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
