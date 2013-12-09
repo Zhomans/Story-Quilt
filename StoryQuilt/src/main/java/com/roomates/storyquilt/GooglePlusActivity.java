@@ -94,7 +94,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
             previousEmail = mPlusClient.getAccountName();
         }
         onConnectionStatusChanged();
-    }c
+    }
     //Google+ Connection Disconnected
     public void onDisconnected() {
         Log.d("GooglePlusActivity", "disconnected");
