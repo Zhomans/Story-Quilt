@@ -19,7 +19,6 @@ public class MainActivity extends GooglePlusActivity {
     Menu menu;
 
     //Current User
-    User user;
     UserHandler userHandler;
 
     //MainActivity Views
@@ -34,6 +33,18 @@ public class MainActivity extends GooglePlusActivity {
     /**
      * Required by GooglePlusActivity
      */
+    public void onCreateExtended(Bundle savedInstanceState) {
+        //Setting the Button Id for both GooglePlusActivity and MainActivity
+        signInButtonId = R.id.sign_in_button;
+
+        //Setting User Handler
+        userHandler = new UserHandler(this);
+        //Get Person Email (previously logged in)
+        previousEmail = userHandler.getEmail();
+
+        //Choose Content View to Show
+        chooseContentView();
+    }
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
         userHandler.setEmail(userInfo.get("personName"));
@@ -52,18 +63,6 @@ public class MainActivity extends GooglePlusActivity {
         }
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
-    public void onCreateExtended(Bundle savedInstanceState) {
-        //Setting the Button Id for both GooglePlusActivity and MainActivity
-        signInButtonId = R.id.sign_in_button;
-
-        //Setting User Handler
-        userHandler = new UserHandler(this);
-        //Get Person Email (previously logged in)
-        previousEmail = userHandler.getEmail();
-
-        //Choose Content View to Show
-        chooseContentView();
-    }
     public HashMap<String,String> getUserInformation(){
         HashMap<String, String> userInfo = new HashMap<String, String>();
         userInfo.put("personName", mPlusClient.getCurrentPerson().getName().getGivenName());
