@@ -4,12 +4,18 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/story_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/story_title_textview"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
+    <TextView
+        android:id="@+id/story_posts_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below = "@id/story_title_textview"
+        />
+
 </RelativeLayout>

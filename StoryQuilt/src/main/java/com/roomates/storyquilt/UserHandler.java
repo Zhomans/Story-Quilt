@@ -2,10 +2,8 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
@@ -27,7 +25,6 @@ public class UserHandler {
 
     public UserHandler(Activity activity){
         this.activity = activity;
-        Log.i("userHandler", "Create User " + User.formatEmail(getEmail()));
         updateUserFromFirebase();
     }
 
@@ -59,8 +56,8 @@ public class UserHandler {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 UserHandler.this.user = snapshot.getValue(User.class);
-                Log.i("UserHandler","updating User");
-                Log.i("UserHandler","updating User:" + (UserHandler.this.user));
+                if (user.writing == null){ user.writing = new ArrayList<String>();}
+                if (user.reading == null){ user.reading = new ArrayList<String>();}
             }
 
             public void onCancelled(FirebaseError error) {
@@ -103,19 +100,16 @@ public class UserHandler {
      */
     //Become Writer from New
     public void becomeWriter(String id){
-        if (this.user.writing == null){this.user.writing = new ArrayList<String>();Log.i("userHandler", "Created empty Writing");}
         this.user.writing.add(id);
         updateUserInFirebase();
     }
     //Become Reader from New
     public void becomeReader(String id){
-        if (this.user.reading == null)this.user.reading = new ArrayList<String>();
         this.user.reading.add(id);
         updateUserInFirebase();
     }
     //Become Reader from Writer
     public void becomeReaderFromWriter(String id){
-        if (this.user.reading == null)this.user.reading = new ArrayList<String>();
         this.user.writing.remove(id);
         this.user.reading.add(id);
         updateUserInFirebase();

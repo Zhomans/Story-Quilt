@@ -52,8 +52,8 @@ public class MainActivity extends GooglePlusActivity {
         userHandler.setEmail(userInfo.get("personEmail"));
         userHandler.setPersonFirstName(userInfo.get("personName"));
         userHandler.setPersonAge(Integer.valueOf(userInfo.get("personAge")));
-        userHandler.addUserToFirebase(userInfo);
         userHandler.updateUserFromFirebase();
+        userHandler.addUserToFirebase(userInfo);
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 
@@ -125,7 +125,7 @@ public class MainActivity extends GooglePlusActivity {
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
-        storyRef = FireConnection.create("stories", "reading");
+        storyRef = FireConnection.create("stories");
     }
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
@@ -134,8 +134,11 @@ public class MainActivity extends GooglePlusActivity {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
                 for (Story tempStory: stories){
-                    if (userHandler.user.writing.contains(tempStory.id))
+                    Log.i("modifyArrayAdapter", tempStory.id);
+                    if (userHandler.user.writing.contains(tempStory.id)){
+                        Log.i("modifyArrayAdapter Add", tempStory.id);
                         writingStories.add(tempStory);
+                    }
                 }
                 return writingStories;
             }

@@ -147,6 +147,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
 
     public void notifyChanged(){
         this.models = modifyArrayAdapter(this.models);
+
         notifyDataSetChanged();
     }
     @Override
