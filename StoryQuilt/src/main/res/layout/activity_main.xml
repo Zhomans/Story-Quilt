@@ -27,6 +27,7 @@
         android:layout_height = "wrap_content"
         android:layout_above = "@id/activity_main_centerOnMe"
         android:layout_below = "@id/activity_main_writing_title"
+        android:background = "@android:color/transparent"
         android:dividerHeight = "@dimen/activity_divider_height"/>
 
     <TextView

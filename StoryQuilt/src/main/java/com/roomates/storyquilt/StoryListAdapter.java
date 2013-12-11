@@ -23,7 +23,7 @@ public abstract class StoryListAdapter extends FirebaseListAdapter<Story> {
     @Override
     //Required method by FirebaseListAdapter
     protected void populateView(View view, Story story){
-        ((TextView) view.findViewById(R.id.story_title_textview)).setText(story.getTitle());
-        ((TextView) view.findViewById(R.id.story_title_textview)).setText(story.pieces.size() + " posts");
+        ((TextView) view.findViewById(R.id.story_title_textview)).setText(story.title);
+        ((TextView) view.findViewById(R.id.story_posts_textview)).setText(story.pieces.size() + " posts");
     }
 }

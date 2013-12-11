@@ -10,12 +10,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:text = "Sample Title"/>
     <TextView
         android:id="@+id/story_posts_textview"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below = "@id/story_title_textview"
+        android:text = "Sample Post"
         />
 
 </RelativeLayout>
