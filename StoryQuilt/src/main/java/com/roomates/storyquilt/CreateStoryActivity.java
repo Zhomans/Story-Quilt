@@ -29,9 +29,10 @@ public class CreateStoryActivity extends Activity{
     int SUBMISSION_MIN = 1;
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
-    int HISTORY_MAX = 100;
-    int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
     double HISTORY_TICK = 0.2;
+    int HISTORY_MAX = (int)Math.round(10/HISTORY_TICK);
+    int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
+
     UserHandler userHandler;
 
     Menu menu;
@@ -94,7 +95,8 @@ public class CreateStoryActivity extends Activity{
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress += SUBMISSION_MIN;
-                submissionDisplay.setText("Submission Length: " + progress + " words");
+                submissionDisplay.setText("Submission Length: " + progress + " words ");
+                updateHistorySeekBar();
             }
 
             @Override
@@ -106,9 +108,7 @@ public class CreateStoryActivity extends Activity{
         historyLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress += SUBMISSION_MIN;
-                long value = Math.round(progress * HISTORY_TICK * submissionLength.getProgress());
-                historyDisplay.setText("History Length: " + value + " words");
+                updateHistorySeekBar();
             }
 
             @Override
@@ -120,9 +120,23 @@ public class CreateStoryActivity extends Activity{
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
+
         });
     }
 
+    public void updateHistorySeekBar(){
+        int progress = historyLength.getProgress() + SUBMISSION_MIN;
+        long value = Math.round(progress * HISTORY_TICK * (submissionLength.getProgress() + SUBMISSION_MIN));
+
+        String postDisplay = String.valueOf(progress * HISTORY_TICK);
+        if (postDisplay.contains(".")){
+            String[] posts = postDisplay.split("\\.");
+            postDisplay = posts[0];
+            postDisplay += "." + posts[1].substring(0,1);
+        } else {
+            postDisplay =  String.valueOf(progress * HISTORY_TICK);}
+        historyDisplay.setText("History Length: " + postDisplay + " posts (" + value + " words)");
+    }
     /**
      * Methods for binding events to Create Story Button
      * On Creating a story...
