@@ -27,15 +27,8 @@ public class UserHandler {
 
     public UserHandler(Activity activity){
         this.activity = activity;
+        updateUser(FireConnection.create("user", User.formatEmail(getEmail())));
     }
-
-     /**
-     * Set the User
-     */
-    public void setUser(String email){
-        this.user = getUserAt(FireConnection.create("user", User.formatEmail(email)));
-    }
-
 
     /**
      * Firebase Information
@@ -59,16 +52,16 @@ public class UserHandler {
     //Update User Class in the firebase
     public void updateUserInFirebase(User user){/*To-DO*/}
     //Get User Class in the firebase
-    public User getUserAt(Firebase firebase){
+    public void updateUser(Firebase firebase){
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
+                UserHandler.this.user = snapshot.getValue(User.class);
             }
 
-            public void onCancelled(FirebaseError error) {}
+            public void onCancelled(FirebaseError error) {
+            }
         });
-        return user;
     }
 
 
