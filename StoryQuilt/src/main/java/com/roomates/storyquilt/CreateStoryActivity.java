@@ -71,10 +71,10 @@ public class CreateStoryActivity extends Activity{
         starterText = (EditText)findViewById(R.id.activity_create_starterText_textfield);
 
         submissionDisplay = (TextView)findViewById(R.id.activity_create_submissionLength_textview);
-        submissionDisplay.setText("Submission Length: " + SUBMISSION_MIN + " words");
+        submissionDisplay.setText("Submission Length: " + SUBMISSION_DEFAULT + " words");
 
         historyDisplay = (TextView)findViewById(R.id.activity_create_historyLength_textview);
-        historyDisplay.setText("History Length: " + Math.round(SUBMISSION_MIN * HISTORY_TICK) + " words");
+        historyDisplay.setText("History Length: " + Math.round(SUBMISSION_DEFAULT * HISTORY_TICK) + " words");
 
         historyLength = (SeekBar)findViewById(R.id.activity_create_historyLength_seekBar);
         submissionLength = (SeekBar)findViewById(R.id.activity_create_submissionLength_seekBar);
