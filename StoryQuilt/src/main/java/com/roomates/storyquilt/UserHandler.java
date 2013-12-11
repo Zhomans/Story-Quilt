@@ -2,6 +2,7 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class UserHandler {
     public void setUser(String email){
         this.user = FireConnection.getUserAt(FireConnection.create("user", User.formatEmail(email)));
     }
+
 
     /**
      * Firebase Information
@@ -71,4 +73,14 @@ public class UserHandler {
     public void setPersonAge(Integer value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putInt("personAge", value).commit();
     }
+
+    public void setConnected(Boolean value) {
+        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
+    }
+
+    public Boolean getConnected() {
+        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
+    }
+
+
 }

@@ -31,11 +31,17 @@ public class CreateStoryActivity extends Activity{
     int HISTORY_MAX = 100;
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
     double HISTORY_TICK = 0.2;
+    UserHandler userHandler;
+
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        //setup user handler
+        userHandler = new UserHandler(this);
 
         //Set up Activity Views
         bindViews();
@@ -50,6 +56,13 @@ public class CreateStoryActivity extends Activity{
     /**
      Setting up Views for CreateStory from XML
      */
+
+    private void setupMenuItems(){
+        Boolean connected = userHandler.getConnected();
+        (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
+        (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
+    }
+
     //Binding Create Story Views
     private void bindViews(){
         storyTitle = (EditText)findViewById(R.id.activity_create_storyTitle_textfield);
@@ -156,6 +169,9 @@ public class CreateStoryActivity extends Activity{
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        //hide/show menu items
+        setupMenuItems();
         return true;
     }
 
