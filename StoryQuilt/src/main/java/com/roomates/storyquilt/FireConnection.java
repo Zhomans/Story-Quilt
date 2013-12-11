@@ -1,9 +1,6 @@
 package com.roomates.storyquilt;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 
 /**
@@ -23,10 +20,11 @@ public class FireConnection {
     }
 
     //Pushes Story to List
-    public static void pushStoryToList(Firebase firebase, Story value){
-        Firebase ref = firebase.push();
+    public static String pushStoryToList(Story value){
+        Firebase ref = create("stories").push();
         value.setId(ref.getName());
         ref.setValue(value);
+        return value.id;
     }
     //Pushes User to List
     public static void pushUserToList(User value){
@@ -38,4 +36,8 @@ public class FireConnection {
         Firebase ref = create("stories", story.id, "pieces", String.valueOf(story.pieces.size()));
         ref.setValue(value);
     }
+
+
+    //Get Story
+
 }

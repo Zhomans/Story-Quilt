@@ -94,6 +94,6 @@ public class Story implements Serializable{
 
     //Check Most Recent Post for Given User
     public boolean checkMostRecentPoster(User user){
-        return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getId());
+        return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getEmail());
     }
 }

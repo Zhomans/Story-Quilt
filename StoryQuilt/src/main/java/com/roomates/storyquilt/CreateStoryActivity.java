@@ -163,8 +163,7 @@ public class CreateStoryActivity extends Activity{
                                 );
 
                 //Push to Firebase
-                FireConnection.pushStoryToList(FireConnection.create("stories"), curStory);
-
+                userHandler.becomeWriter(FireConnection.pushStoryToList(curStory));
                 //End Activity
                 finish();
 

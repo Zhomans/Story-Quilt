@@ -49,10 +49,11 @@ public class MainActivity extends GooglePlusActivity {
     }
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
-        userHandler.setEmail(userInfo.get("personName"));
-        userHandler.setPersonFirstName(userInfo.get("personEmail"));
+        userHandler.setEmail(userInfo.get("personEmail"));
+        userHandler.setPersonFirstName(userInfo.get("personName"));
         userHandler.setPersonAge(Integer.valueOf(userInfo.get("personAge")));
         userHandler.addUserToFirebase(userInfo);
+        userHandler.updateUserFromFirebase();
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 

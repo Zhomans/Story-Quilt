@@ -24,7 +24,7 @@ public class StoryViewActivity extends Activity {
     Button addButton, quitButton;
     TextView storyTitle, recentPosts;
 
-    Story thisStory;
+    StoryHandler storyHandler;
     UserHandler userHandler;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +36,10 @@ public class StoryViewActivity extends Activity {
         bindViews();
 
         //Get Current Story
-        getStory();
+        storyHandler = new StoryHandler(getIntent().getStringExtra("story"));
         //XXX Empty Story
-        Story emptyStory = new Story("Now", "Empty Story", 2, 2, 2, new ArrayList<Piece>());
-        thisStory = emptyStory;
-
         //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
-        if (userHandler.isReader(thisStory)) {
+        if (userHandler.isReader(storyHandler.story.id)) {
             //If Reader
 
             //Populate Activity Views' Text
@@ -63,7 +60,7 @@ public class StoryViewActivity extends Activity {
                     Editable newPostText = newPost.getText();
 
                     //Check to see if last post is by this user and don't let them if they are
-                    if (thisStory.checkMostRecentPoster(userHandler.user)){
+                    if (storyHandler.story.checkMostRecentPoster(userHandler.user)){
                         //Display Error box stating that you can't post twice in a row.
                         AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
                         twiceInARow.setCancelable(false); // This blocks the 'BACK' button
@@ -82,11 +79,11 @@ public class StoryViewActivity extends Activity {
 
                                 //Add new Piece
                                 Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                                thisStory.addPiece(newPiece);
+                                storyHandler.story.addPiece(newPiece);
 
                                 //Make User a Writer if New
-                                if (!userHandler.isWriter(thisStory)){
-                                    userHandler.becomeWriter(thisStory);
+                                if (!userHandler.isWriter(storyHandler.story.id)){
+                                    userHandler.becomeWriter(storyHandler.story.id);
                                 }
 
                                 //Refresh Views
@@ -94,7 +91,7 @@ public class StoryViewActivity extends Activity {
                             } else {
                                 AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
                                 overWordLimit.setCancelable(false); // This blocks the 'BACK' button
-                                overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(thisStory.getTextLimit())));
+                                overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(storyHandler.story.getTextLimit())));
                                 overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -115,10 +112,10 @@ public class StoryViewActivity extends Activity {
                     //Makes you a reader in the story, instead of a writer
 
                     //XXX Add in confirmation Dialog box
-//                    if (userHandler.isWriter(thisStory)) {
-//                        userHandler.becomeReaderFromWriter(thisStory);
+//                    if (userHandler.isWriter(storyHandler.story)) {
+//                        userHandler.becomeReaderFromWriter(storyHandler.story);
 //                    } else {
-//                        userHandler.becomeReader(thisStory);
+//                        userHandler.becomeReader(storyHandler.story);
 //                    }
                     //XXX Update views to Reader
                 }
@@ -143,14 +140,14 @@ public class StoryViewActivity extends Activity {
       Populating Views for StoryView from XML
      */
     private void populateViewsAsWriter(){
-        storyTitle.setText(thisStory.getTitle());
-        quitButton.setText("... "+String.valueOf(thisStory.length())+" Posts Later ...");
-        recentPosts.setText(thisStory.recentPosts());
+        storyTitle.setText(storyHandler.story.getTitle());
+        quitButton.setText("... "+String.valueOf(storyHandler.story.length())+" Posts Later ...");
+        recentPosts.setText(storyHandler.story.recentPosts());
     }
     private void populateViewsAsReader(){
         storyTitle.setText(this.getTitle());
         quitButton.setVisibility(View.INVISIBLE);
-        recentPosts.setText(thisStory.fullStory());
+        recentPosts.setText(storyHandler.story.fullStory());
         newPost.setVisibility(View.INVISIBLE);
         addButton.setVisibility(View.INVISIBLE);
     }
@@ -159,16 +156,10 @@ public class StoryViewActivity extends Activity {
      Checks Input str Word Count. true If Not Greater Than Text Limit
      */
     private boolean checkWordCount(String str){
-        return thisStory.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
+        return storyHandler.story.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
     }
 
-    /**
-     * Get Story from Intent
-     */
-    private void getStory(){
-        Intent inStory = getIntent();
-        Story story = (Story) inStory.getSerializableExtra("story");
-    }
+
 
     //Options Menu Setup
     @Override
@@ -180,8 +171,8 @@ public class StoryViewActivity extends Activity {
     @Override
 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(thisStory));
-        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(thisStory));
+        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(storyHandler.story.id));
+        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(storyHandler.story.id));
         return true;
     }
     @Override

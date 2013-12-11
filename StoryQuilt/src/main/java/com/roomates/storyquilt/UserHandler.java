@@ -2,7 +2,7 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
-import android.content.Context;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -27,7 +27,8 @@ public class UserHandler {
 
     public UserHandler(Activity activity){
         this.activity = activity;
-        updateUser(FireConnection.create("user", User.formatEmail(getEmail())));
+        Log.i("userHandler", "Create User " + User.formatEmail(getEmail()));
+        updateUserFromFirebase();
     }
 
     /**
@@ -44,20 +45,22 @@ public class UserHandler {
                             0,
                             0,
                             false,
-                            new ArrayList<Story>(),
-                            new ArrayList<Story>()));
+                            new ArrayList<String>(),
+                            new ArrayList<String>()));
         }
     }
     //Update User Class in the firebase
-    public void updateUserInFirebase(User user){
-        FireConnection.pushUserToList(user);
+    public void updateUserInFirebase(){
+        FireConnection.pushUserToList(this.user);
     }
     //Get User Class in the firebase
-    public void updateUser(Firebase firebase){
-        firebase.addValueEventListener(new ValueEventListener() {
+    public void updateUserFromFirebase(){
+        FireConnection.create("users", User.formatEmail(getEmail())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 UserHandler.this.user = snapshot.getValue(User.class);
+                Log.i("UserHandler","updating User");
+                Log.i("UserHandler","updating User:" + (UserHandler.this.user));
             }
 
             public void onCancelled(FirebaseError error) {
@@ -73,7 +76,7 @@ public class UserHandler {
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
     }
     public void setEmail(String value){
-        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("email", value).commit();
+        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("email", User.formatEmail(value)).commit();
     }
     public String getPersonFirstName(){
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
@@ -99,25 +102,31 @@ public class UserHandler {
      * Change User Status
      */
     //Become Writer from New
-    public void becomeWriter(Story story){
-        user.getWriting().add(story);
+    public void becomeWriter(String id){
+        if (this.user.writing == null){this.user.writing = new ArrayList<String>();Log.i("userHandler", "Created empty Writing");}
+        this.user.writing.add(id);
+        updateUserInFirebase();
     }
     //Become Reader from New
-    public void becomeReader(Story story){
-        user.getReading().add(story);
+    public void becomeReader(String id){
+        if (this.user.reading == null)this.user.reading = new ArrayList<String>();
+        this.user.reading.add(id);
+        updateUserInFirebase();
     }
     //Become Reader from Writer
-    public void becomeReaderFromWriter(Story story){
-        user.getWriting().remove(story);
-        user.getReading().add(story);
+    public void becomeReaderFromWriter(String id){
+        if (this.user.reading == null)this.user.reading = new ArrayList<String>();
+        this.user.writing.remove(id);
+        this.user.reading.add(id);
+        updateUserInFirebase();
     }
     //Check User's Status as Reader
-    public boolean isReader(Story story) {
-        return user.getReading().contains(story);
+    public boolean isReader(String id) {
+        return user.getReading().contains(id);
     }
     //Check User's Status as Writer
-    public boolean isWriter(Story story) {
-        return user.getWriting().contains(story);
+    public boolean isWriter(String id) {
+        return user.getWriting().contains(id);
     }
 
 }
