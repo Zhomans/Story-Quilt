@@ -27,9 +27,6 @@ public class StoryViewActivity extends Activity {
     Story thisStory;
     UserHandler userHandler;
 
-    Menu menu;
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
@@ -181,6 +178,7 @@ public class StoryViewActivity extends Activity {
         return true;
     }
     @Override
+
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.join_story).setVisible(userHandler.isReader(thisStory));
         menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(thisStory));
