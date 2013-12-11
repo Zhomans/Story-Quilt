@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.roomates.storyquilt.JoinStoryActivity"
+            android:name="com.roomates.storyquilt.StoryViewActivity"
             android:label="Join a Story!" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

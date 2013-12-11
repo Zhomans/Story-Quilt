@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -114,6 +115,9 @@ public class MainActivity extends GooglePlusActivity {
     private void setListViews(){
         writing = (ListView) findViewById(R.id.activity_main_writing_listview);
         reading = (ListView) findViewById(R.id.activity_main_reading_listview);
+
+        writing.setOnItemClickListener( goToStoryActivity());
+        reading.setOnItemClickListener( goToStoryActivity());
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
@@ -150,6 +154,18 @@ public class MainActivity extends GooglePlusActivity {
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);
     }
+    //On Item Click for StoryListAdapter
+    private AdapterView.OnItemClickListener goToStoryActivity() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent goToStory = new Intent(MainActivity.this, StoryViewActivity.class);
+                goToStory.putExtra("story",((Story)writing.getItemAtPosition(position)).id);
+                startActivity(goToStory);
+            }
+        };
+    }
+
 
     /**
      * Activity Methods
