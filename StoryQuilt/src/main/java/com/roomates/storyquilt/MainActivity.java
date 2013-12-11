@@ -30,7 +30,7 @@ public class MainActivity extends GooglePlusActivity {
     StoryListAdapter writingAdapter, readingAdapter;
 
     //Firebase
-    Firebase writingRef, readingRef;
+    Firebase storyRef;
 
     /**
      * Required by GooglePlusActivity
@@ -125,23 +125,30 @@ public class MainActivity extends GooglePlusActivity {
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
-        readingRef = FireConnection.create("users", "reading");
-        writingRef = FireConnection.create("users", "writing");
+        storyRef = FireConnection.create("stories", "reading");
     }
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_story){
+        writingAdapter = new StoryListAdapter(storyRef, MainActivity.this, R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
-                //IMPLEMENT SORTING OR FILTERING HERE
-                return stories;
+                List<Story> writingStories = new ArrayList<Story>();
+                for (Story tempStory: stories){
+                    if (userHandler.user.writing.contains(tempStory.id))
+                        writingStories.add(tempStory);
+                }
+                return writingStories;
             }
         };
-        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_story){
+        readingAdapter = new StoryListAdapter(storyRef, MainActivity.this, R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
-                //IMPLEMENT SORTING OR FILTERING HERE
-                return stories;
+                List<Story> readingStories = new ArrayList<Story>();
+                for (Story tempStory: stories){
+                    if (userHandler.user.reading.contains(tempStory.id))
+                        readingStories.add(tempStory);
+                }
+                return readingStories;
             }
         };
 
