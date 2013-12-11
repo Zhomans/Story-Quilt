@@ -50,7 +50,7 @@ public class UserHandler {
     }
     //Update User Class in the firebase
     public void updateUserInFirebase(User user){
-
+        FireConnection.pushUserToList(user);
     }
     //Get User Class in the firebase
     public void updateUser(Firebase firebase){
