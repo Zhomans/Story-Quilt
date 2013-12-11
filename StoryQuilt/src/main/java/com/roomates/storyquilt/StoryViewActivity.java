@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,12 +54,12 @@ public class StoryViewActivity extends Activity {
             populateViewsAsReader();
 
 
-
         } else {
             //If Writer or New
 
             //Populate Activity Views' Text
             populateViewsAsWriter();
+
 
             //Add Button
             addButton.setOnClickListener(new View.OnClickListener() {
@@ -173,4 +175,42 @@ public class StoryViewActivity extends Activity {
         Story story = (Story) inStory.getSerializableExtra("story");
     }
 
+    //Options Menu Setup
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.story, menu);
+        return true;
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem joinStory = menu.findItem(R.id.join_story);
+        MenuItem leaveStory = menu.findItem(R.id.leave_story);
+
+        if (currentUser.isReader(thisStory)){
+            leaveStory.setVisible(true);
+            joinStory.setVisible(false);
+        } else if (!currentUser.isWriter(thisStory)){
+            joinStory.setVisible(true);
+            leaveStory.setVisible(false);
+        } else {
+            joinStory.setVisible(false);
+            leaveStory.setVisible(false);
+        }
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.leave_story: //Leave a new Story
+                break;
+
+            case R.id.join_story: //Join an Existing Story
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
