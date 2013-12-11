@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,10 +26,15 @@ public class StoryViewActivity extends Activity {
     Story thisStory;
     User currentUser;
 
+    Menu menu;
+
+    UserHandler userHandler;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
+        userHandler = new UserHandler(this);
         //Set up Activity Views
         bindViews();
 
@@ -140,6 +146,23 @@ public class StoryViewActivity extends Activity {
 
         storyTitle = (TextView)findViewById(R.id.activity_story_title_textview);
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
+    }
+
+    private void setupMenuItems(){
+        Boolean connected = userHandler.getConnected();
+        (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
+        (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        //hide/show menu items
+        setupMenuItems();
+        return true;
     }
 
     /**
