@@ -45,4 +45,10 @@ public class FireConnection {
         });
         return user;
     }
+
+    //Push Piece to a Story
+    public static void  pushPieceToStory(String storyId, Piece value){
+        Firebase ref = create("stories", storyId, "pieces").push();
+        ref.setValue(value);
+    }
 }

@@ -49,7 +49,7 @@ public class UserHandler {
         }
     }
     public void updateUserInFirebase(User user){/*To-DO*/}
-
+    
     /**
      * Manage User Information
      */
