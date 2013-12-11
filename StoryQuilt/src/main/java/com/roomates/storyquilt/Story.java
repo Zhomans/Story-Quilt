@@ -60,10 +60,10 @@ public class Story implements Serializable{
     }
 
     //Get Length of Story (by Posts)
-    public int getLength() { return this.pieces.size(); }
+    public int length() { return this.pieces.size(); }
 
     //Get Full Text of a Story
-    public String getFullStory() {
+    public String fullStory() {
         String fullText = "";
         for (Piece piece : this.pieces) {
             fullText.concat(piece.getText()+" ");
@@ -73,9 +73,9 @@ public class Story implements Serializable{
 
     //Get Recent Posts of Story
     //XXX Possibly refactor to make more efficient. Use split?
-    public String getRecentPosts() {
+    public String recentPosts() {
         //XXX Could refactor to take in FullStory so it doesn't need to recalculate
-        String fullText = this.getFullStory();
+        String fullText = this.fullStory();
         String recentWords = "";
         int textCounter = this.textLimit;
         while (fullText != "" && textCounter != 0) {

@@ -1,6 +1,8 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,6 +68,16 @@ public class StoryViewActivity extends Activity {
                     //Check to see if last post is by this user and don't let them if they are
                     if (thisStory.checkMostRecentPoster(currentUser)){
                         //Display Error box stating that you can't post twice in a row.
+                        AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
+                        twiceInARow.setCancelable(false); // This blocks the 'BACK' button
+                        twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
+                        twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        twiceInARow.show();
                     } else {
                         if (newPostText != null){
                             if (checkWordCount(newPostText.toString())){
@@ -81,8 +93,18 @@ public class StoryViewActivity extends Activity {
                                 }
 
                                 //Refresh Views
+
                             } else {
-                                //Display Error box stating that over word limit
+                                AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
+                                overWordLimit.setCancelable(false); // This blocks the 'BACK' button
+                                overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(thisStory.getTextLimit())));
+                                overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                overWordLimit.show();
                             }
                         }
                     }
@@ -96,11 +118,11 @@ public class StoryViewActivity extends Activity {
                     //Makes you a reader in the story, instead of a writer
 
                     //XXX Add in confirmation Dialog box
-                    if (currentUser.isWriter(thisStory)) {
-                        currentUser.becomeReaderFromWriter(thisStory);
-                    } else {
-                        currentUser.becomeReader(thisStory);
-                    }
+//                    if (currentUser.isWriter(thisStory)) {
+//                        currentUser.becomeReaderFromWriter(thisStory);
+//                    } else {
+//                        currentUser.becomeReader(thisStory);
+//                    }
                     //XXX Update views to Reader
                 }
             });
@@ -125,13 +147,13 @@ public class StoryViewActivity extends Activity {
      */
     private void populateViewsAsWriter(){
         storyTitle.setText(thisStory.getTitle());
-        quitButton.setText("... "+String.valueOf(thisStory.getLength())+" Posts Later ...");
-        recentPosts.setText(thisStory.getRecentPosts());
+        quitButton.setText("... "+String.valueOf(thisStory.length())+" Posts Later ...");
+        recentPosts.setText(thisStory.recentPosts());
     }
     private void populateViewsAsReader(){
         storyTitle.setText(this.getTitle());
         quitButton.setVisibility(View.INVISIBLE);
-        recentPosts.setText(thisStory.getFullStory());
+        recentPosts.setText(thisStory.fullStory());
         newPost.setVisibility(View.INVISIBLE);
         addButton.setVisibility(View.INVISIBLE);
     }
