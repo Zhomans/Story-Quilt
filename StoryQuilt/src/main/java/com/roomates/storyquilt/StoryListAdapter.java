@@ -6,10 +6,15 @@ import android.widget.TextView;
 
 import com.firebase.client.Query;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 /**
  * Created by chris on 12/4/13.
  */
-public class StoryListAdapter extends FirebaseListAdapter<Story> {
+public abstract class StoryListAdapter extends FirebaseListAdapter<Story> {
+
     //Constructor for the adapter
     public StoryListAdapter(Query ref, Activity activity, int layout){
         super(ref, Story.class, layout, activity);

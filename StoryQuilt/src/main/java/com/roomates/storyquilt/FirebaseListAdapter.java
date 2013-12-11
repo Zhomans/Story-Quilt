@@ -78,7 +78,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                     }
                 }
 
-                notifyDataSetChanged();
+                notifyChanged();
             }
 
             @Override
@@ -93,7 +93,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                 models.set(index, newModel);
                 modelNames.put(modelName, newModel);
 
-                notifyDataSetChanged();
+                notifyChanged();
             }
 
             @Override
@@ -104,7 +104,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                 T oldModel = modelNames.get(modelName);
                 models.remove(oldModel);
                 modelNames.remove(modelName);
-                notifyDataSetChanged();
+                notifyChanged();
             }
 
             @Override
@@ -128,7 +128,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                         models.add(nextIndex, newModel);
                     }
                 }
-                notifyDataSetChanged();
+                notifyChanged();
             }
 
             @Override
@@ -145,6 +145,10 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
         modelNames.clear();
     }
 
+    public void notifyChanged(){
+        this.models = modifyArrayAdapter(this.models);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return models.size();
@@ -181,4 +185,5 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
      * @param model The object containing the data used to populate the view
      */
     protected abstract void populateView(View v, T model);
+    protected abstract List<T> modifyArrayAdapter(List<T> models);
 }

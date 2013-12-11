@@ -90,11 +90,14 @@ public class UserHandler {
     public void setConnected(Boolean value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
     }
-    public Boolean getConnected() {
+    public Boolean isConnected() {
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
     }
 
 
+    /**
+     * Change User Status
+     */
     //Become Writer from New
     public void becomeWriter(Story story){
         user.getWriting().add(story);

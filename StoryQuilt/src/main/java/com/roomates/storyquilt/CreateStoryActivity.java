@@ -33,9 +33,9 @@ public class CreateStoryActivity extends Activity{
     int HISTORY_MAX = (int)(10/HISTORY_TICK);
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
 
+    //User Information
     UserHandler userHandler;
 
-    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +58,6 @@ public class CreateStoryActivity extends Activity{
     /**
      Setting up Views for CreateStory from XML
      */
-
-    private void setupMenuItems(){
-        Boolean connected = userHandler.getConnected();
-        (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
-        (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
-    }
-
-    //Binding Create Story Views
     private void bindViews(){
         storyTitle = (EditText)findViewById(R.id.activity_create_storyTitle_textfield);
         starterText = (EditText)findViewById(R.id.activity_create_starterText_textfield);
@@ -83,7 +75,9 @@ public class CreateStoryActivity extends Activity{
         create = (Button)findViewById(R.id.activity_create_create_button);
     }
 
-    //Setup Seek Bars
+    /**
+     Setting up SeekBars
+     */
     private void setupSeekBars(){
         historyLength.setMax(HISTORY_MAX);
         historyLength.setProgress(HISTORY_DEFAULT);
@@ -123,7 +117,6 @@ public class CreateStoryActivity extends Activity{
 
         });
     }
-
     public void updateHistorySeekBar(){
         int progress = historyLength.getProgress() + SUBMISSION_MIN;
         long value = Math.round(progress * HISTORY_TICK * (submissionLength.getProgress() + SUBMISSION_MIN));
@@ -137,11 +130,11 @@ public class CreateStoryActivity extends Activity{
             postDisplay =  String.valueOf(progress * HISTORY_TICK);}
         historyDisplay.setText("History Length: " + postDisplay + " posts (" + value + " words)");
     }
+
     /**
      * Methods for binding events to Create Story Button
      * On Creating a story...
      */
-
     private void setupCreateButton(){
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,15 +173,14 @@ public class CreateStoryActivity extends Activity{
         });
     }
 
-    //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        this.menu = menu;
         //hide/show menu items
-        setupMenuItems();
+        (menu.findItem(R.id.gPlusSignOut)).setVisible(userHandler.isConnected());
+        (menu.findItem(R.id.gPlusSignIn)).setVisible(!userHandler.isConnected());
         return true;
     }
 

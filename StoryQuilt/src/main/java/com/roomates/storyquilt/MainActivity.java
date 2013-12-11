@@ -14,6 +14,7 @@ import com.google.android.gms.common.SignInButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends GooglePlusActivity {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
@@ -128,8 +129,20 @@ public class MainActivity extends GooglePlusActivity {
     }
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_story);
-        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_story);
+        writingAdapter = new StoryListAdapter(writingRef, MainActivity.this, R.layout.listitem_main_story){
+            @Override
+            protected List<Story> modifyArrayAdapter(List<Story> stories){
+                //IMPLEMENT SORTING OR FILTERING HERE
+                return stories;
+            }
+        };
+        readingAdapter = new StoryListAdapter(readingRef, MainActivity.this, R.layout.listitem_main_story){
+            @Override
+            protected List<Story> modifyArrayAdapter(List<Story> stories){
+                //IMPLEMENT SORTING OR FILTERING HERE
+                return stories;
+            }
+        };
 
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);

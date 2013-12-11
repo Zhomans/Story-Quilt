@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import java.util.List;
+
 public class JoinStoryActivity extends Activity {
     //JoinStoryActivity Views
     ListView popular, nascent;
@@ -49,8 +51,20 @@ public class JoinStoryActivity extends Activity {
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        popularAdapter = new StoryListAdapter(popularRef, JoinStoryActivity.this, R.layout.listitem_main_story);
-        nascentAdapter = new StoryListAdapter(nascentRef, JoinStoryActivity.this, R.layout.listitem_main_story);
+        popularAdapter = new StoryListAdapter(popularRef, JoinStoryActivity.this, R.layout.listitem_main_story){
+            @Override
+            protected List<Story> modifyArrayAdapter(List<Story> stories){
+                //IMPLEMENT SORTING OR FILTERING HERE
+                return stories;
+            }
+        };
+        nascentAdapter = new StoryListAdapter(nascentRef, JoinStoryActivity.this, R.layout.listitem_main_story){
+            @Override
+            protected List<Story> modifyArrayAdapter(List<Story> stories){
+                //IMPLEMENT SORTING OR FILTERING HERE
+                return stories;
+            }
+        };
 
         popular.setAdapter(popularAdapter);
         nascent.setAdapter(nascentAdapter);
@@ -59,7 +73,6 @@ public class JoinStoryActivity extends Activity {
     /**
      * Activity Methods
      */
-
     //Options Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
