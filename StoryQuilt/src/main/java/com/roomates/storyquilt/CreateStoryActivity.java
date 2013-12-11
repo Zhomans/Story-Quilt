@@ -30,7 +30,7 @@ public class CreateStoryActivity extends Activity{
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
     double HISTORY_TICK = 0.2;
-    int HISTORY_MAX = (int)Math.round(10/HISTORY_TICK);
+    int HISTORY_MAX = (int)(10/HISTORY_TICK);
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
 
     UserHandler userHandler;
