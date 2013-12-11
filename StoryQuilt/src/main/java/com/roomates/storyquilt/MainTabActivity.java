@@ -2,21 +2,13 @@ package com.roomates.storyquilt;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
-import android.app.FragmentTransaction;
-import android.app.Fragment;
 
 import com.firebase.client.Firebase;
-import com.google.android.gms.common.SignInButton;
-
-import java.util.HashMap;
 
 public class MainTabActivity extends GooglePlusActivity {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged

@@ -14,7 +14,6 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.common.SignInButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends GooglePlusActivity {
