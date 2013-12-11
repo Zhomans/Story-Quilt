@@ -59,6 +59,7 @@ public class MainActivity extends GooglePlusActivity {
 
         if (menu != null) {
             Boolean visibility = mPlusClient.isConnected();
+            userHandler.setConnected(visibility);
             (menu.findItem(R.id.gPlusSignOut)).setVisible(visibility);
             (menu.findItem(R.id.gPlusSignIn)).setVisible(!visibility);
         }
@@ -77,7 +78,9 @@ public class MainActivity extends GooglePlusActivity {
      */
     //Choose SetContentView Content
     public void chooseContentView() {
-        if (!mPlusClient.isConnected()) {
+        Boolean connected = mPlusClient.isConnected();
+        userHandler.setConnected(connected);
+        if (!connected) {
             setContentView(R.layout.activity_login);
             setUpLoginViews();
         } else {

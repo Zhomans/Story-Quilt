@@ -2,6 +2,12 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
+import android.content.Context;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,21 +27,15 @@ public class UserHandler {
 
     public UserHandler(Activity activity){
         this.activity = activity;
-    }
-
-     /**
-     * Set the User
-     */
-    public void setUser(String email){
-        this.user = FireConnection.getUserAt(FireConnection.create("user", User.formatEmail(email)));
+        updateUser(FireConnection.create("user", User.formatEmail(getEmail())));
     }
 
     /**
      * Firebase Information
      */
+    //Add User Class in the firebase
     public void addUserToFirebase(HashMap<String, String> userInfo){
-        user = FireConnection.getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
-        if (user == null){
+        if (this.user == null){
             FireConnection.pushUserToList(
                     new User(
                             userInfo.get("personEmail"),
@@ -48,7 +48,23 @@ public class UserHandler {
                             new ArrayList<Story>()));
         }
     }
-    public void updateUserInFirebase(User user){/*To-DO*/}
+    //Update User Class in the firebase
+    public void updateUserInFirebase(User user){
+        FireConnection.pushUserToList(user);
+    }
+    //Get User Class in the firebase
+    public void updateUser(Firebase firebase){
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                UserHandler.this.user = snapshot.getValue(User.class);
+            }
+
+            public void onCancelled(FirebaseError error) {
+            }
+        });
+    }
+
 
     /**
      * Manage User Information
@@ -71,4 +87,14 @@ public class UserHandler {
     public void setPersonAge(Integer value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putInt("personAge", value).commit();
     }
+
+    public void setConnected(Boolean value) {
+        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
+    }
+
+    public Boolean getConnected() {
+        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
+    }
+
+
 }

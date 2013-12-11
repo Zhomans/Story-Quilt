@@ -26,16 +26,23 @@ public class CreateStoryActivity extends Activity{
 
     //Max SeekBar Limits
     int SUBMISSION_MAX = 50; //Words
+    int SUBMISSION_MIN = 1;
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
     int HISTORY_MAX = 100;
     int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
     double HISTORY_TICK = 0.2;
+    UserHandler userHandler;
+
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        //setup user handler
+        userHandler = new UserHandler(this);
 
         //Set up Activity Views
         bindViews();
@@ -50,6 +57,13 @@ public class CreateStoryActivity extends Activity{
     /**
      Setting up Views for CreateStory from XML
      */
+
+    private void setupMenuItems(){
+        Boolean connected = userHandler.getConnected();
+        (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
+        (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
+    }
+
     //Binding Create Story Views
     private void bindViews(){
         storyTitle = (EditText)findViewById(R.id.activity_create_storyTitle_textfield);
@@ -75,22 +89,20 @@ public class CreateStoryActivity extends Activity{
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += SUBMISSION_MIN;
                 submissionDisplay.setText("Submission Length: " + progress + " words");
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar){}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         historyLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += SUBMISSION_MIN;
                 long value = Math.round(progress * HISTORY_TICK * submissionLength.getProgress());
                 historyDisplay.setText("History Length: " + value + " words");
             }
@@ -156,6 +168,9 @@ public class CreateStoryActivity extends Activity{
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        //hide/show menu items
+        setupMenuItems();
         return true;
     }
 

@@ -94,8 +94,7 @@ public class User implements Serializable{
 
     //Format Email to Firebase Friendly format
     public static String formatEmail(String email){
-        Log.i("Email", email.substring(0, email.length() - 10).replace(".",""));
-        return email.substring(0, email.length() - 10).replace(".","");
+        return email.replace(".","").replace("@", "");
     }
 
 }

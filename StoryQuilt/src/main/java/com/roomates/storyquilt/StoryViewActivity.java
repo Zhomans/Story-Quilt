@@ -27,10 +27,15 @@ public class StoryViewActivity extends Activity {
     Story thisStory;
     User currentUser;
 
+    Menu menu;
+
+    UserHandler userHandler;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
+        userHandler = new UserHandler(this);
         //Set up Activity Views
         bindViews();
 
@@ -144,7 +149,7 @@ public class StoryViewActivity extends Activity {
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
     }
 
-    /**
+     /**
       Populating Views for StoryView from XML
      */
     private void populateViewsAsWriter(){
