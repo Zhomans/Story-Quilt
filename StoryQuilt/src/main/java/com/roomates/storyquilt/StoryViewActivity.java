@@ -193,16 +193,8 @@ public class StoryViewActivity extends Activity {
         MenuItem joinStory = menu.findItem(R.id.join_story);
         MenuItem leaveStory = menu.findItem(R.id.leave_story);
 
-        if (currentUser.isReader(thisStory)){
-            leaveStory.setVisible(true);
-            joinStory.setVisible(false);
-        } else if (!currentUser.isWriter(thisStory)){
-            joinStory.setVisible(true);
-            leaveStory.setVisible(false);
-        } else {
-            joinStory.setVisible(false);
-            leaveStory.setVisible(false);
-        }
+        leaveStory.setVisible(currentUser.isReader(thisStory));
+        joinStory.setVisible(!currentUser.isWriter(thisStory));
 
         return true;
     }
