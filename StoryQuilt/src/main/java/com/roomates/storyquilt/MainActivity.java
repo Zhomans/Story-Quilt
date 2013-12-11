@@ -2,6 +2,7 @@ package com.roomates.storyquilt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,7 @@ public class MainActivity extends GooglePlusActivity {
         HashMap<String, String> userInfo = new HashMap<String, String>();
         userInfo.put("personName", mPlusClient.getCurrentPerson().getName().getGivenName());
         userInfo.put("personEmail", mPlusClient.getAccountName());
-        userInfo.put("personAge", String.valueOf(mPlusClient.getCurrentPerson().getAgeRange().getMin()));
+        try{userInfo.put("personAge", String.valueOf(mPlusClient.getCurrentPerson().getAgeRange().getMin()));}catch (NullPointerException e){e.printStackTrace();userInfo.put("personAge", "13");}
         return userInfo;
     }
 

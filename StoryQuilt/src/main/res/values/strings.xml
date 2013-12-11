@@ -26,5 +26,9 @@
     <string name = "gPlusSignOut">Sign Out</string>
     <string name = "gPlusSignIn">Sign in with Google</string>
 
+    <!--Story View-->
+    <string name = "activity_story_overWordLimit">Your message is over the word limit of: </string>
+    <string name = "activity_story_twiceInARow">You cannot post twice in a row. Please wait for another post before posting again.</string>
+
 </resources>
 
