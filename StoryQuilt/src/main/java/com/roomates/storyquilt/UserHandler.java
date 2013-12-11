@@ -87,14 +87,34 @@ public class UserHandler {
     public void setPersonAge(Integer value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putInt("personAge", value).commit();
     }
-
     public void setConnected(Boolean value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
     }
-
     public Boolean getConnected() {
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
     }
 
+
+    //Become Writer from New
+    public void becomeWriter(Story story){
+        user.getWriting().add(story);
+    }
+    //Become Reader from New
+    public void becomeReader(Story story){
+        user.getReading().add(story);
+    }
+    //Become Reader from Writer
+    public void becomeReaderFromWriter(Story story){
+        user.getWriting().remove(story);
+        user.getReading().add(story);
+    }
+    //Check User's Status as Reader
+    public boolean isReader(Story story) {
+        return user.getReading().contains(story);
+    }
+    //Check User's Status as Writer
+    public boolean isWriter(Story story) {
+        return user.getWriting().contains(story);
+    }
 
 }

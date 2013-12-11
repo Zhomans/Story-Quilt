@@ -1,7 +1,5 @@
 package com.roomates.storyquilt;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -56,45 +54,8 @@ public class User implements Serializable{
         this.email = value;
     }
 
-    /**
-     * Become Writer from New
-     */
-    public void becomeWriter(Story story){
-        this.getWriting().add(story);
-    }
-
-    /**
-     * Become Reader from New
-     */
-    public void becomeReader(Story story){
-        this.getReading().add(story);
-    }
-
-    /**
-     * Become Reader from Writer
-     */
-    public void becomeReaderFromWriter(Story story){
-        this.getWriting().remove(story);
-        this.getReading().add(story);
-    }
-
-    /**
-     * Check User's Status as Reader
-     */
-    public boolean isReader(Story story) {
-        return this.getReading().contains(story);
-    }
-
-    /**
-     * Check User's Status as Writer
-     */
-    public boolean isWriter(Story story) {
-        return this.getWriting().contains(story);
-    }
-
     //Format Email to Firebase Friendly format
     public static String formatEmail(String email){
         return email.replace(".","").replace("@", "");
     }
-
 }
