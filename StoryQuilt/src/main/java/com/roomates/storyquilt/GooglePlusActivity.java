@@ -44,8 +44,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Managing Periodic Connection Status and User Info
     String previousEmail = "";
 
-    //User Information Extracted From OnConnected
-    HashMap<String, String> userInfo;
 
     /**
      * Methods for Activity
@@ -55,7 +53,6 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = new HashMap<String, String>();
         mPlusClient = new PlusClient.Builder(this, this, this)
                 .setScopes(Scopes.PLUS_PROFILE, Scopes.PLUS_LOGIN)  // Space separated list of scopes
                 .build();
@@ -99,7 +96,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     //Google+ Connection successful
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
-        userInfo = getUserInformation();
+        getUserInformation();
         if (!previousEmail.equals(mPlusClient.getAccountName())) {
             Toast.makeText(this, mPlusClient.getCurrentPerson().getName().getGivenName() + ", you connected!", Toast.LENGTH_LONG).show();
         }
@@ -200,5 +197,5 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     public abstract void onConnectionStatusChanged();
     public abstract void onActivityResultExtended(int requestCode, int resultCode, Intent data);
     public abstract void onCreateExtended(Bundle savedInstanceState);
-    public abstract HashMap<String,String> getUserInformation();
+    public abstract void getUserInformation();
 }

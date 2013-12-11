@@ -41,6 +41,7 @@ public class MainActivity extends GooglePlusActivity {
 
         //Setting User Handler
         userHandler = new UserHandler(this);
+
         //Get Person Email (previously logged in)
         previousEmail = userHandler.getEmail();
 
@@ -48,12 +49,6 @@ public class MainActivity extends GooglePlusActivity {
         chooseContentView();
     }
     public void onConnectionStatusChanged() {
-        //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
-        userHandler.setEmail(userInfo.get("personEmail"));
-        userHandler.setPersonFirstName(userInfo.get("personName"));
-        userHandler.setPersonAge(Integer.valueOf(userInfo.get("personAge")));
-        userHandler.updateUserFromFirebase();
-        userHandler.addUserToFirebase(userInfo);
         //Choose which content to show: SignIn or Main Activity (if different)
         chooseContentView();
 
@@ -67,12 +62,11 @@ public class MainActivity extends GooglePlusActivity {
         }
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
-    public HashMap<String,String> getUserInformation(){
-        HashMap<String, String> userInfo = new HashMap<String, String>();
-        userInfo.put("personName", mPlusClient.getCurrentPerson().getName().getGivenName());
-        userInfo.put("personEmail", mPlusClient.getAccountName());
-        try{userInfo.put("personAge", String.valueOf(mPlusClient.getCurrentPerson().getAgeRange().getMin()));}catch (NullPointerException e){e.printStackTrace();userInfo.put("personAge", "13");}
-        return userInfo;
+
+    public void getUserInformation(){
+        userHandler.setPersonFirstName(mPlusClient.getCurrentPerson().getName().getGivenName());
+        userHandler.setEmail(mPlusClient.getAccountName());
+        try{userHandler.setPersonAge(mPlusClient.getCurrentPerson().getAgeRange().getMin());}catch (NullPointerException e){e.printStackTrace();userHandler.setPersonAge(18);}
     }
 
     /**

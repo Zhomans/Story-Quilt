@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -146,28 +147,31 @@ public class CreateStoryActivity extends Activity{
 
                 //Check if title exists
                 if (title.equals("")) title = starter;
+                if (starter.equals("") || starter.split(" ").length > submissionLength.getProgress()) {
+                    Toast.makeText(CreateStoryActivity.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ArrayList<Piece> curPieces = new ArrayList<Piece>();
+                    curPieces.add(new Piece(
+                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
+                            String.valueOf(System.currentTimeMillis()),
+                            String.valueOf(starterText.getText())
+                    ));
 
-                ArrayList<Piece> curPieces = new ArrayList<Piece>();
-                curPieces.add(new Piece(
-                        getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
-                        String.valueOf(System.currentTimeMillis()),
-                        String.valueOf(starterText.getText())
-                ));
-                //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
-                Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
-                                title,
-                                (languageFilter.isChecked())? 13:0,
-                                (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
-                                submissionLength.getProgress(),
-                                curPieces
-                                );
+                    //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
+                    Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
+                                    title,
+                                    (languageFilter.isChecked())? 13:0,
+                                    (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
+                                    submissionLength.getProgress(),
+                                    curPieces
+                                    );
 
-                //Push to Firebase
-                userHandler.becomeWriter(FireConnection.pushStoryToList(curStory));
-                //End Activity
-                finish();
-
-
+                    //Push to Firebase
+                    userHandler.becomeWriter(FireConnection.pushStoryToList(curStory));
+                    //End Activity
+                    finish();
+                }
             }
         });
     }

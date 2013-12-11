@@ -2,13 +2,14 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by chris on 12/9/13.
@@ -23,22 +24,30 @@ public class UserHandler {
     //Passing the activity for context
     Activity activity;
 
+
     public UserHandler(Activity activity){
         this.activity = activity;
         updateUserFromFirebase();
+        if (user == null) {
+            Log.i("GetUser", "User is null");
+        }
+        else {
+        Log.i("GetUser", String.valueOf(user.writing.size()));
+        }
     }
 
     /**
      * Firebase Information
      */
     //Add User Class in the firebase
-    public void addUserToFirebase(HashMap<String, String> userInfo){
+    public void addUserToFirebase(){
         if (this.user == null){
+            Log.i("GetUser", "Made New User");
             FireConnection.pushUserToList(
                     new User(
-                            userInfo.get("personEmail"),
-                            userInfo.get("personName"),
-                            Integer.valueOf(userInfo.get("personAge")),
+                            getEmail(),
+                            getPersonFirstName(),
+                            getPersonAge(),
                             0,
                             0,
                             false,
@@ -55,9 +64,19 @@ public class UserHandler {
         FireConnection.create("users", User.formatEmail(getEmail())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                Log.i("GetUser","Updating User");
                 UserHandler.this.user = snapshot.getValue(User.class);
-                if (user.writing == null){ user.writing = new ArrayList<String>();}
-                if (user.reading == null){ user.reading = new ArrayList<String>();}
+                if (user == null){
+                    addUserToFirebase();
+                }
+                if (user.writing == null) {
+                    user.writing = new ArrayList<String>();
+                } else {
+                    Log.i("GetUser", user.email + " " + user.writing.size());
+                }
+                if (user.reading == null) {
+                    user.reading = new ArrayList<String>();
+                }
             }
 
             public void onCancelled(FirebaseError error) {
