@@ -26,6 +26,7 @@ public class CreateStoryActivity extends Activity{
 
     //Max SeekBar Limits
     int SUBMISSION_MAX = 50; //Words
+    int SUBMISSION_MIN = 1;
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
     int HISTORY_MAX = 100;
@@ -88,22 +89,20 @@ public class CreateStoryActivity extends Activity{
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += SUBMISSION_MIN;
                 submissionDisplay.setText("Submission Length: " + progress + " words");
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar){}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         historyLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += SUBMISSION_MIN;
                 long value = Math.round(progress * HISTORY_TICK * submissionLength.getProgress());
                 historyDisplay.setText("History Length: " + value + " words");
             }
