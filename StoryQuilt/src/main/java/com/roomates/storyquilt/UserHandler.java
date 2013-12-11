@@ -35,8 +35,7 @@ public class UserHandler {
      */
     //Add User Class in the firebase
     public void addUserToFirebase(HashMap<String, String> userInfo){
-        user = getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
-        if (user == null){
+        if (this.user == null){
             FireConnection.pushUserToList(
                     new User(
                             userInfo.get("personEmail"),
@@ -50,7 +49,9 @@ public class UserHandler {
         }
     }
     //Update User Class in the firebase
-    public void updateUserInFirebase(User user){/*To-DO*/}
+    public void updateUserInFirebase(User user){
+
+    }
     //Get User Class in the firebase
     public void updateUser(Firebase firebase){
         firebase.addValueEventListener(new ValueEventListener() {
