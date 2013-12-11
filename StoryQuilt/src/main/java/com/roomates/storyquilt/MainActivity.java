@@ -53,7 +53,6 @@ public class MainActivity extends GooglePlusActivity {
         chooseContentView();
 
         //Set Action Settings Sign in or SignOut
-
         if (menu != null) {
             Boolean visibility = mPlusClient.isConnected();
             userHandler.setConnected(visibility);
@@ -61,13 +60,12 @@ public class MainActivity extends GooglePlusActivity {
             (menu.findItem(R.id.gPlusSignIn)).setVisible(!visibility);
         }
     }
-    public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
-
     public void getUserInformation(){
         userHandler.setPersonFirstName(mPlusClient.getCurrentPerson().getName().getGivenName());
         userHandler.setEmail(mPlusClient.getAccountName());
         try{userHandler.setPersonAge(mPlusClient.getCurrentPerson().getAgeRange().getMin());}catch (NullPointerException e){e.printStackTrace();userHandler.setPersonAge(18);}
     }
+    public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
 
     /**
      * Manages Setting Content View based on LogIn State

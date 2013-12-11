@@ -24,59 +24,37 @@ public class UserHandler {
     //Passing the activity for context
     Activity activity;
 
-
     public UserHandler(Activity activity){
         this.activity = activity;
         updateUserFromFirebase();
-        if (user == null) {
-            Log.i("GetUser", "User is null");
-        }
-        else {
-        Log.i("GetUser", String.valueOf(user.writing.size()));
-        }
     }
 
     /**
      * Firebase Information
      */
-    //Add User Class in the firebase
     public void addUserToFirebase(){
-        if (this.user == null){
-            Log.i("GetUser", "Made New User");
-            FireConnection.pushUserToList(
-                    new User(
-                            getEmail(),
-                            getPersonFirstName(),
-                            getPersonAge(),
-                            0,
-                            0,
-                            false,
-                            new ArrayList<String>(),
-                            new ArrayList<String>()));
-        }
+        this.user = new User(
+                getEmail(),
+                getPersonFirstName(),
+                getPersonAge(),
+                0,
+                0,
+                false,
+                new ArrayList<String>(),
+                new ArrayList<String>());
+        updateUserInFirebase();
     }
-    //Update User Class in the firebase
     public void updateUserInFirebase(){
         FireConnection.pushUserToList(this.user);
     }
-    //Get User Class in the firebase
     public void updateUserFromFirebase(){
         FireConnection.create("users", User.formatEmail(getEmail())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.i("GetUser","Updating User");
                 UserHandler.this.user = snapshot.getValue(User.class);
-                if (user == null){
-                    addUserToFirebase();
-                }
-                if (user.writing == null) {
-                    user.writing = new ArrayList<String>();
-                } else {
-                    Log.i("GetUser", user.email + " " + user.writing.size());
-                }
-                if (user.reading == null) {
-                    user.reading = new ArrayList<String>();
-                }
+                if (user == null) addUserToFirebase();
+                if (user.writing == null) user.writing = new ArrayList<String>();
+                if (user.reading == null) user.reading = new ArrayList<String>();
             }
 
             public void onCancelled(FirebaseError error) {
@@ -117,27 +95,22 @@ public class UserHandler {
     /**
      * Change User Status
      */
-    //Become Writer from New
     public void becomeWriter(String id){
         this.user.writing.add(id);
         updateUserInFirebase();
     }
-    //Become Reader from New
     public void becomeReader(String id){
         this.user.reading.add(id);
         updateUserInFirebase();
     }
-    //Become Reader from Writer
     public void becomeReaderFromWriter(String id){
         this.user.writing.remove(id);
         this.user.reading.add(id);
         updateUserInFirebase();
     }
-    //Check User's Status as Reader
     public boolean isReader(String id) {
         return user.getReading().contains(id);
     }
-    //Check User's Status as Writer
     public boolean isWriter(String id) {
         return user.getWriting().contains(id);
     }

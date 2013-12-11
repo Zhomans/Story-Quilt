@@ -37,7 +37,4 @@ public class FireConnection {
         ref.setValue(value);
     }
 
-
-    //Get Story
-
 }
