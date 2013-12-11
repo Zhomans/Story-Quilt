@@ -33,19 +33,6 @@ public class FireConnection {
         create("users", User.formatEmail(value.email)).setValue(value);
     }
 
-    public static User getUserAt(Firebase firebase){
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
-            }
-
-            public void onCancelled(FirebaseError error) {
-            }
-        });
-        return user;
-    }
-
     //Push Piece to a Story
     public static void  pushPieceToStory(Story story, Piece value){
         Firebase ref = create("stories", story.id, "pieces", String.valueOf(story.pieces.size()));

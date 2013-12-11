@@ -4,6 +4,11 @@ package com.roomates.storyquilt;
 import android.app.Activity;
 import android.content.Context;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,15 +33,16 @@ public class UserHandler {
      * Set the User
      */
     public void setUser(String email){
-        this.user = FireConnection.getUserAt(FireConnection.create("user", User.formatEmail(email)));
+        this.user = getUserAt(FireConnection.create("user", User.formatEmail(email)));
     }
 
 
     /**
      * Firebase Information
      */
+    //Add User Class in the firebase
     public void addUserToFirebase(HashMap<String, String> userInfo){
-        user = FireConnection.getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
+        user = getUserAt(FireConnection.create("users", User.formatEmail(userInfo.get("personEmail"))));
         if (user == null){
             FireConnection.pushUserToList(
                     new User(
@@ -50,8 +56,22 @@ public class UserHandler {
                             new ArrayList<Story>()));
         }
     }
+    //Update User Class in the firebase
     public void updateUserInFirebase(User user){/*To-DO*/}
-    
+    //Get User Class in the firebase
+    public User getUserAt(Firebase firebase){
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+            }
+
+            public void onCancelled(FirebaseError error) {}
+        });
+        return user;
+    }
+
+
     /**
      * Manage User Information
      */
