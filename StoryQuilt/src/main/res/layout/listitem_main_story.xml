@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_below = "@id/story_title_textview"
         android:text = "Sample Post"
+        android:paddingBottom = "@dimen/activity_divider_height"
         />
 
 </RelativeLayout>

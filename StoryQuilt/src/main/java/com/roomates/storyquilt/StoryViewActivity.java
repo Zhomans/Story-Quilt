@@ -3,7 +3,6 @@ package com.roomates.storyquilt;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 
 /**
  * Created by zach on 12/7/13.
@@ -21,8 +19,8 @@ import java.util.ArrayList;
 public class StoryViewActivity extends Activity {
     //Views
     EditText newPost;
-    Button addButton, quitButton;
-    TextView storyTitle, recentPosts;
+    Button addButton;
+    TextView storyTitle, recentPosts, quitButton;
 
     StoryHandler storyHandler;
     UserHandler userHandler;
@@ -130,7 +128,7 @@ public class StoryViewActivity extends Activity {
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
 
         addButton = (Button)findViewById(R.id.activity_story_button);
-        quitButton = (Button)findViewById(R.id.activity_story_postsLater_textview);
+        quitButton = (TextView)findViewById(R.id.activity_story_postsLater_textview);
 
         storyTitle = (TextView)findViewById(R.id.activity_story_title_textview);
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
