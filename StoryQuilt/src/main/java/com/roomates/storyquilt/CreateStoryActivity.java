@@ -25,7 +25,7 @@ public class CreateStoryActivity extends Activity{
     Button create;
 
     //Max SeekBar Limits
-    int SUBMISSION_MAX = 50; //Words
+    int SUBMISSION_MAX = 25; //Words
     int SUBMISSION_MIN = 1;
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
