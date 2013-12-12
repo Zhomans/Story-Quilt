@@ -28,10 +28,12 @@ public class StoryViewActivity extends Activity {
     TextView storyTitle, recentPosts, quitButton;
 
     UserHandler userHandler;
+    Story curStory;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
+
 
         userHandler = new UserHandler(this);
 
@@ -40,7 +42,7 @@ public class StoryViewActivity extends Activity {
         FireConnection.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Story curStory = dataSnapshot.getValue(Story.class);
+                curStory= dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)){
                     populateViewsAsReader();
                 } else {
@@ -48,84 +50,11 @@ public class StoryViewActivity extends Activity {
                     setAddButton();
                 }
                 setQuitButton();
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.i("Firebase", "Story connection failed");
-            }
-        });
-    }
-
-    private void setAddButton(){
-        //Add Button
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Editable newPostText = newPost.getText();
-
-                //Check to see if last post is by this user and don't let them if they are
-                if (storyHandler.story.checkMostRecentPoster(userHandler.user)){
-                    //Display Error box stating that you can't post twice in a row.
-                    AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
-                    twiceInARow.setCancelable(false); // This blocks the 'BACK' button
-                    twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
-                    twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    twiceInARow.show();
-                } else {
-                    if (newPostText != null){
-                        if (checkWordCount(newPostText.toString())){
-                            //Other filters
-
-                            //Add new Piece
-                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                            storyHandler.story.addPiece(newPiece);
-
-                            //Make User a Writer if New
-                            if (!userHandler.isWriter(storyHandler.story.id)){
-                                userHandler.becomeWriter(storyHandler.story.id);
-                            }
-
-                            //Refresh Views
-
-                        } else {
-                            AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
-                            overWordLimit.setCancelable(false); // This blocks the 'BACK' button
-                            overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(storyHandler.story.getTextLimit())));
-                            overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            overWordLimit.show();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void setQuitButton(){
-        //Quit Button
-        quitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Makes you a reader in the story, instead of a writer
-
-                //XXX Add in confirmation Dialog box
-//                    if (userHandler.isWriter(storyHandler.story)) {
-//                        userHandler.becomeReaderFromWriter(storyHandler.story);
-//                    } else {
-//                        userHandler.becomeReader(storyHandler.story);
-//                    }
-                //XXX Update views to Reader
             }
         });
     }
@@ -148,25 +77,119 @@ public class StoryViewActivity extends Activity {
       Populating Views for StoryView from XML
      */
     private void populateViewsAsWriter(){
-        storyTitle.setText(storyHandler.story.getTitle());
-        quitButton.setText("... "+String.valueOf(storyHandler.story.length())+" Posts Later ...");
-        recentPosts.setText(storyHandler.story.recentPosts());
+        storyTitle.setText(curStory.title);
+        quitButton.setText("... "+String.valueOf(curStory.pieces.size())+" Posts Later ...");
+        recentPosts.setText(curStory.recentPosts());
     }
     private void populateViewsAsReader(){
         storyTitle.setText(this.getTitle());
         quitButton.setVisibility(View.INVISIBLE);
-        recentPosts.setText(storyHandler.story.fullStory());
+        recentPosts.setText(curStory.fullStory());
         newPost.setVisibility(View.INVISIBLE);
         addButton.setVisibility(View.INVISIBLE);
     }
+    private void setAddButton(){
+        //Add Button
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Editable newPostText = newPost.getText();
 
-    /**
-     Checks Input str Word Count. true If Not Greater Than Text Limit
-     */
-    private boolean checkWordCount(String str){
-        return storyHandler.story.getTextLimit() >= (str.length() - str.replaceAll(" ", "").length()+1);
+                //Check to see if last post is by this user and don't let them if they are
+                if (curStory.checkMostRecentPoster(userHandler.user)){
+                    //Display Error box stating that you can't post twice in a row.
+                    AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
+                    twiceInARow.setCancelable(false); // This blocks the 'BACK' button
+                    twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
+                    twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    twiceInARow.show();
+                } else {
+                    if (newPostText != null){
+                        if (curStory.checkWordCount(newPostText.toString())){
+                            //Other filters
+
+                            //Add new Piece
+                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            curStory.addPiece(newPiece);
+
+                            //Make User a Writer if New
+                            if (!userHandler.isWriter(curStory.id)){
+                                userHandler.becomeWriter(curStory.id);
+                            }
+
+                            //Refresh Views
+
+                            //Check to see if last post is by this user and don't let them if they are
+                            if (curStory.checkMostRecentPoster(userHandler.user)){
+                                //Display Error box stating that you can't post twice in a row.
+                                AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
+                                twiceInARow.setCancelable(false); // This blocks the 'BACK' button
+                                twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
+                                twiceInARow.setButton(0,"Continue", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                twiceInARow.show();
+                            } else {
+                                if (newPostText != null){
+                                    if (curStory.checkWordCount(newPostText.toString())){
+                                        //Other filters
+
+                                        //Add new Piece
+                                        newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                                        curStory.addPiece(newPiece);
+
+                                        //Make User a Writer if New
+                                        if (!userHandler.isWriter(curStory.id)){
+                                            userHandler.becomeWriter(curStory.id);
+                                        }
+
+                                        //Refresh Views
+
+                                    } else {
+                                        AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
+                                        overWordLimit.setCancelable(false); // This blocks the 'BACK' button
+                                        overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())));
+                                        overWordLimit.setButton(0,"Continue", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        overWordLimit.show();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
+    private void setQuitButton(){
+        //Quit Button
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Makes you a reader in the story, instead of a writer
 
+                //XXX Add in confirmation Dialog box
+//                    if (userHandler.isWriter(storyHandler.story)) {
+//                        userHandler.becomeReaderFromWriter(storyHandler.story);
+//                    } else {
+//                        userHandler.becomeReader(storyHandler.story);
+//                    }
+                //XXX Update views to Reader
+            }
+        });
+    }
 
 
     //Options Menu Setup
@@ -179,8 +202,8 @@ public class StoryViewActivity extends Activity {
     @Override
 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(storyHandler.story.id));
-        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(storyHandler.story.id));
+        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
+        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         return true;
     }
     @Override

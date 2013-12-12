@@ -96,4 +96,9 @@ public class Story implements Serializable{
     public boolean checkMostRecentPoster(User user){
         return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getEmail());
     }
+
+    //Check Word Count
+    public boolean checkWordCount(String str){
+        return this.textLimit >= (str.length() - str.replaceAll(" ", "").length()+1);
+    }
 }
