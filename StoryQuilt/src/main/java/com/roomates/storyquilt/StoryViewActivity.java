@@ -114,7 +114,7 @@ public class StoryViewActivity extends Activity {
                             //Other filters
 
                             //Add new Piece
-                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            Piece newPiece = new Piece(userHandler.getEmail(), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
 
                             //Make User a Writser if New
@@ -143,7 +143,7 @@ public class StoryViewActivity extends Activity {
                                         //Other filters
 
                                         //Add new Piece
-                                        newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                                        newPiece = new Piece(userHandler.getEmail(), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                                         curStory.addPiece(newPiece);
 
                                         //Make User a Writer if New

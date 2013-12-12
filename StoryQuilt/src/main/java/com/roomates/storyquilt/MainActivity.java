@@ -63,7 +63,12 @@ public class MainActivity extends GooglePlusActivity {
     public void getUserInformation(){
         userHandler.setPersonFirstName(mPlusClient.getCurrentPerson().getName().getGivenName());
         userHandler.setEmail(mPlusClient.getAccountName());
-        try{userHandler.setPersonAge(mPlusClient.getCurrentPerson().getAgeRange().getMin());}catch (NullPointerException e){e.printStackTrace();userHandler.setPersonAge(18);}
+        try{
+            userHandler.setPersonAge(mPlusClient.getCurrentPerson().getAgeRange().getMin());
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            userHandler.setPersonAge(18);
+        }
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
 
