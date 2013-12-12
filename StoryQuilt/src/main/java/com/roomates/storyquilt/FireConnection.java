@@ -32,9 +32,9 @@ public class FireConnection {
     }
 
     //Push Piece to a Story
-    public static void  pushPieceToStory(Story story, Piece value){
-        Firebase ref = create("stories", story.id, "pieces", String.valueOf(story.pieces.size()));
-        ref.setValue(value);
+    public static void  updateStoryInFirebase(Story story){
+        Firebase ref = create("stories", story.id);
+        ref.setValue(story);
     }
 
 }

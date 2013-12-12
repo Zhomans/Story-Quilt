@@ -106,6 +106,7 @@ public class StoryViewActivity extends Activity {
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
+                            //FireConnection.updateStoryInFirebase(curStory);
 
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
