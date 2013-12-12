@@ -25,7 +25,7 @@ public class CreateStoryActivity extends Activity{
     ToggleButton languageFilter;
     Button create;
 
-    //Max SeekBar Limits
+    //SeekBar Constants
     int SUBMISSION_MAX = 25; //Words
     int SUBMISSION_MIN = 1;
     int SUBMISSION_DEFAULT = 3;//Word slider default
@@ -147,7 +147,7 @@ public class CreateStoryActivity extends Activity{
 
                 //Check if title exists
                 if (title.equals("")) title = starter;
-                if (starter.equals("") || starter.split(" ").length > submissionLength.getProgress()) {
+                if (starter.equals("") || starter.split(" ").length > (submissionLength.getProgress() + 1)) {
                     Toast.makeText(CreateStoryActivity.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
                 }
                 else {

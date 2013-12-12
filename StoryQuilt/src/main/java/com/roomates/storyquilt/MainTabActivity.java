@@ -82,7 +82,7 @@ public class MainTabActivity extends GooglePlusActivity {
 
     /**
      * Methods for Handling List Views
-     */
+//     */
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
         readingRef = FireConnection.create("users", "reading");
