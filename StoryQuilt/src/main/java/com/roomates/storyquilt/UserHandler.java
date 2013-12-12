@@ -2,6 +2,7 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
@@ -50,6 +51,7 @@ public class UserHandler {
         FireConnection.create("users", User.formatEmail(getEmail())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                Log.i("UserHandler", "Here!");
                 UserHandler.this.user = snapshot.getValue(User.class);
                 if (user == null) addUserToFirebase();
                 if (user.writing == null) user.writing = new ArrayList<String>();

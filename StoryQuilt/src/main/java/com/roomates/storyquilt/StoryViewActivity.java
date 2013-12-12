@@ -5,12 +5,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 
 /**
@@ -22,104 +27,109 @@ public class StoryViewActivity extends Activity {
     Button addButton;
     TextView storyTitle, recentPosts, quitButton;
 
-    StoryHandler storyHandler;
     UserHandler userHandler;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
         userHandler = new UserHandler(this);
-        //Set up Activity Views
+
         bindViews();
 
-        //Get Current Story
-        storyHandler = new StoryHandler(getIntent().getStringExtra("story"));
-        //XXX Empty Story
-        //Checks to see whether you are a reader or writer. If reader, show full story and don't show postCount, edittext and button.
-        if (userHandler.isReader(storyHandler.story.id)) {
-            //If Reader
+        FireConnection.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Story curStory = dataSnapshot.getValue(Story.class);
+                if (userHandler.isReader(curStory.id)){
+                    populateViewsAsReader();
+                } else {
+                    populateViewsAsWriter();
+                    setAddButton();
+                }
+                setQuitButton();
 
-            //Populate Activity Views' Text
-            populateViewsAsReader();
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.i("Firebase", "Story connection failed");
+            }
+        });
+    }
 
-        } else {
-            //If Writer or New
+    private void setAddButton(){
+        //Add Button
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Editable newPostText = newPost.getText();
 
-            //Populate Activity Views' Text
-            populateViewsAsWriter();
+                //Check to see if last post is by this user and don't let them if they are
+                if (storyHandler.story.checkMostRecentPoster(userHandler.user)){
+                    //Display Error box stating that you can't post twice in a row.
+                    AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
+                    twiceInARow.setCancelable(false); // This blocks the 'BACK' button
+                    twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
+                    twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    twiceInARow.show();
+                } else {
+                    if (newPostText != null){
+                        if (checkWordCount(newPostText.toString())){
+                            //Other filters
 
+                            //Add new Piece
+                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            storyHandler.story.addPiece(newPiece);
 
-            //Add Button
-            addButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Editable newPostText = newPost.getText();
-
-                    //Check to see if last post is by this user and don't let them if they are
-                    if (storyHandler.story.checkMostRecentPoster(userHandler.user)){
-                        //Display Error box stating that you can't post twice in a row.
-                        AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
-                        twiceInARow.setCancelable(false); // This blocks the 'BACK' button
-                        twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
-                        twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            //Make User a Writer if New
+                            if (!userHandler.isWriter(storyHandler.story.id)){
+                                userHandler.becomeWriter(storyHandler.story.id);
                             }
-                        });
-                        twiceInARow.show();
-                    } else {
-                        if (newPostText != null){
-                            if (checkWordCount(newPostText.toString())){
-                                //Other filters
 
-                                //Add new Piece
-                                Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
-                                storyHandler.story.addPiece(newPiece);
+                            //Refresh Views
 
-                                //Make User a Writer if New
-                                if (!userHandler.isWriter(storyHandler.story.id)){
-                                    userHandler.becomeWriter(storyHandler.story.id);
+                        } else {
+                            AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
+                            overWordLimit.setCancelable(false); // This blocks the 'BACK' button
+                            overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(storyHandler.story.getTextLimit())));
+                            overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
                                 }
-
-                                //Refresh Views
-
-                            } else {
-                                AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
-                                overWordLimit.setCancelable(false); // This blocks the 'BACK' button
-                                overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(storyHandler.story.getTextLimit())));
-                                overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                overWordLimit.show();
-                            }
+                            });
+                            overWordLimit.show();
                         }
                     }
                 }
-            });
+            }
+        });
+    }
 
-            //Quit Button
-            quitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Makes you a reader in the story, instead of a writer
+    private void setQuitButton(){
+        //Quit Button
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Makes you a reader in the story, instead of a writer
 
-                    //XXX Add in confirmation Dialog box
+                //XXX Add in confirmation Dialog box
 //                    if (userHandler.isWriter(storyHandler.story)) {
 //                        userHandler.becomeReaderFromWriter(storyHandler.story);
 //                    } else {
 //                        userHandler.becomeReader(storyHandler.story);
 //                    }
-                    //XXX Update views to Reader
-                }
-            });
-        }
+                //XXX Update views to Reader
+            }
+        });
     }
+
 
     /**
      Binding Views for StoryView from XML
