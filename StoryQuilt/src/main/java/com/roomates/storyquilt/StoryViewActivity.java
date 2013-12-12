@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
@@ -97,31 +98,19 @@ public class StoryViewActivity extends Activity {
 
                 //Check to see if last post is by this user and don't let them if they are
                 if (curStory.checkMostRecentPoster(userHandler.user)){
-                    //Display Error box stating that you can't post twice in a row.
-                    AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
-                    twiceInARow.setCancelable(false); // This blocks the 'BACK' button
-                    twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
-                    twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    twiceInARow.show();
+                    //Display Error toast stating that you can't post twice in a row.
+                    Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_twiceInARow), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (newPostText != null){
+                    if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
-                            //Other filters
-
                             //Add new Piece
                             Piece newPiece = new Piece(userHandler.getEmail(), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
 
-                            //Make User a Writser if New
+                            //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
                             }
-
                             //Refresh Views
 
                             //Check to see if last post is by this user and don't let them if they are
@@ -167,6 +156,8 @@ public class StoryViewActivity extends Activity {
                                     }
                                 }
                             }
+                        } else {
+                            Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -174,19 +165,28 @@ public class StoryViewActivity extends Activity {
         });
     }
     private void setQuitButton(){
-        //Quit Button
+        quitButton.setClickable(true);
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Makes you a reader in the story, instead of a writer
-
-                //XXX Add in confirmation Dialog box
-//                    if (userHandler.isWriter(storyHandler.story)) {
-//                        userHandler.becomeReaderFromWriter(storyHandler.story);
-//                    } else {
-//                        userHandler.becomeReader(storyHandler.story);
-//                    }
-                //XXX Update views to Reader
+                new AlertDialog.Builder(StoryViewActivity.this)
+                        .setTitle("Are you sure you want to see the whole story?")
+                        .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userHandler.becomeReaderFromWriter(curStory.id);
+                                StoryViewActivity.this.populateViewsAsReader();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
     }
