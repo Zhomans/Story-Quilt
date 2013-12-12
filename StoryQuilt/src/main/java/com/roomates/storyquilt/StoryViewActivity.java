@@ -29,6 +29,7 @@ public class StoryViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
+
         userHandler = new UserHandler(this);
         //Set up Activity Views
         bindViews();
@@ -63,7 +64,7 @@ public class StoryViewActivity extends Activity {
                         AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
                         twiceInARow.setCancelable(false); // This blocks the 'BACK' button
                         twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
-                        twiceInARow.setButton("Continue", new DialogInterface.OnClickListener() {
+                        twiceInARow.setButton(0,"Continue", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -90,7 +91,7 @@ public class StoryViewActivity extends Activity {
                                 AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
                                 overWordLimit.setCancelable(false); // This blocks the 'BACK' button
                                 overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(storyHandler.story.getTextLimit())));
-                                overWordLimit.setButton("Continue", new DialogInterface.OnClickListener() {
+                                overWordLimit.setButton(0,"Continue", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();

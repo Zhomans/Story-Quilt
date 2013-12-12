@@ -33,8 +33,8 @@ public class StoryHandler {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 StoryHandler.this.story = snapshot.getValue(Story.class);
-                Log.i("UserHandler", "updating Story");
-                Log.i("UserHandler", "updating Story:" + (StoryHandler.this.story));
+                Log.i("UserHandler", "updating User");
+                Log.i("UserHandler", "updating User:" + (StoryHandler.this.story));
             }
 
             public void onCancelled(FirebaseError error) {
