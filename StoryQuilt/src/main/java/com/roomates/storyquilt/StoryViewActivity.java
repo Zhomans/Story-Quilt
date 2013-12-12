@@ -34,27 +34,24 @@ public class StoryViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-
+        //Create the User Handler
         userHandler = new UserHandler(this);
 
+        //Bind Activity Views
         bindViews();
 
+        //Create the Story Firebase Connection
         FireConnection.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) { //Everytime the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
-                if (userHandler.isReader(curStory.id)){
-                    populateViewsAsReader();
-                } else {
-                    populateViewsAsWriter();
-                    setAddButton();
-                }
-                setQuitButton();
+                if (userHandler.isReader(curStory.id)) populateViewsAsReader();
+                else  populateViewsAsWriter();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.i("Firebase", "Story connection failed");
+                Log.i("Firebase", "Story connection failed:" + firebaseError.getMessage());
             }
         });
     }
@@ -78,13 +75,16 @@ public class StoryViewActivity extends Activity {
      */
     private void populateViewsAsWriter(){
         storyTitle.setText(curStory.title);
-        quitButton.setText("... "+String.valueOf(curStory.pieces.size())+" Posts Later ...");
         recentPosts.setText(curStory.recentPosts());
+        quitButton.setText("... "+String.valueOf(curStory.pieces.size())+" Posts Later ...");
+        setAddButton();
+        setQuitButton();
     }
     private void populateViewsAsReader(){
         storyTitle.setText(this.getTitle());
-        quitButton.setVisibility(View.INVISIBLE);
         recentPosts.setText(curStory.fullStory());
+
+        quitButton.setVisibility(View.INVISIBLE);
         newPost.setVisibility(View.INVISIBLE);
         addButton.setVisibility(View.INVISIBLE);
     }
@@ -117,7 +117,7 @@ public class StoryViewActivity extends Activity {
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
 
-                            //Make User a Writer if New
+                            //Make User a Writser if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
                             }
