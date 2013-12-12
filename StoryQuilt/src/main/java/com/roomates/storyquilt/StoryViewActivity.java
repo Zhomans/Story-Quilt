@@ -104,13 +104,58 @@ public class StoryViewActivity extends Activity {
                     if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
                             //Add new Piece
-                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            Piece newPiece = new Piece(userHandler.getEmail(), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
                             //FireConnection.updateStoryInFirebase(curStory);
 
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
+                            }
+                            //Refresh Views
+
+                            //Check to see if last post is by this user and don't let them if they are
+                            if (curStory.checkMostRecentPoster(userHandler.user)){
+                                //Display Error box stating that you can't post twice in a row.
+                                AlertDialog twiceInARow = new AlertDialog.Builder(StoryViewActivity.this).create();
+                                twiceInARow.setCancelable(false); // This blocks the 'BACK' button
+                                twiceInARow.setMessage(getString(R.string.activity_story_twiceInARow));
+                                twiceInARow.setButton(0,"Continue", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                twiceInARow.show();
+                            } else {
+                                if (newPostText != null){
+                                    if (curStory.checkWordCount(newPostText.toString())){
+                                        //Other filters
+
+                                        //Add new Piece
+                                        newPiece = new Piece(userHandler.getEmail(), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                                        curStory.addPiece(newPiece);
+
+                                        //Make User a Writer if New
+                                        if (!userHandler.isWriter(curStory.id)){
+                                            userHandler.becomeWriter(curStory.id);
+                                        }
+
+                                        //Refresh Views
+
+                                    } else {
+                                        AlertDialog overWordLimit = new AlertDialog.Builder(StoryViewActivity.this).create();
+                                        overWordLimit.setCancelable(false); // This blocks the 'BACK' button
+                                        overWordLimit.setMessage(getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())));
+                                        overWordLimit.setButton(0,"Continue", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        overWordLimit.show();
+                                    }
+                                }
                             }
                         } else {
                             Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
