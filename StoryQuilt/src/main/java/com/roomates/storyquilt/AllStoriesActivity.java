@@ -11,8 +11,8 @@ import com.firebase.client.Firebase;
 
 import java.util.List;
 
-public class JoinStoryActivity extends Activity {
-    //JoinStoryActivity Views
+public class AllStoriesActivity extends Activity {
+    //AllStoriesActivity Views
     ListView popular, nascent;
 
     //ListAdapters
@@ -50,14 +50,14 @@ public class JoinStoryActivity extends Activity {
 
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        popularAdapter = new StoryListAdapter(popularRef, JoinStoryActivity.this, R.layout.listitem_main_story){
+        popularAdapter = new StoryListAdapter(popularRef, AllStoriesActivity.this, R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 //IMPLEMENT SORTING OR FILTERING HERE
                 return stories;
             }
         };
-        nascentAdapter = new StoryListAdapter(nascentRef, JoinStoryActivity.this, R.layout.listitem_main_story){
+        nascentAdapter = new StoryListAdapter(nascentRef, AllStoriesActivity.this, R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 //IMPLEMENT SORTING OR FILTERING HERE
@@ -88,7 +88,7 @@ public class JoinStoryActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.create_story: //Create a new Story
-                Intent createStory = new Intent(JoinStoryActivity.this, CreateStoryActivity.class);
+                Intent createStory = new Intent(AllStoriesActivity.this, CreateStoryActivity.class);
                 startActivity(createStory);
         }
         return super.onOptionsItemSelected(item);

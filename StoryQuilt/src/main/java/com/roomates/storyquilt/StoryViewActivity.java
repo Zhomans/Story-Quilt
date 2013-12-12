@@ -101,10 +101,8 @@ public class StoryViewActivity extends Activity {
                     //Display Error toast stating that you can't post twice in a row.
                     Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_twiceInARow), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (newPostText != null){
+                    if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
-                            //Other filters
-
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
@@ -113,11 +111,7 @@ public class StoryViewActivity extends Activity {
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
                             }
-
-                            //Refresh Views
-
                         } else {
-                            //
                             Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -126,19 +120,28 @@ public class StoryViewActivity extends Activity {
         });
     }
     private void setQuitButton(){
-        //Quit Button
+        quitButton.setClickable(true);
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Makes you a reader in the story, instead of a writer
-
-                //XXX Add in confirmation Dialog box
-//                    if (userHandler.isWriter(storyHandler.story)) {
-//                        userHandler.becomeReaderFromWriter(storyHandler.story);
-//                    } else {
-//                        userHandler.becomeReader(storyHandler.story);
-//                    }
-                //XXX Update views to Reader
+                new AlertDialog.Builder(StoryViewActivity.this)
+                        .setTitle("Are you sure you want to see the whole story?")
+                        .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userHandler.becomeReaderFromWriter(curStory.id);
+                                StoryViewActivity.this.populateViewsAsReader();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
     }
