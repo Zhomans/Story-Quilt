@@ -7,11 +7,6 @@
         android:orderInCategory="100"
         android:showAsAction="always" />
 
-    <item android:id="@+id/join_story"
-        android:title="@string/join_story"
-        android:orderInCategory="100"
-        android:showAsAction="always" />
-
     <item android:id="@+id/gPlusSignOut"
         android:title="@string/gPlusSignOut"
         android:orderInCategory="100" />

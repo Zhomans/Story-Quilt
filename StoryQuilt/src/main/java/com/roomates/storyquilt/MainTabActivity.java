@@ -129,11 +129,6 @@ public class MainTabActivity extends GooglePlusActivity {
                 startActivity(createStory);
                 break;
 
-            case R.id.join_story: //Join an Existing Story
-                Intent joinStory = new Intent(MainTabActivity.this, AllStoriesActivity.class);
-                startActivity(joinStory);
-                break;
-
             case R.id.gPlusSignIn: //Sign in Google+
                 signIn();
                 break;
