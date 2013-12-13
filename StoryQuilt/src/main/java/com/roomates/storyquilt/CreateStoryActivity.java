@@ -13,6 +13,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by chris on 12/4/13.
@@ -153,10 +154,12 @@ public class CreateStoryActivity extends Activity{
                 else {
                     ArrayList<Piece> curPieces = new ArrayList<Piece>();
                     curPieces.add(new Piece(
-                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("username","Anonymous"),
+                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("email","Anonymous"),
                             String.valueOf(System.currentTimeMillis()),
                             String.valueOf(starterText.getText())
                     ));
+                    HashSet<String> writers = new HashSet<String>();
+                    writers.add(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email","Anonymous"));
 
                     //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
                     Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
@@ -164,7 +167,8 @@ public class CreateStoryActivity extends Activity{
                                     (languageFilter.isChecked())? 13:0,
                                     (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
                                     submissionLength.getProgress(),
-                                    curPieces
+                                    curPieces,
+                                    writers
                                     );
 
                     //Push to Firebase
@@ -178,7 +182,6 @@ public class CreateStoryActivity extends Activity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         //hide/show menu items

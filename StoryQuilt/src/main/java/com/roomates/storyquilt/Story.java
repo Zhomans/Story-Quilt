@@ -3,6 +3,7 @@ package com.roomates.storyquilt;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by chris on 12/4/13.
@@ -11,16 +12,18 @@ public class Story implements Serializable{
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
+    HashSet<String> writers;
     ArrayList<Piece> pieces;
 
     public Story(){} //Firebase required constructor
-    public Story(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<Piece> pieces){
+    public Story(String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, ArrayList<Piece> pieces, HashSet<String> writers){
         this.lastUpdated = lastUpdated;
         this.title = title;
         this.ageLimit = ageLimit;
         this.historyLimit = historyLimit;
         this.textLimit = textLimit;
         this.pieces = pieces;
+        this.writers = writers;
     }
 
     //Firebase Get Methods

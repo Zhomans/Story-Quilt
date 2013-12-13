@@ -44,7 +44,7 @@ public class StoryViewActivity extends Activity {
         //Create the Story Firebase Connection
         FireConnection.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) { //Everytime the story is updated
+            public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)) populateViewsAsReader();
                 else  populateViewsAsWriter();
@@ -111,6 +111,7 @@ public class StoryViewActivity extends Activity {
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
+                                curStory.writers.add(userHandler.user.email);
                             }
                         } else {
                             Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
@@ -133,6 +134,7 @@ public class StoryViewActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 userHandler.becomeReaderFromWriter(curStory.id);
+                                curStory.writers.remove(userHandler.user.email);
                                 StoryViewActivity.this.populateViewsAsReader();
                                 dialog.dismiss();
                             }
@@ -166,9 +168,11 @@ public class StoryViewActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.leave_story: //Leave a new Story
+                curStory.writers.remove(userHandler.user.email);
                 break;
 
             case R.id.join_story: //Join an Existing Story
+                curStory.writers.add(userHandler.user.email);
                 break;
 
         }
