@@ -75,6 +75,7 @@ public class MainTabActivity extends GooglePlusActivity {
      */
     public void setUpFragments(){
         //Choose Content View to Show
+        actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         //My Stories

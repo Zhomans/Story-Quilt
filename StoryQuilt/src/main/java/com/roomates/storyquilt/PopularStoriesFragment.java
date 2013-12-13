@@ -3,7 +3,6 @@ package com.roomates.storyquilt;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ public class PopularStoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_popular, null);
+        View v = inflater.inflate(R.layout.fragment_stories, null);
         setupListView(v);
         return v;
 
@@ -50,7 +49,7 @@ public class PopularStoriesFragment extends Fragment {
      */
     //Setting up the view and bindings
     public void setupListView(View v){
-        popular = (ListView) v.findViewById(R.id.activity_main_writing_listview);
+        popular = (ListView) v.findViewById(R.id.fragment_stories_listview);
         popular.setOnItemClickListener(goToStoryActivity());
 
         //Firebase

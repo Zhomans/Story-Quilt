@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment {
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
         //Set up ReadOnly Button
-        Button readOnly = (Button) v.findViewById(R.id.activity_signin_readonly);
+        Button readOnly = (Button) v.findViewById(R.id.fragment_signin_readonly);
         readOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

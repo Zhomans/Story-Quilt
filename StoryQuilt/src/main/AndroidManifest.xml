@@ -25,7 +25,7 @@
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_version" />
 
         <activity
-            android:name="com.roomates.storyquilt.MainActivity"
+            android:name="com.roomates.storyquilt.MainTabActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
