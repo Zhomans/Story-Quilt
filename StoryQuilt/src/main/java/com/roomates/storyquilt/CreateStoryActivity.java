@@ -38,7 +38,6 @@ public class CreateStoryActivity extends Activity{
     //User Information
     UserHandler userHandler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
