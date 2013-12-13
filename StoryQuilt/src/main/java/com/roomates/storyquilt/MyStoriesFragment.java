@@ -34,12 +34,12 @@ public class MyStoriesFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userHandler = new UserHandler(getActivity());
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        userHandler = new UserHandler(getActivity());
     }
 
     @Override
