@@ -104,7 +104,7 @@ public class MainActivity extends GooglePlusActivity {
             }
         });
     }
-    //MainPage views
+    //MyStory views
     private void setUpMainPageViews(){
         setListViews();
         setFireBaseRefs();

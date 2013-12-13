@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 /**
  * Created by evan on 9/25/13.
  */
-public class SearchFragment extends Fragment {
+public class NewStoriesFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

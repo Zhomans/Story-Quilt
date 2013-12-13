@@ -20,7 +20,7 @@ public class PopularStoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_my_stories, null);
+        View v = inflater.inflate(R.layout.fragment_mystories, null);
 
         return v;
 

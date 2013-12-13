@@ -1,6 +1,8 @@
 package com.roomates.storyquilt;
 
 import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,63 +19,51 @@ public class MainTabActivity extends GooglePlusActivity {
     //Current User
     UserHandler userHandler;
 
-    //MainActivity Views
-    ListView writing, reading;
-
-    //ListAdapters
-    StoryListAdapter writingAdapter, readingAdapter;
-
-    //Firebase
-    Firebase writingRef, readingRef;
-
     public LoginFragment loginFragment = new LoginFragment();
     public MyStoriesFragment myStoriesFragment = new MyStoriesFragment();
     public PopularStoriesFragment popularStoriesFragment = new PopularStoriesFragment();
+    public NewStoriesFragment newStoriesFragment = new NewStoriesFragment();
     public SearchFragment searchFragment = new SearchFragment();
 
     public ActionBar actionBar;
 
+    /**
+     * Required by GooglePlusActivity
+     */
     public void onCreateExtended(Bundle savedInstanceState) {
         //Setting the Button Id for both GooglePlusActivity and MainActivity
         setContentView(R.layout.activity_main_tab);
-        actionBar = getActionBar();
-
-        signInButtonId = R.id.sign_in_button;
-
         //Setting User Handler
         userHandler = new UserHandler(this);
         //Get Person Email (previously logged in)
         previousEmail = userHandler.getEmail();
-
-        //Choose Content View to Show
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        ActionBar.Tab myStoriesTab = actionBar.newTab().setText("My Stories");
-        myStoriesTab.setTabListener(new NavTabListener(myStoriesFragment));
-
-        ActionBar.Tab popularStoriesTab = actionBar.newTab().setText("Popular");
-        popularStoriesTab.setTabListener(new NavTabListener(popularStoriesFragment));
-
-        actionBar.addTab(myStoriesTab);
-        actionBar.addTab(popularStoriesTab);
+        //Set Up Fragments
+        setUpFragments();
+        if (!mPlusClient.isConnected()){
+            goToFragment(loginFragment, "LOGIN");
+        } else {
+            goToFragment(myStoriesFragment, "STORIES");
+        }
     }
-
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
         userHandler.updateUserFromFirebase();
         userHandler.addUserToFirebase();
 
+        Boolean connected = mPlusClient.isConnected();
+        //Update Handler
+        userHandler.setConnected(connected);
+        Fragment fragment = getFragmentManager().findFragmentByTag("LOGIN");
+        if (connected && (fragment).isVisible()){
+            goToFragment(myStoriesFragment,"STORIES");
+        }
         //Set Action Settings Sign in or SignOut
-
         if (menu != null) {
-            Boolean visibility = mPlusClient.isConnected();
-            userHandler.setConnected(visibility);
-            (menu.findItem(R.id.gPlusSignOut)).setVisible(visibility);
-            (menu.findItem(R.id.gPlusSignIn)).setVisible(!visibility);
+            (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
+            (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
         }
     }
     public void onActivityResultExtended(int requestCode, int resultCode, Intent data){/*DO NOTHING*/}
-
     public void getUserInformation(){
         userHandler.setPersonFirstName(mPlusClient.getCurrentPerson().getName().getGivenName());
         userHandler.setEmail(mPlusClient.getAccountName());
@@ -81,14 +71,41 @@ public class MainTabActivity extends GooglePlusActivity {
     }
 
     /**
-     * Methods for Handling List Views
-//     */
-    //Get Firebase Refs for Reading and Writing
-    private void setFireBaseRefs(){
-        readingRef = FireConnection.create("users", "reading");
-        writingRef = FireConnection.create("users", "writing");
+     * Fragments
+     */
+    public void setUpFragments(){
+        //Choose Content View to Show
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        //My Stories
+        ActionBar.Tab myStoriesTab = actionBar.newTab().setText("My Stories");
+        myStoriesTab.setTabListener(new NavTabListener(myStoriesFragment));
+
+        //Popular Stories
+        ActionBar.Tab popularStoriesTab = actionBar.newTab().setText("Popular");
+        popularStoriesTab.setTabListener(new NavTabListener(popularStoriesFragment));
+
+        //New Stories
+        ActionBar.Tab newStoriesTab = actionBar.newTab().setText("New");
+        newStoriesTab.setTabListener(new NavTabListener(newStoriesFragment));
+
+        actionBar.addTab(myStoriesTab);
+        actionBar.addTab(popularStoriesTab);
+        actionBar.addTab(newStoriesTab);
     }
-    //Create and Set ArrayAdapters for the ListViews
+    public void goToFragment(Fragment fragment, String id){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.fragmentContainer, fragment, id);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
+
 
     /**
      * Activity Methods
