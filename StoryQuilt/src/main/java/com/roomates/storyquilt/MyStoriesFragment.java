@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * Created by evan on 9/25/13.
+ * Created by roomates on 9/25/13.
  */
 public class MyStoriesFragment extends Fragment {
     //MainActivity Views
@@ -34,8 +34,12 @@ public class MyStoriesFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
         userHandler = new UserHandler(getActivity());
-        userHandler.updateUserFromFirebase();
     }
 
     @Override

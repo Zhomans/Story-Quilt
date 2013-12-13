@@ -149,6 +149,10 @@ public class StoryViewActivity extends Activity {
         });
     }
 
+    @Override
+    public void onStop(){
+        userHandler.stopConnection();
+    }
 
     //Options Menu Setup
     @Override

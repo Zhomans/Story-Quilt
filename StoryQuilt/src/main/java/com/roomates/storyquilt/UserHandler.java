@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
@@ -24,6 +25,10 @@ public class UserHandler {
     //Passing the activity for context
     Activity activity;
 
+    //Firebase Ref
+    Firebase firebase;
+    ValueEventListener listener;
+
     public UserHandler(Activity activity){
         this.activity = activity;
         updateUserFromFirebase();
@@ -42,26 +47,31 @@ public class UserHandler {
                 false,
                 new ArrayList<String>(),
                 new ArrayList<String>());
-        updateUserInFirebase();
-    }
-    public void updateUserInFirebase(){
         FireConnection.pushUserToList(this.user);
     }
+
     public void updateUserFromFirebase(){
-        FireConnection.create("users", User.formatEmail(getEmail())).addValueEventListener(new ValueEventListener() {
+        firebase = FireConnection.create("users", User.formatEmail(getEmail()));
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 UserHandler.this.user = snapshot.getValue(User.class);
                 if (user == null) addUserToFirebase();
-                if (user.writing == null) user.writing = new ArrayList<String>();
+                if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
+                else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
                 if (user.reading == null) user.reading = new ArrayList<String>();
             }
 
             public void onCancelled(FirebaseError error) {
             }
-        });
+        };
+
+        firebase.addValueEventListener(listener);
     }
 
+    public void stopConnection(){
+        firebase.removeEventListener(listener);
+    }
 
     /**
      * Manage User Information
@@ -97,16 +107,16 @@ public class UserHandler {
      */
     public void becomeWriter(String id){
         this.user.writing.add(id);
-        updateUserInFirebase();
+        FireConnection.pushUserToList(this.user);
     }
     public void becomeReader(String id){
         this.user.reading.add(id);
-        updateUserInFirebase();
+        //updateUserInFirebase();
     }
     public void becomeReaderFromWriter(String id){
         this.user.writing.remove(id);
         this.user.reading.add(id);
-        updateUserInFirebase();
+        //updateUserInFirebase();
     }
     public boolean isReader(String id) {
         return user.getReading().contains(id);

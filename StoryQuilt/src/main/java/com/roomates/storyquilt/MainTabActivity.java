@@ -17,8 +17,6 @@ public class MainTabActivity extends GooglePlusActivity {
     Menu menu;
 
     //Current User
-    UserHandler userHandler;
-
     public LoginFragment loginFragment = new LoginFragment();
     public MyStoriesFragment myStoriesFragment = new MyStoriesFragment();
     public PopularStoriesFragment popularStoriesFragment = new PopularStoriesFragment();
@@ -26,6 +24,8 @@ public class MainTabActivity extends GooglePlusActivity {
     public SearchFragment searchFragment = new SearchFragment();
 
     public ActionBar actionBar;
+
+    UserHandler userHandler;
 
     /**
      * Required by GooglePlusActivity
@@ -35,8 +35,10 @@ public class MainTabActivity extends GooglePlusActivity {
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler
         userHandler = new UserHandler(this);
+
         //Get Person Email (previously logged in)
         previousEmail = userHandler.getEmail();
+
         //Set Up Fragments
         setUpFragments();
         if (!mPlusClient.isConnected()){
@@ -48,7 +50,6 @@ public class MainTabActivity extends GooglePlusActivity {
     public void onConnectionStatusChanged() {
         //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
         userHandler.updateUserFromFirebase();
-        userHandler.addUserToFirebase();
 
         Boolean connected = mPlusClient.isConnected();
         //Update Handler
@@ -105,8 +106,6 @@ public class MainTabActivity extends GooglePlusActivity {
         // Commit the transaction
         transaction.commit();
     }
-
-
 
     /**
      * Activity Methods
