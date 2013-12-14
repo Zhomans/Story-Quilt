@@ -113,14 +113,14 @@ public class ActivityStoryView extends Activity {
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
-                            //FireHandler.updateStoryInFirebase(curStory);
+                            FireHandler.updateStoryInFirebase(curStory);
 
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
                                 curStory.writers.add(userHandler.user.email);
                             }
-                            FireHandler.pushStoryToList(curStory);
+
                         } else {
                             Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
                         }

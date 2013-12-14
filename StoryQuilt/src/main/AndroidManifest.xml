@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".ActivityStoryView"
-            android:label="Join a Story!" >
+            android:label="StoryQuilt" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

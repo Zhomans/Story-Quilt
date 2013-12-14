@@ -10,7 +10,8 @@
         android:id = "@+id/fragment_main_centerOnMe"
         android:layout_width = "0dp"
         android:layout_height = "0dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:padding = "10dp"/>
 
     <TextView
         android:id = "@+id/fragment_main_writing_title"
@@ -35,6 +36,7 @@
         android:layout_height = "wrap_content"
         android:textSize = "@dimen/activity_title_font"
         android:text = "@string/activity_main_reading_title"
+        android:padding = "10dp"
         android:layout_below="@+id/fragment_main_centerOnMe"
         android:layout_alignParentLeft="true" />
 
@@ -44,7 +46,7 @@
         android:layout_height = "wrap_content"
         android:layout_below = "@id/fragment_main_reading_title"
         android:layout_alignParentBottom="true"
-        android:dividerHeight = "@dimen/activity_divider_height"/>
+        />
 
 </RelativeLayout>
 
