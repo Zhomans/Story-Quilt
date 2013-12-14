@@ -113,10 +113,10 @@ public class UserHandler {
         FireHandler.pushUserToList(this.user);
     }
     public boolean isReader(String id) {
-        return user.reading != null && user.reading.contains(id);
+        return user != null && user.reading != null && user.reading.contains(id);
     }
     public boolean isWriter(String id) {
-        return user.writing != null && user.getWriting().contains(id);
+        return user != null && user.writing != null && user.getWriting().contains(id);
     }
 
 }

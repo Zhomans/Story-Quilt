@@ -31,12 +31,14 @@ public class ActivityMainTab extends ActivityGooglePlus {
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler
         userHandler = new UserHandler(this);
-
         //Get Person Email (previously logged in)
         previousEmail = userHandler.getEmail();
 
+
+
         //Set Up Fragments
         setUpFragments();
+
         if (!mPlusClient.isConnected()){
             goToFragment(loginFragment, "LOGIN");
         } else {
