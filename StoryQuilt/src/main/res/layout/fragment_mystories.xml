@@ -36,7 +36,7 @@
         android:layout_height = "wrap_content"
         android:textSize = "@dimen/activity_title_font"
         android:text = "@string/activity_main_reading_title"
-        android:padding = "10dp"
+        android:paddingTop = "10dp"
         android:layout_below="@+id/fragment_main_centerOnMe"
         android:layout_alignParentLeft="true" />
 

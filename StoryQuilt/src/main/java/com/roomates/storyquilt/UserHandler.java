@@ -61,6 +61,7 @@ public class UserHandler {
             }
         });
     }
+
 /*
     public void stopConnection(){
         firebase.removeEventListener(listener);

@@ -34,8 +34,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
         //Get Person Email (previously logged in)
         previousEmail = userHandler.getEmail();
 
-
-
         //Set Up Fragments
         setUpFragments();
 
