@@ -112,7 +112,6 @@ public class UserHandler {
         return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
     }
 
-
     /**
      * Change User Status
      */
@@ -135,5 +134,4 @@ public class UserHandler {
     public boolean isWriter(String id) {
         return user != null && user.writing != null && user.getWriting().contains(id);
     }
-
 }
