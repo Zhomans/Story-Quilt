@@ -88,9 +88,13 @@ public class Story implements Serializable{
         int textCounter = this.textLimit;
         while (fullText != "" && textCounter != 0) {
             int indexOfFinalSpace = fullText.lastIndexOf(" ");
-            recentWords.concat(fullText.substring(indexOfFinalSpace+1));
-            fullText.substring(0,indexOfFinalSpace); //XXX Possible One-Off Error. Check this if something is broken.
-            textCounter--;
+            recentWords = recentWords.concat(fullText.substring(indexOfFinalSpace+1));
+            if (indexOfFinalSpace != -1) {
+                fullText = fullText.substring(0,indexOfFinalSpace); //XXX Possible One-Off Error. Check this if something is broken.
+                textCounter--;
+            } else {
+                break;
+            }
         }
         return recentWords;
     }
