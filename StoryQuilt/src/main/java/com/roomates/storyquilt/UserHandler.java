@@ -28,6 +28,18 @@ public class UserHandler {
 
     public UserHandler(Activity activity){
         this.activity = activity;
+
+        this.user = new User(
+                getEmail(),
+                getPersonFirstName(),
+                getPersonAge(),
+                0,
+                0,
+                false,
+                new ArrayList<String>(),
+                new ArrayList<String>());
+        FireHandler.pushUserToList(this.user);
+
         updateUserFromFirebase();
     }
 
@@ -61,6 +73,7 @@ public class UserHandler {
             }
         });
     }
+
 /*
     public void stopConnection(){
         firebase.removeEventListener(listener);
