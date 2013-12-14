@@ -25,9 +25,6 @@ public class UserHandler {
     //Passing the activity for context
     Activity activity;
 
-    //Firebase Ref
-    Firebase firebase;
-    ValueEventListener listener;
 
     public UserHandler(Activity activity){
         this.activity = activity;
@@ -50,8 +47,7 @@ public class UserHandler {
         FireHandler.pushUserToList(this.user);
     }
     public void updateUserFromFirebase(){
-        firebase = FireHandler.create("users", User.formatEmail(getEmail()));
-        listener = new ValueEventListener() {
+        FireHandler.create("users", User.formatEmail(getEmail())).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 UserHandler.this.user = snapshot.getValue(User.class);
@@ -63,13 +59,13 @@ public class UserHandler {
 
             public void onCancelled(FirebaseError error) {
             }
-        };
-
-        firebase.addValueEventListener(listener);
+        });
     }
+/*
     public void stopConnection(){
         firebase.removeEventListener(listener);
     }
+*/
 
     /**
      * Manage User Information
@@ -109,12 +105,12 @@ public class UserHandler {
     }
     public void becomeReader(String id){
         this.user.reading.add(id);
-        //updateUserInFirebase();
+        FireHandler.pushUserToList(this.user);
     }
     public void becomeReaderFromWriter(String id){
         this.user.writing.remove(id);
         this.user.reading.add(id);
-        //updateUserInFirebase();
+        FireHandler.pushUserToList(this.user);
     }
     public boolean isReader(String id) {
         return user.getReading().contains(id);

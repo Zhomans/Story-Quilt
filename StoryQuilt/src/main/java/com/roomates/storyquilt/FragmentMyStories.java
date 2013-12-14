@@ -35,7 +35,7 @@ public class FragmentMyStories extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userHandler = new UserHandler(getActivity());
-        Log.i("FragmentMyStories", "onCreate is run");
+        Log.i("Logger MyStories", "onCreate is run");
     }
 
     @Override
@@ -48,8 +48,16 @@ public class FragmentMyStories extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mystories, null);
         setUpMainPageViews(v);
-        Log.i("FragmentMyStories", "onCreateView is run");
+        Log.i("Logger MyStories", "onCreateView is run");
         return v;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.i("Logger MyStories", "onStart is run");
+        setListAdapters();
+        Log.i("Logger MyStories", "onStart is run");
     }
 
     //MyStory views
@@ -81,10 +89,9 @@ public class FragmentMyStories extends Fragment {
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
-                userHandler.updateUserFromFirebase();
                 for (Story tempStory: stories){
-                    Log.i("MyStories",tempStory.id);
-                    Log.i("MyStories",userHandler.user.writing.size() + "");
+                    Log.i("Logger MyStories",tempStory.id);
+                    Log.i("Logger MyStories",userHandler.user.writing.size() + "");
                     if (userHandler.user.writing.contains(tempStory.id)){
                         writingStories.add(tempStory);
                     }
