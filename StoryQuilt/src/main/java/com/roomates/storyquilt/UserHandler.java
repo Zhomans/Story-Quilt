@@ -47,11 +47,11 @@ public class UserHandler {
                 false,
                 new ArrayList<String>(),
                 new ArrayList<String>());
-        FireConnection.pushUserToList(this.user);
+        FireHandler.pushUserToList(this.user);
     }
 
     public void updateUserFromFirebase(){
-        firebase = FireConnection.create("users", User.formatEmail(getEmail()));
+        firebase = FireHandler.create("users", User.formatEmail(getEmail()));
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -107,7 +107,7 @@ public class UserHandler {
      */
     public void becomeWriter(String id){
         this.user.writing.add(id);
-        FireConnection.pushUserToList(this.user);
+        FireHandler.pushUserToList(this.user);
     }
     public void becomeReader(String id){
         this.user.reading.add(id);

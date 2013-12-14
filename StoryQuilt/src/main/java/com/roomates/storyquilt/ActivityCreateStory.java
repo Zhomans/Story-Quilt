@@ -18,7 +18,7 @@ import java.util.HashSet;
 /**
  * Created by chris on 12/4/13.
  */
-public class CreateStoryActivity extends Activity{
+public class ActivityCreateStory extends Activity{
     //Views
     TextView historyDisplay, submissionDisplay;
     EditText storyTitle, starterText;
@@ -148,7 +148,7 @@ public class CreateStoryActivity extends Activity{
                 //Check if title exists
                 if (title.equals("")) title = starter;
                 if (starter.equals("") || starter.split(" ").length > (submissionLength.getProgress() + 1)) {
-                    Toast.makeText(CreateStoryActivity.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityCreateStory.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     ArrayList<Piece> curPieces = new ArrayList<Piece>();
@@ -171,7 +171,7 @@ public class CreateStoryActivity extends Activity{
                                     );
 
                     //Push to Firebase
-                    userHandler.becomeWriter(FireConnection.pushStoryToList(curStory));
+                    userHandler.becomeWriter(FireHandler.pushStoryToList(curStory));
                     //End Activity
                     finish();
                 }

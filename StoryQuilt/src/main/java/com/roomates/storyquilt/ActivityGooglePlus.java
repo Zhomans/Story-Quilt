@@ -22,7 +22,7 @@ import com.google.android.gms.plus.PlusClient;
  * Activities extend this abstract class and implement methods declared at the bottom of
  * file.
  */
-public abstract class GooglePlusActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
+public abstract class ActivityGooglePlus extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, PlusClient.OnAccessRevokedListener,
         GooglePlayServicesClient.OnConnectionFailedListener, View.OnClickListener {
     //SignIn Button Id from Activity
     int signInButtonId;
@@ -98,7 +98,7 @@ public abstract class GooglePlusActivity extends Activity implements GooglePlayS
     }
     //Google+ Connection Disconnected
     public void onDisconnected() {
-        Log.d("GooglePlusActivity", "disconnected");
+        Log.d("ActivityGooglePlus", "disconnected");
         onConnectionStatusChanged();
     }
     //Google+ Connection Failed

@@ -24,7 +24,7 @@ public class MyStoriesFragment extends Fragment {
     ListView writing, reading;
 
     //ListAdapters
-    StoryListAdapter writingAdapter, readingAdapter;
+    AdapterStoryList writingAdapter, readingAdapter;
 
     //Firebase
     Firebase storyRef;
@@ -71,11 +71,11 @@ public class MyStoriesFragment extends Fragment {
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
-        storyRef = FireConnection.create("stories");
+        storyRef = FireHandler.create("stories");
     }
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new StoryListAdapter(storyRef, getActivity(), R.layout.listitem_main_story){
+        writingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
@@ -89,7 +89,7 @@ public class MyStoriesFragment extends Fragment {
                 return writingStories;
             }
         };
-        readingAdapter = new StoryListAdapter(storyRef, getActivity(), R.layout.listitem_main_story){
+        readingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> readingStories = new ArrayList<Story>();
@@ -104,12 +104,12 @@ public class MyStoriesFragment extends Fragment {
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);
     }
-    //On Item Click for StoryListAdapter
+    //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent goToStory = new Intent(getActivity(), StoryViewActivity.class);
+                Intent goToStory = new Intent(getActivity(), ActivityStoryView.class);
                 goToStory.putExtra("story",((Story)writing.getItemAtPosition(position)).id);
                 startActivity(goToStory);
             }

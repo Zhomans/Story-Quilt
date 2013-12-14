@@ -12,7 +12,7 @@ import com.google.android.gms.common.SignInButton;
 /**
  * Created by evan on 9/25/13.
  */
-public class LoginFragment extends Fragment {
+public class FragmentLogin extends Fragment {
     //UserHandler
     UserHandler userHandler;
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment {
     public void setUpLoginViews(View v){
         //Set up SignInButton
         SignInButton signInButton = (SignInButton) v.findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener((MainTabActivity)getActivity());
+        signInButton.setOnClickListener((ActivityMainTab)getActivity());
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
         //Set up ReadOnly Button

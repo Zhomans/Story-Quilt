@@ -7,31 +7,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
-
-import com.firebase.client.Firebase;
-
-public class MainTabActivity extends GooglePlusActivity {
+public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
 
     //Current User
-    public LoginFragment loginFragment = new LoginFragment();
+    public FragmentLogin loginFragment = new FragmentLogin();
     public MyStoriesFragment myStoriesFragment = new MyStoriesFragment();
-    public PopularStoriesFragment popularStoriesFragment = new PopularStoriesFragment();
-    public NewStoriesFragment newStoriesFragment = new NewStoriesFragment();
-    public SearchFragment searchFragment = new SearchFragment();
+    public FragmentPopularStories popularStoriesFragment = new FragmentPopularStories();
+    public FragmentNewStories newStoriesFragment = new FragmentNewStories();
+    public FragmentSearch searchFragment = new FragmentSearch();
 
     public ActionBar actionBar;
 
     UserHandler userHandler;
 
     /**
-     * Required by GooglePlusActivity
+     * Required by ActivityGooglePlus
      */
     public void onCreateExtended(Bundle savedInstanceState) {
-        //Setting the Button Id for both GooglePlusActivity and MainActivity
+        //Setting the Button Id for both ActivityGooglePlus and MainActivity
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler
         userHandler = new UserHandler(this);
@@ -48,7 +44,7 @@ public class MainTabActivity extends GooglePlusActivity {
         }
     }
     public void onConnectionStatusChanged() {
-        //These are saved in GooglePlusActivity. Setting them to our SharedPreferences
+        //These are saved in ActivityGooglePlus. Setting them to our SharedPreferences
         userHandler.updateUserFromFirebase();
 
         Boolean connected = mPlusClient.isConnected();
@@ -81,15 +77,15 @@ public class MainTabActivity extends GooglePlusActivity {
 
         //My Stories
         ActionBar.Tab myStoriesTab = actionBar.newTab().setText("My Stories");
-        myStoriesTab.setTabListener(new NavTabListener(myStoriesFragment));
+        myStoriesTab.setTabListener(new ListenerNavTab(myStoriesFragment));
 
         //Popular Stories
         ActionBar.Tab popularStoriesTab = actionBar.newTab().setText("Popular");
-        popularStoriesTab.setTabListener(new NavTabListener(popularStoriesFragment));
+        popularStoriesTab.setTabListener(new ListenerNavTab(popularStoriesFragment));
 
         //New Stories
         ActionBar.Tab newStoriesTab = actionBar.newTab().setText("New");
-        newStoriesTab.setTabListener(new NavTabListener(newStoriesFragment));
+        newStoriesTab.setTabListener(new ListenerNavTab(newStoriesFragment));
 
         actionBar.addTab(myStoriesTab);
         actionBar.addTab(popularStoriesTab);
@@ -125,7 +121,7 @@ public class MainTabActivity extends GooglePlusActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.create_story: //Create a new Story
-                Intent createStory = new Intent(MainTabActivity.this, CreateStoryActivity.class);
+                Intent createStory = new Intent(ActivityMainTab.this, ActivityCreateStory.class);
                 startActivity(createStory);
                 break;
 

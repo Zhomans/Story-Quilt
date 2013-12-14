@@ -22,7 +22,7 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by zach on 12/7/13.
  */
-public class StoryViewActivity extends Activity {
+public class ActivityStoryView extends Activity {
     //Views
     EditText newPost;
     Button addButton;
@@ -42,7 +42,7 @@ public class StoryViewActivity extends Activity {
         bindViews();
 
         //Create the Story Firebase Connection
-        FireConnection.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
+        FireHandler.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
@@ -99,14 +99,14 @@ public class StoryViewActivity extends Activity {
                 //Check to see if last post is by this user and don't let them if they are
                 if (curStory.checkMostRecentPoster(userHandler.user)){
                     //Display Error toast stating that you can't post twice in a row.
-                    Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_twiceInARow), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_twiceInARow), Toast.LENGTH_SHORT).show();
                 } else {
                     if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
-                            //FireConnection.updateStoryInFirebase(curStory);
+                            //FireHandler.updateStoryInFirebase(curStory);
 
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
@@ -114,7 +114,7 @@ public class StoryViewActivity extends Activity {
                                 curStory.writers.add(userHandler.user.email);
                             }
                         } else {
-                            Toast.makeText(StoryViewActivity.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -127,7 +127,7 @@ public class StoryViewActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //Makes you a reader in the story, instead of a writer
-                new AlertDialog.Builder(StoryViewActivity.this)
+                new AlertDialog.Builder(ActivityStoryView.this)
                         .setTitle("Are you sure you want to see the whole story?")
                         .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
                         .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -135,7 +135,7 @@ public class StoryViewActivity extends Activity {
                             public void onClick(DialogInterface dialog, int which) {
                                 userHandler.becomeReaderFromWriter(curStory.id);
                                 curStory.writers.remove(userHandler.user.email);
-                                StoryViewActivity.this.populateViewsAsReader();
+                                ActivityStoryView.this.populateViewsAsReader();
                                 dialog.dismiss();
                             }
                         })

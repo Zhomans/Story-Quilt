@@ -6,7 +6,7 @@ import com.firebase.client.Firebase;
 /**
  * Created by chris on 12/8/13.
  */
-public class FireConnection {
+public class FireHandler {
     final static String url = "https://storyquilt.firebaseio.com";
     static User user;
 

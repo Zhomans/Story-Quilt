@@ -30,7 +30,7 @@ import java.util.Map;
  * you like and this class will handle updating the list as the data changes.
  * @param <T> The class type to use as a model for the data contained in the children of the given Firebase location
  */
-public abstract class FirebaseListAdapter<T> extends BaseAdapter {
+public abstract class AdapterFirebaseList<T> extends BaseAdapter {
 
     private Query ref;
     private Class<T> modelClass;
@@ -49,7 +49,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
      *               instance of the corresponding view with the data from an instance of modelClass.
      * @param activity The activity containing the ListView
      */
-    public FirebaseListAdapter(Query ref, Class<T> modelClass, int layout, Activity activity) {
+    public AdapterFirebaseList(Query ref, Class<T> modelClass, int layout, Activity activity) {
         this.ref = ref;
         this.modelClass = modelClass;
         this.layout = layout;
@@ -61,7 +61,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
 
-                T model = dataSnapshot.getValue(FirebaseListAdapter.this.modelClass);
+                T model = dataSnapshot.getValue(AdapterFirebaseList.this.modelClass);
                 modelNames.put(dataSnapshot.getName(), model);
 
                 // Insert into the correct location, based on previousChildName
@@ -87,7 +87,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                 // One of the models changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getName();
                 T oldModel = modelNames.get(modelName);
-                T newModel = dataSnapshot.getValue(FirebaseListAdapter.this.modelClass);
+                T newModel = dataSnapshot.getValue(AdapterFirebaseList.this.modelClass);
                 int index = models.indexOf(oldModel);
 
                 models.set(index, newModel);
@@ -113,7 +113,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getName();
                 T oldModel = modelNames.get(modelName);
-                T newModel = dataSnapshot.getValue(FirebaseListAdapter.this.modelClass);
+                T newModel = dataSnapshot.getValue(AdapterFirebaseList.this.modelClass);
                 int index = models.indexOf(oldModel);
                 models.remove(index);
                 if (previousChildName == null) {
@@ -133,7 +133,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
 
             @Override
             public void onCancelled(FirebaseError e) {
-                Log.e("FirebaseListAdapter", "Listen was cancelled, no more updates will occur");
+                Log.e("AdapterFirebaseList", "Listen was cancelled, no more updates will occur");
             }
         });
     }

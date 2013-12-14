@@ -7,11 +7,11 @@ import android.app.FragmentTransaction;
 /**
  * Created by evan on 9/25/13.
  */
-public class NavTabListener implements ActionBar.TabListener {
+public class ListenerNavTab implements ActionBar.TabListener {
 
     public Fragment fragment;
 
-    public NavTabListener(Fragment fragment){
+    public ListenerNavTab(Fragment fragment){
         this.fragment = fragment;
     }
 
