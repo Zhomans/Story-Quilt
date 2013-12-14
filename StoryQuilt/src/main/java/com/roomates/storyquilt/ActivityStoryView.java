@@ -120,6 +120,7 @@ public class ActivityStoryView extends Activity {
                                 userHandler.becomeWriter(curStory.id);
                                 curStory.writers.add(userHandler.user.email);
                             }
+                            FireHandler.pushStoryToList(curStory);
                         } else {
                             Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
                         }
