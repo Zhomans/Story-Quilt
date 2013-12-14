@@ -49,7 +49,6 @@ public class UserHandler {
                 new ArrayList<String>());
         FireHandler.pushUserToList(this.user);
     }
-
     public void updateUserFromFirebase(){
         firebase = FireHandler.create("users", User.formatEmail(getEmail()));
         listener = new ValueEventListener() {
@@ -68,7 +67,6 @@ public class UserHandler {
 
         firebase.addValueEventListener(listener);
     }
-
     public void stopConnection(){
         firebase.removeEventListener(listener);
     }

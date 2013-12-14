@@ -91,9 +91,9 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
         getUserInformation();
-        if (!previousEmail.equals(mPlusClient.getAccountName())) {
+/*        if (!previousEmail.equals(mPlusClient.getAccountName())) {
             Toast.makeText(this, mPlusClient.getCurrentPerson().getName().getGivenName() + ", you connected!", Toast.LENGTH_LONG).show();
-        }
+        }*/
         onConnectionStatusChanged();
     }
     //Google+ Connection Disconnected

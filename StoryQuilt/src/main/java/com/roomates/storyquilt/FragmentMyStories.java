@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by roomates on 9/25/13.
  */
-public class MyStoriesFragment extends Fragment {
+public class FragmentMyStories extends Fragment {
     //MainActivity Views
     ListView writing, reading;
 
@@ -35,6 +35,7 @@ public class MyStoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userHandler = new UserHandler(getActivity());
+        Log.i("FragmentMyStories", "onCreate is run");
     }
 
     @Override
@@ -47,6 +48,7 @@ public class MyStoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mystories, null);
         setUpMainPageViews(v);
+        Log.i("FragmentMyStories", "onCreateView is run");
         return v;
     }
 
@@ -79,7 +81,10 @@ public class MyStoriesFragment extends Fragment {
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
+                userHandler.updateUserFromFirebase();
                 for (Story tempStory: stories){
+                    Log.i("MyStories",tempStory.id);
+                    Log.i("MyStories",userHandler.user.writing.size() + "");
                     if (userHandler.user.writing.contains(tempStory.id)){
                         writingStories.add(tempStory);
                     }

@@ -148,11 +148,11 @@ public class ActivityStoryView extends Activity {
             }
         });
     }
-
+/*
     @Override
     public void onStop(){
         userHandler.stopConnection();
-    }
+    }*/
 
     //Options Menu Setup
     @Override

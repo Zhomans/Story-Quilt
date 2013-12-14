@@ -14,7 +14,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
     //Current User
     public FragmentLogin loginFragment = new FragmentLogin();
-    public MyStoriesFragment myStoriesFragment = new MyStoriesFragment();
+    public FragmentMyStories myStoriesFragment = new FragmentMyStories();
     public FragmentPopularStories popularStoriesFragment = new FragmentPopularStories();
     public FragmentNewStories newStoriesFragment = new FragmentNewStories();
     public FragmentSearch searchFragment = new FragmentSearch();
