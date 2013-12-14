@@ -136,14 +136,11 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     public void signIn() {
         mPlusClient.disconnect();
         if (!mPlusClient.isConnected()) { //Create a new Story
-            Log.i("testing","hello");
             if (mConnectionResult == null) {
                 mConnectionProgressDialog.show();
                 mPlusClient.connect();
-                Log.i("signin","Debug2");
             } else {
                 try {
-                    Log.i("signin","Debug3");
                     mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
                 } catch (IntentSender.SendIntentException e) {
                     // Try connecting again.

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -61,8 +60,7 @@ public class FragmentPopularStories extends Fragment {
         popularAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
-                List<Story> writingStories = new ArrayList<Story>();
-                Collections.sort(writingStories, new Comparator<Story>() {
+                Collections.sort(stories, new Comparator<Story>() {
                     public int compare(Story s1, Story s2) { //#posts/#writers
                         int s1value = s1.pieces.size()/s1.writers.size();
                         int s2value = s2.pieces.size()/s2.writers.size();
@@ -71,9 +69,10 @@ public class FragmentPopularStories extends Fragment {
                         return s1value < s2value ? -1 : 1;
                     }
                 });
-                return writingStories;
+                return stories;
             }
         };
+        popular.setAdapter(popularAdapter);
     }
 
     //On Item Click for AdapterStoryList

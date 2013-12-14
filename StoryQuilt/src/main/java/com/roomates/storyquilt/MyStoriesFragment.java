@@ -80,9 +80,7 @@ public class MyStoriesFragment extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
                 for (Story tempStory: stories){
-                    Log.i("modifyArrayAdapter", tempStory.id);
                     if (userHandler.user.writing.contains(tempStory.id)){
-                        Log.i("modifyArrayAdapter Add", tempStory.id);
                         writingStories.add(tempStory);
                     }
                 }

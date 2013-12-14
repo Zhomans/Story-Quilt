@@ -3,6 +3,7 @@ package com.roomates.storyquilt;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -40,7 +43,6 @@ public class FragmentNewStories extends Fragment {
         View v = inflater.inflate(R.layout.fragment_stories, null);
         setupListView(v);
         return v;
-
     }
 
     /**
@@ -59,9 +61,18 @@ public class FragmentNewStories extends Fragment {
         newAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
+                Collections.sort(stories, new Comparator<Story>() {
+                    public int compare(Story s1, Story s2) { //#posts/#writers
+                        if (s1.lastUpdated.equals(s2.lastUpdated))
+                            return 0;
+                        return Long.valueOf(s1.lastUpdated) > Long.valueOf(s2.lastUpdated) ? -1 : 1;
+                    }
+                });
                 return stories;
             }
         };
+
+        newStories.setAdapter(newAdapter);
     }
 
     //On Item Click for AdapterStoryList

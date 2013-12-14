@@ -51,6 +51,7 @@ public class Story implements Serializable{
     public ArrayList<Piece> getPieces(){
         return this.pieces;
     }
+    public HashSet<String> getWriters(){return this.writers;}
 
     //Setting the priority based on viewers and posters
     public void setPriority(int num_viewers, int num_posters){
