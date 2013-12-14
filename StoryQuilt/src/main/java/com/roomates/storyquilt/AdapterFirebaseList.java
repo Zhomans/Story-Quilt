@@ -37,6 +37,7 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     private int layout;
     private LayoutInflater inflater;
     private List<T> models;
+    private List<T> filtered;
     private Map<String, T> modelNames;
     private ChildEventListener listener;
 
@@ -55,6 +56,7 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
         this.layout = layout;
         inflater = activity.getLayoutInflater();
         models = new ArrayList<T>();
+        filtered = new ArrayList<T>();
         modelNames = new HashMap<String, T>();
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
         listener = this.ref.addChildEventListener(new ChildEventListener() {
@@ -146,18 +148,17 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     }
 
     public void notifyChanged(){
-        this.models = modifyArrayAdapter(this.models);
-
+        this.filtered = modifyArrayAdapter(this.models);
         notifyDataSetChanged();
     }
     @Override
     public int getCount() {
-        return models.size();
+        return filtered.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return models.get(i);
+        return filtered.get(i);
     }
 
     @Override
@@ -171,7 +172,7 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
             view = inflater.inflate(layout, viewGroup, false);
         }
 
-        T model = models.get(i);
+        T model = filtered.get(i);
         // Call out to subclass to marshall this model into the provided view
         populateView(view, model);
         return view;

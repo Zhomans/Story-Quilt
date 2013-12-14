@@ -38,8 +38,6 @@ public class UserHandler {
                 false,
                 new ArrayList<String>(),
                 new ArrayList<String>());
-        FireHandler.pushUserToList(this.user);
-
         updateUserFromFirebase();
     }
 
