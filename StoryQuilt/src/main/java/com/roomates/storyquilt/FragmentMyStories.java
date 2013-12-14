@@ -86,7 +86,7 @@ public class FragmentMyStories extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
                 for (Story tempStory: stories){
-                    if (userHandler.user.writing.contains(tempStory.id)){
+                    if (userHandler.isWriter(tempStory.id)){
                         writingStories.add(tempStory);
                     }
                 }
