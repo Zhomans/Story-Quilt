@@ -23,6 +23,8 @@ import com.firebase.client.ValueEventListener;
  * Created by zach on 12/7/13.
  */
 public class ActivityStoryView extends Activity {
+    //Menu
+    Menu menu;
     //Views
     EditText newPost;
     Button addButton;
@@ -42,12 +44,17 @@ public class ActivityStoryView extends Activity {
         bindViews();
 
         //Create the Story Firebase Connection
-        FireHandler.create("story", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
+        FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
+                Logger.Log(ActivityStoryView.this.getLocalClassName(), curStory.id);
                 if (userHandler.isReader(curStory.id)) populateViewsAsReader();
                 else  populateViewsAsWriter();
+                if (menu!=null){
+                    menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
+                    menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
+                }
             }
 
             @Override
@@ -159,15 +166,10 @@ public class ActivityStoryView extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
+        this.menu = menu;
         return true;
     }
-    @Override
 
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
-        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
-        return true;
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
