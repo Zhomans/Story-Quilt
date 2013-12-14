@@ -74,6 +74,7 @@ public class Story implements Serializable{
         for (Piece piece : this.pieces) {
             Log.d("Piece Text", piece.getText());
             fullText += piece.getText();
+            fullText += " ";
         }
         return fullText;
     }

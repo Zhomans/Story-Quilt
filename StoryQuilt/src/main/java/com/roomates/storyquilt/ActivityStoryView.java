@@ -49,8 +49,13 @@ public class ActivityStoryView extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
                 Logger.Log(ActivityStoryView.this.getLocalClassName(), curStory.id);
-                if (userHandler.isReader(curStory.id)) populateViewsAsReader();
-                else  populateViewsAsWriter();
+                if (userHandler.isReader(curStory.id)) {
+                    Log.i("reader?","true");
+                    populateViewsAsReader();
+                } else {
+                    Log.i("writer?","true");
+                    populateViewsAsWriter();
+                }
                 if (menu!=null){
                     menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
                     menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));

@@ -65,9 +65,6 @@ public class UserHandler {
                 if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
                 else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
                 if (user.reading == null) user.reading = new ArrayList<String>();
-                if (activity.getLocalClassName().equals("ActivityMainTab")) {
-                    ((ActivityMainTab) activity).onConnectionStatusChanged();
-                }
 
             }
 
