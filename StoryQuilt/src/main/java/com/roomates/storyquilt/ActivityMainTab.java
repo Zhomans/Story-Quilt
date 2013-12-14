@@ -13,7 +13,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
     Menu menu;
 
     //Current User
-    public FragmentLogin loginFragment = new FragmentLogin();
     public FragmentMyStories myStoriesFragment = new FragmentMyStories();
     public FragmentPopularStories popularStoriesFragment = new FragmentPopularStories();
     public FragmentNewStories newStoriesFragment = new FragmentNewStories();
@@ -38,12 +37,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
         //Set Up Fragments
         setUpFragments();
-
-        if (!mPlusClient.isConnected()){
-            goToFragment(loginFragment, "LOGIN");
-        } else {
-            goToFragment(myStoriesFragment, "STORIES");
-        }
     }
     public void onConnectionStatusChanged() {
         //These are saved in ActivityGooglePlus. Setting them to our SharedPreferences
@@ -52,12 +45,10 @@ public class ActivityMainTab extends ActivityGooglePlus {
         Boolean connected = mPlusClient.isConnected();
         //Update Handler
         userHandler.setConnected(connected);
-        Fragment fragment = getFragmentManager().findFragmentByTag("LOGIN");
-        if (connected && (fragment).isVisible()){
-            goToFragment(myStoriesFragment,"STORIES");
-        }
+
         //Set Action Settings Sign in or SignOut
         if (menu != null) {
+            Logger.Log("MainTab", String.valueOf(connected));
             (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
             (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
         }
