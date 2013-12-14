@@ -1,6 +1,8 @@
 package com.roomates.storyquilt;
 
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +72,8 @@ public class Story implements Serializable{
     public String fullStory() {
         String fullText = "";
         for (Piece piece : this.pieces) {
-            fullText.concat(piece.getText()+" ");
+            Log.d("Piece Text", piece.getText());
+            fullText += piece.getText();
         }
         return fullText;
     }
@@ -80,6 +83,7 @@ public class Story implements Serializable{
     public String recentPosts() {
         //XXX Could refactor to take in FullStory so it doesn't need to recalculate
         String fullText = this.fullStory();
+        Log.d("Full text", fullText);
         String recentWords = "";
         int textCounter = this.textLimit;
         while (fullText != "" && textCounter != 0) {
