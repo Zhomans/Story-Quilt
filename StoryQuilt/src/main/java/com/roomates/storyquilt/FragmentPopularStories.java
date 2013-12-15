@@ -66,7 +66,7 @@ public class FragmentPopularStories extends Fragment {
                         int s2value = s2.pieces.size()/s2.writers.size();
                         if (s1value == s2value)
                             return 0;
-                        return s1value < s2value ? -1 : 1;
+                        return s1value > s2value ? -1 : 1;
                     }
                 });
                 return stories;
