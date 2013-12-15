@@ -75,6 +75,12 @@ public class FragmentNewStories extends Fragment {
         newStories.setAdapter(newAdapter);
     }
 
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        newAdapter.cleanup();
+    }
     //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {

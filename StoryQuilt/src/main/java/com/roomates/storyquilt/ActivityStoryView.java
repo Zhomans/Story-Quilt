@@ -1,5 +1,6 @@
 package com.roomates.storyquilt;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by zach on 12/7/13.
  */
-public class ActivityStoryView  extends ActivityFirebase {
+public class ActivityStoryView  extends Activity {
     //Menu
     Menu menu;
     //Views

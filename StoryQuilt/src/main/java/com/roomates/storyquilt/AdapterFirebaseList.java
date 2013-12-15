@@ -144,7 +144,7 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     }
 
     public void notifyChanged(){
-        //this.models = modifyArrayAdapter(this.models);
+        /*this.models = modifyArrayAdapter(this.models);*/
 
         notifyDataSetChanged();
     }

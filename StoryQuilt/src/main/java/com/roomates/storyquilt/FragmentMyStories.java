@@ -108,6 +108,13 @@ public class FragmentMyStories extends Fragment {
         writing.setAdapter(writingAdapter);
         reading.setAdapter(readingAdapter);
     }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("Debugger","PAuSE");
+        readingAdapter.cleanup();
+        writingAdapter.cleanup();
+    }
     //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {

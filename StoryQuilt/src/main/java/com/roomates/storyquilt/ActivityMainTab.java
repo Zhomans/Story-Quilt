@@ -83,26 +83,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
     }
 
 
-    /**
-     * Activity Methods
-     */
-    @Override
-    public void onStop(){
-        super.onStop();
-        Firebase.goOffline();
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        Firebase.goOnline();
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        Firebase.goOffline();
-    }
     //Options Menu Setup
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

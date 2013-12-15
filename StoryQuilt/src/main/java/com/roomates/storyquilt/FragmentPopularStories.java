@@ -74,7 +74,11 @@ public class FragmentPopularStories extends Fragment {
         };
         popular.setAdapter(popularAdapter);
     }
-
+    @Override
+    public void onPause(){
+        super.onPause();
+        popularAdapter.cleanup();
+    }
     //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {

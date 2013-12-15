@@ -1,5 +1,6 @@
 package com.roomates.storyquilt;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import java.util.HashSet;
 /**
  * Created by chris on 12/4/13.
  */
-public class ActivityCreateStory extends ActivityFirebase {
+public class ActivityCreateStory extends Activity {
     //Views
     TextView historyDisplay, submissionDisplay;
     EditText storyTitle, starterText;
