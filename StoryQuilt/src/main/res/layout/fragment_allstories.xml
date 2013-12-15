@@ -19,7 +19,7 @@
         android:paddingTop = "10dp"
         android:paddingLeft = "50dp"
         android:textColor = "@android:color/darker_gray"
-        android:text = "sort by: popular"/>
+        android:text = "sorted by: popular"/>
 
     <ListView
         android:id = "@+id/fragment_stories_listview"

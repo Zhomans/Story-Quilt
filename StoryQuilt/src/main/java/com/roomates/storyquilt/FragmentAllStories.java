@@ -3,6 +3,7 @@ package com.roomates.storyquilt;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +19,9 @@ import com.firebase.client.Firebase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by chris 10/13/2013.
@@ -27,6 +30,9 @@ public class FragmentAllStories extends Fragment {
     //Sorting Mode
     final int SORTBY_NEW = 0;
     final int SORTBY_POPULAR = 1;
+    final int SORTBY_RANDOM = 2;
+
+
     int mode = SORTBY_POPULAR;
     //List View
     ListView stories;
@@ -38,8 +44,11 @@ public class FragmentAllStories extends Fragment {
     //Firebase
     Firebase storyRef;
 
-    //Random Story Ids
-    ArrayList<Integer> random;
+    //Random List of Stories
+    final int NUM_RANDOM_STORIES = 6;
+    HashSet<String> random;
+    ArrayList<Story> original;
+    int numStories;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +83,12 @@ public class FragmentAllStories extends Fragment {
             @Override
             public void onClick(View view) {
                 if (sortBy.getText().toString().split(": ")[1].equals("popular")){
-                    sortBy.setText("sort by: new");
+                    sortBy.setText("sorted by: new");
                     mode = SORTBY_NEW;
                    setupListView(v);
                 } else {
                     mode = SORTBY_POPULAR;
-                    sortBy.setText("sort by: popular");
+                    sortBy.setText("sorted by: popular");
                     setupListView(v);
                 }
             }
@@ -88,6 +97,7 @@ public class FragmentAllStories extends Fragment {
     //Setting up the view and bindings
     public void setupListView(View v){
         ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
+        ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + (mode==2? "random":"popular"));
 
         stories = (ListView) v.findViewById(R.id.fragment_stories_listview);
         stories.setOnItemClickListener(goToStoryActivity());
@@ -101,6 +111,8 @@ public class FragmentAllStories extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 switch (mode){
                     case SORTBY_NEW:
+                        original = new ArrayList<Story>();
+                        original.addAll(stories);
                         Collections.sort(stories, new Comparator<Story>() {
                             public int compare(Story s1, Story s2) { //#posts/#writers
                                 if (s1.lastUpdated.equals(s2.lastUpdated))
@@ -111,6 +123,8 @@ public class FragmentAllStories extends Fragment {
                         break;
 
                     case SORTBY_POPULAR:
+                        original = new ArrayList<Story>();
+                        original.addAll(stories);
                         Collections.sort(stories, new Comparator<Story>() {
                             public int compare(Story s1, Story s2) { //#posts/#writers
                                 int s1value = s1.pieces.size()/s1.writers.size();
@@ -121,6 +135,23 @@ public class FragmentAllStories extends Fragment {
                             }
                         });
                         break;
+                    case SORTBY_RANDOM:
+                        Collections.sort(stories, new Comparator<Story>() {
+                            public int compare(Story s1, Story s2) { //#posts/#writers
+                                int s1value = s1.pieces.size()/s1.writers.size();
+                                int s2value = s2.pieces.size()/s2.writers.size();
+                                if (s1value == s2value)
+                                    return 0;
+                                return s1value > s2value ? -1 : 1;
+                            }
+                        });
+                        ArrayList<Story> filtered = new ArrayList<Story>();
+                        for (Story tempStory: stories){
+                            if (random.contains(tempStory.id)){
+                                filtered.add(tempStory);
+                            }
+                        }
+                        return filtered;
                 }
                 return stories;
             }
@@ -160,6 +191,15 @@ public class FragmentAllStories extends Fragment {
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                numStories = original.size();
+                Random num = new Random(System.currentTimeMillis());
+                mode = SORTBY_RANDOM;
+                ((TextView)getView().findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: random");
+                random = new HashSet<String>();
+                while (random.size() < NUM_RANDOM_STORIES){
+                    random.add((original.get(num.nextInt(numStories))).id);
+                }
+                setupListView(getView());
                 return false;
             }
         });
