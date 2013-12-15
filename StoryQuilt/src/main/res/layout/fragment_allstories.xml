@@ -9,12 +9,7 @@
         android:textSize = "@dimen/activity_title_font"
         android:text="default Title"
         android:layout_alignParentLeft="true" />
-<!--    <Spinner
-        android:id = "@+id/fragment_stories_sortby_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>-->
+
     <TextView
         android:id = "@+id/fragment_stories_sortby_text"
         android:layout_alignBottom="@id/fragment_stories_title"

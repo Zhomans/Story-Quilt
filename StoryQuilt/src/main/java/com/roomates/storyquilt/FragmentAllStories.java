@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +27,7 @@ public class FragmentAllStories extends Fragment {
     //Sorting Mode
     final int SORTBY_NEW = 0;
     final int SORTBY_POPULAR = 1;
+    int mode = SORTBY_POPULAR;
     //List View
     ListView stories;
     TextView sortBy;
@@ -32,6 +37,9 @@ public class FragmentAllStories extends Fragment {
 
     //Firebase
     Firebase storyRef;
+
+    //Random Story Ids
+    ArrayList<Integer> random;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +54,14 @@ public class FragmentAllStories extends Fragment {
         setUpSortBy(v);
         setupListView(v);
         return v;
-
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
 
     /**
      * Set up List View
@@ -61,10 +75,12 @@ public class FragmentAllStories extends Fragment {
             public void onClick(View view) {
                 if (sortBy.getText().toString().split(": ")[1].equals("popular")){
                     sortBy.setText("sort by: new");
-                    refreshAdapter(SORTBY_NEW);
+                    mode = SORTBY_NEW;
+                   setupListView(v);
                 } else {
+                    mode = SORTBY_POPULAR;
                     sortBy.setText("sort by: popular");
-                    refreshAdapter(SORTBY_POPULAR);
+                    setupListView(v);
                 }
             }
         });
@@ -80,26 +96,6 @@ public class FragmentAllStories extends Fragment {
         storyRef = FireHandler.create("stories");
 
         //Adapter
-        storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
-            @Override
-            protected List<Story> modifyArrayAdapter(List<Story> stories){
-                Collections.sort(stories, new Comparator<Story>() {
-                    public int compare(Story s1, Story s2) { //#posts/#writers
-                        int s1value = s1.pieces.size()/s1.writers.size();
-                        int s2value = s2.pieces.size()/s2.writers.size();
-                        if (s1value == s2value)
-                            return 0;
-                        return s1value > s2value ? -1 : 1;
-                    }
-                });
-                return stories;
-            }
-        };
-        stories.setAdapter(storiesAdapter);
-    }
-    //Refresh the adapter
-    public void refreshAdapter(final int mode){
-        storiesAdapter.cleanup();
         storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
@@ -136,6 +132,14 @@ public class FragmentAllStories extends Fragment {
         super.onPause();
         storiesAdapter.cleanup();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        setupListView(getView());
+    }
+
+
     //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {
@@ -146,5 +150,18 @@ public class FragmentAllStories extends Fragment {
                 startActivity(goToStory);
             }
         };
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
     }
 }
