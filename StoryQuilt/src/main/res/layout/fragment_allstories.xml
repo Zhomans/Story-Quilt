@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id = "@+id/fragment_stories_title"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:textSize = "@dimen/activity_title_font"
+        android:text="default Title"
+        android:layout_alignParentLeft="true" />
+<!--    <Spinner
+        android:id = "@+id/fragment_stories_sortby_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>-->
+    <TextView
+        android:id = "@+id/fragment_stories_sortby_text"
+        android:layout_alignBottom="@id/fragment_stories_title"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop = "10dp"
+        android:paddingLeft = "50dp"
+        android:textColor = "@android:color/darker_gray"
+        android:text = "sort by: popular"/>
+
+    <ListView
+        android:id = "@+id/fragment_stories_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below = "@id/fragment_stories_title"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

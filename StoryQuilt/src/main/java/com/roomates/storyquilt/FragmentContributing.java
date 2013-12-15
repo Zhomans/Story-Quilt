@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
@@ -19,12 +20,12 @@ import java.util.List;
 /**
  * Created by roomates on 9/25/13.
  */
-public class FragmentMyStories extends Fragment {
+public class FragmentContributing extends Fragment {
     //MainActivity Views
-    ListView writing, reading;
+    ListView contributing;
 
     //ListAdapters
-    AdapterStoryList writingAdapter, readingAdapter;
+    AdapterStoryList contributingAdapter;
 
     //Firebase
     Firebase storyRef;
@@ -45,7 +46,7 @@ public class FragmentMyStories extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_mystories, null);
+        View v = inflater.inflate(R.layout.fragment_stories, null);
         setUpMainPageViews(v);
         return v;
     }
@@ -69,11 +70,9 @@ public class FragmentMyStories extends Fragment {
      */
     //Grab ListViews from the XML
     private void setListViews(View v){
-        writing = (ListView) v.findViewById(R.id.fragment_main_writing_listview);
-        reading = (ListView) v.findViewById(R.id.fragment_main_reading_listview);
-
-        writing.setOnItemClickListener( goToStoryActivity());
-        reading.setOnItemClickListener( goToStoryActivity());
+        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Contributing");
+        contributing = (ListView) v.findViewById(R.id.fragment_stories_listview);
+        contributing.setOnItemClickListener(goToStoryActivity());
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
@@ -81,7 +80,7 @@ public class FragmentMyStories extends Fragment {
     }
     //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
-        writingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
+        contributingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> writingStories = new ArrayList<Story>();
@@ -93,28 +92,12 @@ public class FragmentMyStories extends Fragment {
                 return writingStories;
             }
         };
-        readingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
-            @Override
-            protected List<Story> modifyArrayAdapter(List<Story> stories){
-                List<Story> readingStories = new ArrayList<Story>();
-                Log.i("UserHandler Readers", userHandler.user.reading.toString());
-                for (Story tempStory: stories){
-                    if (userHandler.isReader(tempStory.id))
-                        readingStories.add(tempStory);
-                }
-                return readingStories;
-            }
-        };
-
-        writing.setAdapter(writingAdapter);
-        reading.setAdapter(readingAdapter);
+        contributing.setAdapter(contributingAdapter);
     }
     @Override
     public void onPause(){
         super.onPause();
-        Log.i("Debugger","PAuSE");
-        readingAdapter.cleanup();
-        writingAdapter.cleanup();
+        contributingAdapter.cleanup();
     }
     //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
@@ -122,7 +105,7 @@ public class FragmentMyStories extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent goToStory = new Intent(getActivity(), ActivityStoryView.class);
-                goToStory.putExtra("story",((Story)writing.getItemAtPosition(position)).id);
+                goToStory.putExtra("story",((Story) contributing.getItemAtPosition(position)).id);
                 startActivity(goToStory);
             }
         };

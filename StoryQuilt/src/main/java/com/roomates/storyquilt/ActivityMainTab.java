@@ -6,17 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.firebase.client.Firebase;
-
 public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
 
     //Current User
-    public FragmentMyStories myStoriesFragment = new FragmentMyStories();
-    public FragmentPopularStories popularStoriesFragment = new FragmentPopularStories();
-    public FragmentNewStories newStoriesFragment = new FragmentNewStories();
-    public FragmentSearch searchFragment = new FragmentSearch();
+    public FragmentContributing contributingFragment = new FragmentContributing();
+    public FragmentFollowing followingFragment = new FragmentFollowing();
+    public FragmentAllStories allStoriesFragment = new FragmentAllStories();
 
     public ActionBar actionBar;
 
@@ -66,22 +63,24 @@ public class ActivityMainTab extends ActivityGooglePlus {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         //My Stories
-        ActionBar.Tab myStoriesTab = actionBar.newTab().setText("My Stories");
-        myStoriesTab.setTabListener(new ListenerNavTab(myStoriesFragment));
+        ActionBar.Tab contributing = actionBar.newTab().setText("Contributing");
+        contributing.setTabListener(new ListenerNavTab(contributingFragment));
 
         //Popular Stories
-        ActionBar.Tab popularStoriesTab = actionBar.newTab().setText("Popular");
-        popularStoriesTab.setTabListener(new ListenerNavTab(popularStoriesFragment));
+        ActionBar.Tab following = actionBar.newTab().setText("Following");
+        following.setTabListener(new ListenerNavTab(followingFragment));
 
         //New Stories
-        ActionBar.Tab newStoriesTab = actionBar.newTab().setText("New");
-        newStoriesTab.setTabListener(new ListenerNavTab(newStoriesFragment));
+        ActionBar.Tab allStories = actionBar.newTab().setText("All");
+        allStories.setTabListener(new ListenerNavTab(allStoriesFragment));
 
-        actionBar.addTab(myStoriesTab);
-        actionBar.addTab(popularStoriesTab);
-        actionBar.addTab(newStoriesTab);
+        actionBar.addTab(contributing);
+        actionBar.addTab(following);
+        actionBar.addTab(allStories);
     }
+    public void setUpSearchBar(){
 
+    }
 
     //Options Menu Setup
     @Override
