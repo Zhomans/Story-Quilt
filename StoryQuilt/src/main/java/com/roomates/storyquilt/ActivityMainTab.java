@@ -1,12 +1,12 @@
 package com.roomates.storyquilt;
 
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.firebase.client.Firebase;
 
 public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
@@ -46,7 +46,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
         //Set Action Settings Sign in or SignOut
         if (menu != null) {
-            Logger.Log("MainTab", String.valueOf(connected));
             (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
             (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
         }
@@ -82,21 +81,28 @@ public class ActivityMainTab extends ActivityGooglePlus {
         actionBar.addTab(popularStoriesTab);
         actionBar.addTab(newStoriesTab);
     }
-    public void goToFragment(Fragment fragment, String id){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragmentContainer, fragment, id);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
-    }
 
     /**
      * Activity Methods
      */
+    @Override
+    public void onStop(){
+        super.onStop();
+        Firebase.goOffline();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Firebase.goOnline();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Firebase.goOffline();
+    }
     //Options Menu Setup
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

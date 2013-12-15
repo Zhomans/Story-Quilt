@@ -37,7 +37,6 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     private int layout;
     private LayoutInflater inflater;
     private List<T> models;
-    private List<T> filtered;
     private Map<String, T> modelNames;
     private ChildEventListener listener;
 
@@ -56,7 +55,6 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
         this.layout = layout;
         inflater = activity.getLayoutInflater();
         models = new ArrayList<T>();
-        filtered = new ArrayList<T>();
         modelNames = new HashMap<String, T>();
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
         listener = this.ref.addChildEventListener(new ChildEventListener() {
@@ -85,7 +83,6 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                 // One of the models changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getName();
                 T oldModel = modelNames.get(modelName);
@@ -100,7 +97,6 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
                 // A model was removed from the list. Remove it from our list and the name mapping
                 String modelName = dataSnapshot.getName();
                 T oldModel = modelNames.get(modelName);
@@ -148,17 +144,18 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     }
 
     public void notifyChanged(){
-        this.filtered = modifyArrayAdapter(this.models);
+        //this.models = modifyArrayAdapter(this.models);
+
         notifyDataSetChanged();
     }
     @Override
     public int getCount() {
-        return filtered.size();
+        return models.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return filtered.get(i);
+        return models.get(i);
     }
 
     @Override
@@ -172,7 +169,7 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
             view = inflater.inflate(layout, viewGroup, false);
         }
 
-        T model = filtered.get(i);
+        T model = models.get(i);
         // Call out to subclass to marshall this model into the provided view
         populateView(view, model);
         return view;

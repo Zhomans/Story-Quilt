@@ -25,6 +25,8 @@ public class UserHandler {
     //Passing the activity for context
     Activity activity;
 
+    //Firebase
+    Firebase firebase;
 
     public UserHandler(Activity activity){
         this.activity = activity;
@@ -73,13 +75,13 @@ public class UserHandler {
         });
     }
 
-/*
-    public void stopConnection(){
-        firebase.removeEventListener(listener);
-    }
-*/
 
-    /**
+    public void stopConnection(){
+        Firebase.goOffline();
+    }
+
+
+   /**
      * Manage User Information
      */
     public String getEmail(){

@@ -1,6 +1,5 @@
 package com.roomates.storyquilt;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by zach on 12/7/13.
  */
-public class ActivityStoryView extends Activity {
+public class ActivityStoryView  extends ActivityFirebase {
     //Menu
     Menu menu;
     //Views
@@ -48,7 +47,6 @@ public class ActivityStoryView extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory= dataSnapshot.getValue(Story.class);
-                Logger.Log(ActivityStoryView.this.getLocalClassName(), curStory.id);
                 if (userHandler.isReader(curStory.id)) {
                     Log.i("reader?","true");
                     populateViewsAsReader();
@@ -118,13 +116,13 @@ public class ActivityStoryView extends Activity {
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
-                            FireHandler.updateStoryInFirebase(curStory);
-
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
                                 userHandler.becomeWriter(curStory.id);
                                 curStory.writers.add(userHandler.user.email);
                             }
+                            newPost.setText("");
+                            FireHandler.updateStoryInFirebase(curStory);
 
                         } else {
                             Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
@@ -154,18 +152,11 @@ public class ActivityStoryView extends Activity {
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
+                            public void onClick(DialogInterface dialog, int which) {}
                         }).show();
             }
         });
     }
-/*
-    @Override
-    public void onStop(){
-        userHandler.stopConnection();
-    }*/
 
     //Options Menu Setup
     @Override
@@ -186,7 +177,6 @@ public class ActivityStoryView extends Activity {
             case R.id.join_story: //Join an Existing Story
                 curStory.writers.add(userHandler.user.email);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
