@@ -129,6 +129,6 @@ public class UserHandler {
         return user != null && user.reading != null && user.reading.contains(id);
     }
     public boolean isWriter(String id) {
-        return user != null && user.writing != null && user.getWriting().contains(id);
+        return user != null && user.writing != null && user.writing.contains(id);
     }
 }

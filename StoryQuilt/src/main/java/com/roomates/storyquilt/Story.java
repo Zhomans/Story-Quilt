@@ -70,41 +70,39 @@ public class Story implements Serializable{
 
     //Get Full Text of a Story
     public String fullStory() {
-        String fullText = "";
-        for (Piece piece : this.pieces) {
-            Log.d("Piece Text", piece.getText());
-            fullText += piece.getText();
-            fullText += " ";
+        StringBuilder sb = new StringBuilder();
+        for (Piece tempPiece: this.pieces){
+            sb.append(tempPiece.text);
+            sb.append(" ");
         }
-        return fullText;
+        return sb.toString();
     }
 
     //Get Recent Posts of Story
-    //XXX Possibly refactor to make more efficient. Use split?
     public String recentPosts() {
-        //XXX Could refactor to take in FullStory so it doesn't need to recalculate
-        String fullText = this.fullStory();
-        Log.d("Full text", fullText);
-        String recentWords = "";
-        int textCounter = this.textLimit;
-        while (fullText != "" && textCounter != 0) {
-            int indexOfFinalSpace = fullText.lastIndexOf(" ");
-            recentWords = recentWords.concat(fullText.substring(indexOfFinalSpace+1));
-            if (indexOfFinalSpace != -1) {
-                fullText = fullText.substring(0,indexOfFinalSpace); //XXX Possible One-Off Error. Check this if something is broken.
-                textCounter--;
-            } else {
+        StringBuilder sb = new StringBuilder();
+        int wordCount = 0;
+        for (int i = this.pieces.size() - 1; i >= 0; i-- ){
+            String nextText = pieces.get(i).getText();
+            wordCount += nextText.trim().split(" ").length;
+            sb.insert(0, nextText.trim());
+            if (wordCount > historyLimit){
                 break;
+            } else {
+                sb.insert(0," ");
             }
         }
-        return recentWords;
+
+        for (int i = 0; i <= wordCount - historyLimit; i++){
+            sb.delete(0, sb.indexOf(" "));
+        }
+        return sb.toString();
     }
 
     //Add Piece to Story
     public void addPiece(Piece newPiece) {
         this.pieces.add(newPiece);
     }
-
     //Check Most Recent Post for Given User
     public boolean checkMostRecentPoster(User user){
         return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getEmail());

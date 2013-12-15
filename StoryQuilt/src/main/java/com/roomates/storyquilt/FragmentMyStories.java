@@ -97,6 +97,7 @@ public class FragmentMyStories extends Fragment {
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 List<Story> readingStories = new ArrayList<Story>();
+                Log.i("UserHandler Readers", userHandler.user.reading.toString());
                 for (Story tempStory: stories){
                     if (userHandler.isReader(tempStory.id))
                         readingStories.add(tempStory);

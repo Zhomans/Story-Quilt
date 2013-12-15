@@ -115,7 +115,7 @@ public class ActivityStoryView  extends Activity {
                     if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
                             //Add new Piece
-                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personEmail", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
