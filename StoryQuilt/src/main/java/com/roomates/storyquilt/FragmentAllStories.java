@@ -227,6 +227,13 @@ public class FragmentAllStories extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.GONE);
+                        getView().findViewById(R.id.closeSearch).setVisibility(View.GONE);
+                    }
+                });
                 return false;
             }
         });
