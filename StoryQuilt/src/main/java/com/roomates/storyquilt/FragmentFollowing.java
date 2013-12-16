@@ -73,7 +73,7 @@ public class FragmentFollowing extends Fragment {
      */
     //Grab ListViews from the XML
     private void setListViews(View v){
-        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Following");
+//        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Following");
         following = (ListView) v.findViewById(R.id.fragment_stories_listview);
         following.setOnItemClickListener(goToStoryActivity());
     }

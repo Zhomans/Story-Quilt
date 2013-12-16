@@ -75,7 +75,7 @@ public class FragmentContributing extends Fragment {
      */
     //Grab ListViews from the XML
     private void setListViews(View v){
-        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Contributing");
+//        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Contributing");
         contributing = (ListView) v.findViewById(R.id.fragment_stories_listview);
         contributing.setOnItemClickListener(goToStoryActivity());
     }
