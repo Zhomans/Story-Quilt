@@ -3,6 +3,8 @@ package com.roomates.storyquilt;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,6 +53,8 @@ public class FragmentAllStories extends Fragment {
     ArrayList<Story> original;
     int numStories;
 
+    View v;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +64,7 @@ public class FragmentAllStories extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_allstories, null);
+        v = inflater.inflate(R.layout.fragment_allstories, null);
         setUpSortBy(v);
         setupListView(v);
         return v;
@@ -159,6 +164,15 @@ public class FragmentAllStories extends Fragment {
             }
         };
         stories.setAdapter(storiesAdapter);
+
+        EditText searchText = (EditText) v.findViewById(R.id.activity_all_stories_search_bar);
+        searchText.addTextChangedListener(new TextWatcher(){
+            public void afterTextChanged(Editable s) {
+               //update contents of list adapter
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            public void onTextChanged(CharSequence s, int start, int before, int count){}
+        });
     }
     @Override
     public void onPause(){
@@ -203,6 +217,16 @@ public class FragmentAllStories extends Fragment {
                     random.add((original.get(num.nextInt(numStories))).id);
                 }
                 setupListView(getView());
+                return false;
+            }
+        });
+
+        MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
+        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
                 return false;
             }
         });

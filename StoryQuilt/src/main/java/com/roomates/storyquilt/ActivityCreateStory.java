@@ -33,7 +33,7 @@ public class ActivityCreateStory extends Activity {
 
     double HISTORY_TICK = 0.2;
     int HISTORY_MAX = (int)(10/HISTORY_TICK);
-    int HISTORY_DEFAULT = SUBMISSION_DEFAULT;
+    int HISTORY_DEFAULT = (int)(1/HISTORY_TICK);
 
     //User Information
     UserHandler userHandler;
@@ -80,12 +80,6 @@ public class ActivityCreateStory extends Activity {
      Setting up SeekBars
      */
     private void setupSeekBars(){
-        historyLength.setMax(HISTORY_MAX);
-        historyLength.setProgress(HISTORY_DEFAULT);
-
-        submissionLength.setMax(SUBMISSION_MAX);
-        submissionLength.setProgress(SUBMISSION_DEFAULT);
-
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -118,19 +112,25 @@ public class ActivityCreateStory extends Activity {
 
         });
 
+        historyLength.setMax(HISTORY_MAX);
+        historyLength.setProgress(HISTORY_DEFAULT);
+
+        submissionLength.setMax(SUBMISSION_MAX);
+        submissionLength.setProgress(SUBMISSION_DEFAULT);
+
         updateHistorySeekBar();
     }
     public void updateHistorySeekBar(){
-        int progress = (int)(historyLength.getProgress() + SUBMISSION_MIN * HISTORY_TICK);
-        long value = Math.round(progress * HISTORY_TICK * (submissionLength.getProgress() + SUBMISSION_MIN));
+        int numPosts = (int) (historyLength.getProgress() * HISTORY_TICK);
+        long value = Math.round(numPosts * (submissionLength.getProgress() + SUBMISSION_MIN));
 
-        String postDisplay = String.valueOf(progress * HISTORY_TICK);
+        String postDisplay = String.valueOf(value);
         if (postDisplay.contains(".")){
             String[] posts = postDisplay.split("\\.");
             postDisplay = posts[0];
             postDisplay += "." + posts[1].substring(0,1);
         } else {
-            postDisplay =  String.valueOf(progress * HISTORY_TICK);}
+            postDisplay =  String.valueOf(numPosts);}
         historyDisplay.setText("History Length: " + postDisplay + " posts (" + value + " words)");
     }
 
