@@ -53,6 +53,7 @@ public class FragmentFollowing extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -130,11 +131,19 @@ public class FragmentFollowing extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
+        searchItem.setIcon(R.drawable.search);
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
+                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.GONE);
+                        getView().findViewById(R.id.closeSearch).setVisibility(View.GONE);
+                    }
+                });
                 return false;
             }
         });

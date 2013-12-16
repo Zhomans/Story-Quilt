@@ -3,16 +3,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
-    <!--<TextView-->
-        <!--android:id = "@+id/fragment_stories_title"-->
-        <!--android:layout_width = "150dp"-->
-        <!--android:layout_height = "30dp"-->
-        <!--android:text = "Title"-->
-        <!--android:textSize = "@dimen/activity_title_font"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:background="@drawable/white_background"/>-->
 
     <SearchView
         android:id = "@+id/activity_stories_search_bar"
@@ -32,6 +22,5 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-
         android:layout_below="@+id/activity_stories_search_bar" />
 </RelativeLayout>

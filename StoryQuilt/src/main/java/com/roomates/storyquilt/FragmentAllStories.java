@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -187,7 +188,9 @@ public class FragmentAllStories extends Fragment {
         stories.setAdapter(storiesAdapter);
 
         SearchView searchText = (SearchView) v.findViewById(R.id.activity_all_stories_search_bar);
-
+        int id = searchText.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchText.findViewById(id);
+        textView.setTextColor(Color.WHITE);
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -234,6 +237,7 @@ public class FragmentAllStories extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
+        item.setIcon(R.drawable.dice);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -253,6 +257,7 @@ public class FragmentAllStories extends Fragment {
         });
 
         MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
+        searchItem.setIcon(R.drawable.search);
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

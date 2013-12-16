@@ -3,14 +3,9 @@
     tools:context=".MainActivity" >
 
     <item android:id="@+id/create_story"
-        android:title="@string/create_story"
-        android:orderInCategory="100"
+        android:icon="@drawable/plus"
+        android:orderInCategory="120"
         android:showAsAction="always" />
-<!--
-    <item android:id="@+id/search_story"
-        android:title="@string/search_story"
-        android:orderInCategory="100"
-        android:showAsAction="always" />-->
 
     <item android:id="@+id/gPlusSignOut"
         android:title="@string/gPlusSignOut"

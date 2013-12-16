@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -55,6 +57,7 @@ public class FragmentContributing extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class FragmentContributing extends Fragment {
         setListAdapters();
     }
 
-
+    
     /**
      * Methods for Handling List Views
      */
@@ -88,6 +91,11 @@ public class FragmentContributing extends Fragment {
         contributing = (ListView) v.findViewById(R.id.fragment_stories_listview);
         contributing.setBackground(new BitmapDrawable(getResources(), getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         contributing.setOnItemClickListener(goToStoryActivity());
+
+        SearchView searchText = (SearchView) v.findViewById(R.id.activity_all_stories_search_bar);
+        int id = searchText.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchText.findViewById(id);
+        textView.setTextColor(Color.WHITE);
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
@@ -131,11 +139,19 @@ public class FragmentContributing extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
+        searchItem.setIcon(R.drawable.search);
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
+                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.closeSearch).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.GONE);
+                        getView().findViewById(R.id.closeSearch).setVisibility(View.GONE);
+                    }
+                });
                 return false;
             }
         });
