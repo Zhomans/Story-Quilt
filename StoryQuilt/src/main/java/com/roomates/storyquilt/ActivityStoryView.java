@@ -89,7 +89,7 @@ public class ActivityStoryView  extends Activity {
     private void populateViewsAsWriter(){
         storyTitle.setText(curStory.title);
         recentPosts.setText(curStory.recentPosts());
-        quitButton.setText("... "+String.valueOf(curStory.pieces.size())+" Posts Later ...");
+        quitButton.setText("... "+String.valueOf(curStory.pieces.size() - curStory.historyLimit/curStory.textLimit)+" Posts Later ...");
         setAddButton();
         setQuitButton();
     }
