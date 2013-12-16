@@ -104,7 +104,7 @@ public class FragmentAllStories extends Fragment {
     public void setupListView(View v){
         ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
         String modeText;
-        switch (mode) {case 0: modeText = "new"; break; case 1: modeText = "popular"; break; case 2: modeText = "random"; break; default: modeText = "random"; break;}
+        switch (mode) {case SORTBY_NEW: modeText = "new"; break; case SORTBY_POPULAR: modeText = "popular"; break; case SORTBY_RANDOM: modeText = "random"; break; default: modeText = "random"; break;}
         ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
 
         stories = (ListView) v.findViewById(R.id.fragment_stories_listview);

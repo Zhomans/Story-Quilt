@@ -112,8 +112,8 @@ public class ActivityStoryView  extends Activity {
                 if (curStory.checkMostRecentPoster(userHandler.user)){
                     //Display Error toast stating that you can't post twice in a row.
                     Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_twiceInARow), Toast.LENGTH_SHORT).show();
-                } else if (getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "").equals("readonly")){
-                    Toast.makeText(ActivityStoryView.this, "You are in read-only mode. You can't post", Toast.LENGTH_SHORT).show();
+                } else if (userHandler.user.email.equals("readonly")){
+                    Toast.makeText(ActivityStoryView.this, "Sign in to post to a story!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     if (newPostText != null || !newPostText.toString().equals("")){
