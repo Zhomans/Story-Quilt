@@ -159,6 +159,7 @@ public class FragmentAllStories extends Fragment {
                                 filtered.add(tempStory);
                             }
                         }
+                        Collections.shuffle(filtered);
                         return filtered;
                 }
                 return stories;
