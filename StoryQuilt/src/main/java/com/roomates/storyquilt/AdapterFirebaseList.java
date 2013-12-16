@@ -36,7 +36,8 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
     private Class<T> modelClass;
     private int layout;
     private LayoutInflater inflater;
-    private List<T> models, filtered;
+    private List<T> filtered;
+    public List<T> models;
     private Map<String, T> modelNames;
     private ChildEventListener listener;
 

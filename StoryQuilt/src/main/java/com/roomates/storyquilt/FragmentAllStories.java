@@ -35,6 +35,7 @@ public class FragmentAllStories extends Fragment {
     final int SORTBY_NEW = 0;
     final int SORTBY_POPULAR = 1;
     final int SORTBY_RANDOM = 2;
+    String searchQueryText = "";
 
 
     int mode = SORTBY_POPULAR;
@@ -117,6 +118,14 @@ public class FragmentAllStories extends Fragment {
         storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
+                ArrayList<Story> filtered_stories = new ArrayList<Story>();
+                for (Story story : stories) {
+                    if (story.getTitle().contains(searchQueryText)) {
+                        Log.d("Story", story.getTitle());
+                        filtered_stories.add(story);
+                    }
+                }
+                stories = filtered_stories;
                 switch (mode){
                     case SORTBY_NEW:
                         original = new ArrayList<Story>();
@@ -177,8 +186,9 @@ public class FragmentAllStories extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // search goes here !!
-                // listAdapter.getFilter().filter(query);
+                //should narrow again from filtered list on update
+                searchQueryText = newText;
+                stories.invalidate();
                 return false;
             }
 

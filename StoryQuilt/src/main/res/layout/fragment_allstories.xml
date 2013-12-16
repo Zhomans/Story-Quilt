@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_stories_title"
         android:layout_alignParentLeft="true"
+        android:inputType="text"
         android:layout_toLeftOf="@+id/imageButton" />
 
     <TextView
