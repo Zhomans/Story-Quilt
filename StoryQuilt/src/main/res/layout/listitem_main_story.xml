@@ -11,14 +11,32 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text = "Sample Title"/>
+        android:text = "Sample Title"
+        android:textSize="30dp"
+        android:maxWidth="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:fontFamily="sans-serif-light"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/posts"
+        android:layout_alignParentRight="true"
+        android:id="@+id/posts_icon"
+        android:paddingTop="4dp"/>
     <TextView
-        android:id="@+id/story_posts_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below = "@id/story_title_textview"
-        android:text = "Sample Post"
+        android:id="@+id/story_posts_textview"
+        android:layout_toLeftOf="@id/posts_icon"
+        android:text = "99"
+        android:textSize="30dp"
         android:paddingBottom = "@dimen/activity_divider_height"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-light"
+        android:paddingTop="4dp"
         />
 
 </RelativeLayout>
