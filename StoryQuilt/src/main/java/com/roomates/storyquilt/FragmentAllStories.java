@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -165,13 +166,22 @@ public class FragmentAllStories extends Fragment {
         };
         stories.setAdapter(storiesAdapter);
 
-        EditText searchText = (EditText) v.findViewById(R.id.activity_all_stories_search_bar);
-        searchText.addTextChangedListener(new TextWatcher(){
-            public void afterTextChanged(Editable s) {
-               //update contents of list adapter
+        SearchView searchText = (SearchView) v.findViewById(R.id.activity_all_stories_search_bar);
+
+        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-            public void onTextChanged(CharSequence s, int start, int before, int count){}
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // search goes here !!
+                // listAdapter.getFilter().filter(query);
+                return false;
+            }
+
         });
     }
     @Override
