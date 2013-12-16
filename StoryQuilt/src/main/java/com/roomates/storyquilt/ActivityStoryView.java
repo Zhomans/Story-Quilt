@@ -133,28 +133,33 @@ public class ActivityStoryView  extends Activity {
             }
         });
     }
+
+    private void leaveStory() {
+        //Makes you a reader in the story, instead of a writer
+        new AlertDialog.Builder(ActivityStoryView.this)
+                .setTitle("Are you sure you want to see the whole story?")
+                .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        userHandler.becomeReaderFromWriter(curStory.id);
+                        curStory.writers.remove(userHandler.user.email);
+                        ActivityStoryView.this.populateViewsAsReader();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                }).show();
+    }
+
     private void setQuitButton(){
         quitButton.setClickable(true);
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Makes you a reader in the story, instead of a writer
-                new AlertDialog.Builder(ActivityStoryView.this)
-                        .setTitle("Are you sure you want to see the whole story?")
-                        .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
-                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                userHandler.becomeReaderFromWriter(curStory.id);
-                                curStory.writers.remove(userHandler.user.email);
-                                ActivityStoryView.this.populateViewsAsReader();
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {}
-                        }).show();
+                leaveStory();
             }
         });
     }
@@ -172,7 +177,7 @@ public class ActivityStoryView  extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.leave_story: //Leave a new Story
-                curStory.writers.remove(userHandler.user.email);
+                leaveStory();
                 break;
 
             case R.id.join_story: //Join an Existing Story
