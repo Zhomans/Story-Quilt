@@ -56,6 +56,7 @@ public class ActivityStoryView  extends Activity {
                     populateViewsAsWriter();
                 }
                 if (menu!=null){
+                    Log.i("Debugger", "here");
                     menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
                     menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
                 }
@@ -115,7 +116,7 @@ public class ActivityStoryView  extends Activity {
                     if (newPostText != null || !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
                             //Add new Piece
-                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personEmail", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
+                            Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
                             curStory.addPiece(newPiece);
                             //Make User a Writer if New
                             if (!userHandler.isWriter(curStory.id)){
@@ -169,7 +170,10 @@ public class ActivityStoryView  extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
+<<<<<<< HEAD
         this.menu = menu;
+=======
+>>>>>>> c795de2fe7ec4ee88267cfdc52729ec8e27bb46c
         menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
         menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         return true;
