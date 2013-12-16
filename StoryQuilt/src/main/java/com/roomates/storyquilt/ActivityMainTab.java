@@ -88,6 +88,9 @@ public class ActivityMainTab extends ActivityGooglePlus {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         this.menu = menu;
+        Boolean connected = userHandler.isConnected();
+        (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
+        (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
         return true;
     }
     @Override
