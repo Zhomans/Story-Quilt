@@ -45,7 +45,7 @@ public class FragmentAllStories extends Fragment {
     Firebase storyRef;
 
     //Random List of Stories
-    final int NUM_RANDOM_STORIES = 6;
+    int NUM_RANDOM_STORIES = 6;
     HashSet<String> random;
     ArrayList<Story> original;
     int numStories;
@@ -97,7 +97,9 @@ public class FragmentAllStories extends Fragment {
     //Setting up the view and bindings
     public void setupListView(View v){
         ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
-        ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + (mode==2? "random":"popular"));
+        String modeText;
+        switch (mode) {case 0: modeText = "new"; break; case 1: modeText = "popular"; break; case 2: modeText = "random"; break; default: modeText = "random"; break;}
+        ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
 
         stories = (ListView) v.findViewById(R.id.fragment_stories_listview);
         stories.setOnItemClickListener(goToStoryActivity());
@@ -196,6 +198,7 @@ public class FragmentAllStories extends Fragment {
                 mode = SORTBY_RANDOM;
                 ((TextView)getView().findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: random");
                 random = new HashSet<String>();
+                if (NUM_RANDOM_STORIES > numStories) NUM_RANDOM_STORIES = numStories;
                 while (random.size() < NUM_RANDOM_STORIES){
                     random.add((original.get(num.nextInt(numStories))).id);
                 }
