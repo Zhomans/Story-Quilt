@@ -20,6 +20,6 @@ public abstract class AdapterStoryList extends AdapterFirebaseList<Story> {
     //Required method by AdapterFirebaseList
     protected void populateView(View view, Story story){
         ((TextView) view.findViewById(R.id.story_title_textview)).setText(story.title);
-        ((TextView) view.findViewById(R.id.story_posts_textview)).setText(story.pieces.size() + " posts");
+        ((TextView) view.findViewById(R.id.story_posts_textview)).setText(String.valueOf(story.pieces.size()));
     }
 }
