@@ -170,6 +170,7 @@ public class ActivityStoryView  extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
+        this.menu = menu;
         menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
         menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         return true;

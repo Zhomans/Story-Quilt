@@ -119,7 +119,7 @@ public class ActivityCreateStory extends Activity {
         });
     }
     public void updateHistorySeekBar(){
-        int progress = historyLength.getProgress() + SUBMISSION_MIN;
+        int progress = (int)(historyLength.getProgress() + SUBMISSION_MIN * HISTORY_TICK);
         long value = Math.round(progress * HISTORY_TICK * (submissionLength.getProgress() + SUBMISSION_MIN));
 
         String postDisplay = String.valueOf(progress * HISTORY_TICK);
