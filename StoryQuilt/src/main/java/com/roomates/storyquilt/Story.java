@@ -93,7 +93,7 @@ public class Story implements Serializable{
             }
         }
 
-        for (int i = 0; i < wordCount - historyLimit; i++){
+        for (int i = 0; i <= wordCount - historyLimit; i++){
             sb.delete(0, sb.indexOf(" ") + 1);
         }
 
@@ -114,7 +114,7 @@ public class Story implements Serializable{
 
     //Check Word Count
     public boolean checkWordCount(String str){
-        str = str.replaceAll("^ ", "").replaceAll(" $", "");
+        str = str.replaceAll("^[ ]+", "").replaceAll("[ ]+$", "");
         return this.textLimit >= (str.length() - str.replaceAll(" ", "").length()+1);
     }
 }
