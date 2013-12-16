@@ -35,6 +35,7 @@ public class FragmentAllStories extends Fragment {
     final int SORTBY_NEW = 0;
     final int SORTBY_POPULAR = 1;
     final int SORTBY_RANDOM = 2;
+    String searchQueryText = "";
 
 
     int mode = SORTBY_POPULAR;
@@ -102,7 +103,7 @@ public class FragmentAllStories extends Fragment {
     }
     //Setting up the view and bindings
     public void setupListView(View v){
-        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
+//        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
         String modeText;
         switch (mode) {case SORTBY_NEW: modeText = "new"; break; case SORTBY_POPULAR: modeText = "popular"; break; case SORTBY_RANDOM: modeText = "random"; break; default: modeText = "random"; break;}
         ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
@@ -117,6 +118,13 @@ public class FragmentAllStories extends Fragment {
         storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
+                ArrayList<Story> filtered_stories = new ArrayList<Story>();
+                for (Story story : stories) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
+                        filtered_stories.add(story);
+                    }
+                }
+                stories = filtered_stories;
                 switch (mode){
                     case SORTBY_NEW:
                         original = new ArrayList<Story>();
@@ -178,8 +186,9 @@ public class FragmentAllStories extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // search goes here !!
-                // listAdapter.getFilter().filter(query);
+                //should narrow again from filtered list on update
+                searchQueryText = newText;
+                setupListView(getView());
                 return false;
             }
 
