@@ -120,7 +120,7 @@ public class FragmentAllStories extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
-                    if (story.getTitle().contains(searchQueryText)) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
                         Log.d("Story", story.getTitle());
                         filtered_stories.add(story);
                     }
@@ -189,7 +189,7 @@ public class FragmentAllStories extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 //should narrow again from filtered list on update
                 searchQueryText = newText;
-                stories.invalidate();
+                setupListView(getView());
                 return false;
             }
 
