@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/closeSearch"
+        android:visibility="gone"
         android:layout_alignBottom="@+id/activity_all_stories_search_bar"
         android:layout_alignRight="@+id/fragment_stories_sortby_text"
         android:layout_alignTop="@+id/activity_all_stories_search_bar" />
