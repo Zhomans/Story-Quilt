@@ -50,6 +50,8 @@ public class FragmentAllStories extends Fragment {
     ArrayList<Story> original;
     int numStories;
 
+    View v;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class FragmentAllStories extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_allstories, null);
+        v = inflater.inflate(R.layout.fragment_allstories, null);
         setUpSortBy(v);
         setupListView(v);
         return v;
@@ -203,6 +205,16 @@ public class FragmentAllStories extends Fragment {
                     random.add((original.get(num.nextInt(numStories))).id);
                 }
                 setupListView(getView());
+                return false;
+            }
+        });
+
+        MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
+        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
                 return false;
             }
         });

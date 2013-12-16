@@ -10,6 +10,16 @@
         android:text="default Title"
         android:layout_alignParentLeft="true" />
 
+    <SearchView
+        android:id = "@+id/activity_all_stories_search_bar"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search for stories by title"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_stories_title"
+        android:layout_alignParentLeft="true" />
+
     <TextView
         android:id = "@+id/fragment_stories_sortby_text"
         android:layout_alignBottom="@id/fragment_stories_title"
@@ -25,6 +35,6 @@
         android:id = "@+id/fragment_stories_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below = "@id/fragment_stories_title"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/activity_all_stories_search_bar"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>
