@@ -33,7 +33,7 @@ public class ActivityStoryView  extends Activity {
     UserHandler userHandler;
     Story curStory;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
@@ -47,7 +47,7 @@ public class ActivityStoryView  extends Activity {
         FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
-                curStory= dataSnapshot.getValue(Story.class);
+                curStory = dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)) {
                     Log.i("reader?","true");
                     populateViewsAsReader();
