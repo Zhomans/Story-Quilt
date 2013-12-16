@@ -114,6 +114,7 @@ public class Story implements Serializable{
 
     //Check Word Count
     public boolean checkWordCount(String str){
+        str = str.replaceAll("^ ", "").replaceAll(" $", "");
         return this.textLimit >= (str.length() - str.replaceAll(" ", "").length()+1);
     }
 }

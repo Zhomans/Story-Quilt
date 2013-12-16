@@ -6,13 +6,26 @@
         android:id = "@+id/fragment_stories_title"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
+        android:text = "Title"
         android:textSize = "@dimen/activity_title_font"
         android:layout_alignParentLeft="true" />
-    <ListView
-        android:id = "@+id/fragment_stories_listview"
-        android:layout_below="@+id/fragment_stories_title"
+
+    <SearchView
+        android:id = "@+id/activity_stories_search_bar"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search for stories by title"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        />
+        android:layout_below="@+id/fragment_stories_title"
+        android:layout_alignParentLeft="true" />
+
+    <ListView
+        android:id = "@+id/fragment_stories_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/activity_stories_search_bar" />
 </RelativeLayout>
