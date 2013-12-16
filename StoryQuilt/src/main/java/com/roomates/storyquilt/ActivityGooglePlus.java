@@ -53,8 +53,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
         onCreateExtended(savedInstanceState);
-
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

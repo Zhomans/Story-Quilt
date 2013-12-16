@@ -93,8 +93,8 @@ public class Story implements Serializable{
             }
         }
 
-        for (int i = 0; i <= wordCount - historyLimit; i++){
-            sb.delete(0, sb.indexOf(" "));
+        for (int i = 0; i < wordCount - historyLimit; i++){
+            sb.delete(0, sb.indexOf(" ") + 1);
         }
         return sb.toString();
     }
