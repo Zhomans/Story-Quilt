@@ -121,7 +121,6 @@ public class FragmentAllStories extends Fragment {
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
                     if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
-                        Log.d("Story", story.getTitle());
                         filtered_stories.add(story);
                     }
                 }
