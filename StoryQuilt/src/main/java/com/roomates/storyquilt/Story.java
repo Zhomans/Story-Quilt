@@ -98,6 +98,7 @@ public class Story implements Serializable{
                 sb.delete(0, sb.indexOf(" "));
             }
         }
+
         return sb.toString();
     }
 

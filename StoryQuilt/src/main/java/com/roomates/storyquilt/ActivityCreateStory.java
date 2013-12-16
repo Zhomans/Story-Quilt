@@ -117,6 +117,8 @@ public class ActivityCreateStory extends Activity {
             }
 
         });
+
+        updateHistorySeekBar();
     }
     public void updateHistorySeekBar(){
         int progress = historyLength.getProgress() + SUBMISSION_MIN;

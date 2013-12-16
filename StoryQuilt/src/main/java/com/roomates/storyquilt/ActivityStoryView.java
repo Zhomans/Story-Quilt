@@ -33,7 +33,7 @@ public class ActivityStoryView  extends Activity {
     UserHandler userHandler;
     Story curStory;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
@@ -47,7 +47,7 @@ public class ActivityStoryView  extends Activity {
         FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
-                curStory= dataSnapshot.getValue(Story.class);
+                curStory = dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)) {
                     Log.i("reader?","true");
                     populateViewsAsReader();
@@ -170,10 +170,7 @@ public class ActivityStoryView  extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
-<<<<<<< HEAD
         this.menu = menu;
-=======
->>>>>>> c795de2fe7ec4ee88267cfdc52729ec8e27bb46c
         menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
         menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         return true;
