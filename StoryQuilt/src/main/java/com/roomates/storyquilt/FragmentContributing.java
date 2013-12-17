@@ -69,6 +69,7 @@ public class FragmentContributing extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stories, null);
+        Log.i("UserHandlerDebug", userHandler.user.email);
         setUpMainPageViews(v);
         return v;
     }
@@ -76,14 +77,14 @@ public class FragmentContributing extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        setListAdapters();
+        setListAdapters(getView());
     }
 
     //MyStory views
     private void setUpMainPageViews(View v){
         setListViews(v);
         setFireBaseRefs();
-        setListAdapters();
+        setListAdapters(getView());
     }
 
     
@@ -101,7 +102,7 @@ public class FragmentContributing extends Fragment {
         storyRef = FireHandler.create("stories");
     }
     //Create and Set ArrayAdapters for the ListViews
-    private void setListAdapters(){
+    private void setListAdapters(final View v){
         contributingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
@@ -112,6 +113,19 @@ public class FragmentContributing extends Fragment {
                     }
                 }
                 stories = filtered_stories;
+
+//                // May work on this a bit later -- not currently functioning
+//                if (v != null) {
+//                    TextView no_stories = (TextView) v.findViewById(R.id.no_stories);
+//                    if (stories.size() == 0) {
+//                        no_stories.setVisibility(View.VISIBLE);
+//                    } else {
+//                        no_stories.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    Log.d("Null View", "is null");
+//                }
+
                 List<Story> writingStories = new ArrayList<Story>();
                 for (Story tempStory: stories){
                     if (userHandler.isWriter(tempStory.id)){
@@ -169,7 +183,7 @@ public class FragmentContributing extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     //should narrow again from filtered list on update
                     searchQueryText = newText;
-                    setListAdapters();
+                    setListAdapters(getView());
                     return false;
                 }
 

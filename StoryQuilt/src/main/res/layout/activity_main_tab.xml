@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/parent"
     tools:context=".MainActivity">
+
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_below = "@id/activity_main_tab_holder"
