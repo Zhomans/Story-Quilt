@@ -4,14 +4,6 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
 
-    <SearchView
-        android:id = "@+id/activity_stories_search_bar"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search for stories by title"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
 
     <ListView
         android:id = "@+id/fragment_stories_listview"
@@ -23,4 +15,5 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/activity_stories_search_bar" />
+
 </RelativeLayout>

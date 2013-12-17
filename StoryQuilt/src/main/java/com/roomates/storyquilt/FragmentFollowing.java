@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -44,6 +45,9 @@ public class FragmentFollowing extends Fragment {
 
     //UserHandler
     UserHandler userHandler;
+
+    //Query String
+    String searchQueryText = "";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +87,6 @@ public class FragmentFollowing extends Fragment {
      */
     //Grab ListViews from the XML
     private void setListViews(View v){
-//        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Following");
         following = (ListView) v.findViewById(R.id.fragment_stories_listview);
         following.setBackground(new BitmapDrawable(getResources(), getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         following.setOnItemClickListener(goToStoryActivity());
@@ -97,6 +100,13 @@ public class FragmentFollowing extends Fragment {
         followingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
+                ArrayList<Story> filtered_stories = new ArrayList<Story>();
+                for (Story story : stories) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
+                        filtered_stories.add(story);
+                    }
+                }
+                stories = filtered_stories;
                 List<Story> readingStories = new ArrayList<Story>();
                 Log.i("UserHandler Readers", userHandler.user.reading.toString());
                 for (Story tempStory: stories){
@@ -127,26 +137,37 @@ public class FragmentFollowing extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
-        searchItem.setIcon(R.drawable.search);
-        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.closeSearch).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.closeSearch).setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.GONE);
-                        getView().findViewById(R.id.closeSearch).setVisibility(View.GONE);
+        final MenuItem searchItem =  menu.findItem(R.id.search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        if (searchView != null){
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean queryTextFocused) {
+                    if (!queryTextFocused) {
+                        searchItem.collapseActionView();
+                        searchView.setQuery("", false);
                     }
-                });
-                return false;
-            }
-        });
+                }
+            });
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    //should narrow again from filtered list on update
+                    searchQueryText = newText;
+                    setListAdapters();
+                    return false;
+                }
+
+            });
+        }
     }
 
     public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {

@@ -4,21 +4,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
 
-    <SearchView
-        android:id = "@+id/activity_all_stories_search_bar"
-        android:background = "@android:color/black"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search for stories by title"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:inputType="text"
-        />
-
     <TextView
         android:id = "@+id/fragment_stories_sortby_text"
-        android:layout_below="@id/activity_all_stories_search_bar"
         android:layout_alignParentRight="true"
         android:layout_width="130dp"
         android:layout_height="30dp"
@@ -46,13 +33,5 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/closeSearch"
-        android:visibility="gone"
-        android:layout_alignBottom="@+id/activity_all_stories_search_bar"
-        android:layout_alignRight="@+id/fragment_stories_sortby_text"
-        android:layout_alignTop="@+id/activity_all_stories_search_bar"
-        />
+
 </RelativeLayout>
