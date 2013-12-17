@@ -3,6 +3,7 @@ package com.roomates.storyquilt;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,10 +38,17 @@ public class ActivityStoryView  extends Activity {
 
     UserHandler userHandler;
     Story curStory;
+    String passStory;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        passStory = getIntent().getStringExtra("story");
+        setup();
+    }
+
+    private void setup() {
         setContentView(R.layout.activity_story);
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
@@ -48,8 +56,10 @@ public class ActivityStoryView  extends Activity {
         //Create the User Handler
         userHandler = new UserHandler(this);
 
+        passStory = getIntent().getStringExtra("story");
+
         //Create the Story Firebase Connection
-        FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
+        FireHandler.create("stories", passStory).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory = dataSnapshot.getValue(Story.class);
@@ -59,10 +69,10 @@ public class ActivityStoryView  extends Activity {
                     bindViewsAsReader();
                     populateViewsAsReader();
                 } else {
-                    Log.i("writer?","true");
-                    bindViewsAsWriter();
-                    populateViewsAsWriter();
-                }
+
+                }                    Log.i("writer?","true");
+                bindViewsAsWriter();
+                populateViewsAsWriter();
                 if (menu!=null){
                     Log.i("Debugger", "here");
                     menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
@@ -187,7 +197,14 @@ public class ActivityStoryView  extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         userHandler.becomeReaderFromWriter(curStory.id);
                         curStory.writers.remove(userHandler.user.email);
-                        ActivityStoryView.this.populateViewsAsReader();
+                        //ActivityStoryView.this.bindViewsAsReader();
+                        //ActivityStoryView.this.populateViewsAsReader();
+
+                        setup();
+                       //breaks the back button
+//                        Intent goToStory = new Intent(ActivityStoryView.this, ActivityStoryView.class);
+//                        goToStory.putExtra("story",passStory);
+//                        startActivity(goToStory);
                         dialog.dismiss();
                     }
                 })
@@ -212,6 +229,9 @@ public class ActivityStoryView  extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
+        if (!userHandler.isReader(curStory.id) && !userHandler.isWriter(curStory.id)) {
+            menu.findItem(R.id.join_story).setVisible(true);
+        }
         this.menu = menu;
         return true;
     }
@@ -225,6 +245,7 @@ public class ActivityStoryView  extends Activity {
 
             case R.id.join_story: //Join an Existing Story
                 curStory.writers.add(userHandler.user.email);
+                menu.findItem(R.id.join_story).setVisible(false);
                 break;
 
             case android.R.id.home:
