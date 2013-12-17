@@ -46,6 +46,9 @@ public class FragmentFollowing extends Fragment {
     //UserHandler
     UserHandler userHandler;
 
+    //Menu
+    MenuItem searchItem;
+
     //Query String
     String searchQueryText = "";
 
@@ -122,6 +125,7 @@ public class FragmentFollowing extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
+        if (searchItem != null) {searchItem.collapseActionView();}
         followingAdapter.cleanup();
     }
     //On Item Click for AdapterStoryList
@@ -139,7 +143,7 @@ public class FragmentFollowing extends Fragment {
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final MenuItem searchItem =  menu.findItem(R.id.search);
+        searchItem =  menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         if (searchView != null){
             searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {

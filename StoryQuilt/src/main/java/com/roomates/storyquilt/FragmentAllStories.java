@@ -60,6 +60,10 @@ public class FragmentAllStories extends Fragment {
     //Firebase
     Firebase storyRef;
 
+    //Search Item
+    MenuItem searchItem;
+
+
     //Random List of Stories
     int NUM_RANDOM_STORIES = 6;
     HashSet<String> random;
@@ -191,6 +195,7 @@ public class FragmentAllStories extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
+        if (searchItem != null) {searchItem.collapseActionView();}
         storiesAdapter.cleanup();
     }
 
@@ -236,11 +241,11 @@ public class FragmentAllStories extends Fragment {
                 return false;
             }
         });
-        final MenuItem searchItem =  menu.findItem(R.id.search);
+        searchItem =  menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
         final MenuItem addItem = menu.findItem(R.id.create_story);
-        final ImageView addView = (ImageView) addItem.getActionView();
+        /*final ImageView addView = (ImageView) addItem.getActionView();*/
 
         if (searchView != null){
             searchView.setOnClickListener(new View.OnClickListener() {
