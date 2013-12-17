@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/quilt_background">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/parent"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,7 +39,7 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:maxLines = "4"
         android:scrollbars = "vertical"
         android:id="@+id/activity_story_recentPosts_textview"
@@ -76,3 +80,4 @@
         android:fontFamily="sans-serif-light"/>
     
 </RelativeLayout>
+</ScrollView>
