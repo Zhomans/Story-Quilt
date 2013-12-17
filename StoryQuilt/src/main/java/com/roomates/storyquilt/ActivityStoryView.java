@@ -5,10 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +40,8 @@ public class ActivityStoryView  extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
+        //Touch off keyboard
+        setupUI(findViewById(R.id.parent));
 
         //Create the User Handler
         userHandler = new UserHandler(this);
@@ -81,6 +87,7 @@ public class ActivityStoryView  extends Activity {
 
         storyTitle = (TextView)findViewById(R.id.activity_story_title_textview);
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
+        recentPosts.setMovementMethod(new ScrollingMovementMethod());
     }
 
      /**
@@ -89,7 +96,8 @@ public class ActivityStoryView  extends Activity {
     private void populateViewsAsWriter(){
         storyTitle.setText(curStory.title);
         recentPosts.setText(curStory.recentPosts());
-        quitButton.setText("... "+String.valueOf(curStory.pieces.size() - curStory.historyLimit/curStory.textLimit)+" Posts Later ...");
+        int curNum = curStory.pieces.size() - curStory.historyLimit/curStory.textLimit;
+        quitButton.setText("... "+String.valueOf(curNum>0? curNum:0)+" Posts Later ...");
         setAddButton();
         setQuitButton();
     }
@@ -191,5 +199,30 @@ public class ActivityStoryView  extends Activity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setupUI(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideKeyboard(ActivityStoryView.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

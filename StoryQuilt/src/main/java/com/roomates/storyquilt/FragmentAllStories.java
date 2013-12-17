@@ -114,7 +114,6 @@ public class FragmentAllStories extends Fragment {
     }
     //Setting up the view and bindings
     public void setupListView(View v){
-//        ((TextView) v.findViewById(R.id.fragment_stories_title)).setText("Stories");
         String modeText;
         switch (mode) {case SORTBY_NEW: modeText = "new"; break; case SORTBY_POPULAR: modeText = "popular"; break; case SORTBY_RANDOM: modeText = "random"; break; default: modeText = "random"; break;}
         ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
@@ -187,26 +186,6 @@ public class FragmentAllStories extends Fragment {
         };
         stories.setAdapter(storiesAdapter);
 
-        SearchView searchText = (SearchView) v.findViewById(R.id.activity_all_stories_search_bar);
-        int id = searchText.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) searchText.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //should narrow again from filtered list on update
-                searchQueryText = newText;
-                setupListView(getView());
-                return false;
-            }
-
-        });
     }
     @Override
     public void onPause(){
@@ -234,7 +213,7 @@ public class FragmentAllStories extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
         item.setIcon(R.drawable.dice);
@@ -255,24 +234,36 @@ public class FragmentAllStories extends Fragment {
                 return false;
             }
         });
-
-        MenuItem searchItem = menu.add(Menu.NONE, R.id.search_all, 100, "Search");
-        searchItem.setIcon(R.drawable.search);
-        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.closeSearch).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.closeSearch).setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        getView().findViewById(R.id.activity_all_stories_search_bar).setVisibility(View.GONE);
-                        getView().findViewById(R.id.closeSearch).setVisibility(View.GONE);
+        final MenuItem searchItem =  menu.findItem(R.id.search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        if (searchView != null){
+            searchView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (searchItem.isActionViewExpanded()){
+                        searchItem.collapseActionView();
+                        searchView.setQuery("", false);
                     }
-                });
-                return false;
-            }
-        });
+                }
+            });
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    //should narrow again from filtered list on update
+                    searchQueryText = newText;
+                    setupListView(getView());
+                    return false;
+                }
+
+            });
+        }
     }
 
     public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
