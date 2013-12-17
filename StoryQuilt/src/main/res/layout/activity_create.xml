@@ -2,60 +2,104 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/quilt_background">
+
+    <TextView
+        android:id="@+id/activity_create_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:textSize="@dimen/activity_story_title_font"
+        android:layout_alignParentTop="true"
+        android:text="Create Story"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/white_background"
+        android:layout_margin="8dp"
+        android:fontFamily="sans-serif-light"
+        />
 
     <TextView
         android:id="@+id/activity_create_storyTitle_textview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/storyTitlePrompt"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:gravity="center_horizontal" />
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/activity_create_textview"
+        android:gravity="center"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        />
 
     <EditText
         android:id="@+id/activity_create_storyTitle_textfield"
         android:layout_below = "@id/activity_create_storyTitle_textview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/white_background"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:singleLine="true"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        />
 
     <TextView
         android:id="@+id/activity_create_submissionLength_textview"
         android:layout_below = "@id/activity_create_storyTitle_textfield"
-        android:layout_marginLeft = "@dimen/activity_create_text_margin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/submissionLength"
-         />
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        />
 
     <SeekBar
         android:id="@+id/activity_create_submissionLength_seekBar"
-        android:layout_width="fill_parent"
-        android:padding = "@dimen/activity_create_seekbar_padding"
+        android:layout_width="300dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:layout_below = "@id/activity_create_submissionLength_textview"
         android:layout_height="wrap_content"
-        android:indeterminate="false" />
+        android:indeterminate="false"
+        android:layout_alignLeft="@id/activity_create_submissionLength_textview"
+        android:layout_marginBottom="8dp"
+        />
 
     <TextView
         android:id="@+id/activity_create_historyLength_textview"
         android:layout_below = "@id/activity_create_submissionLength_seekBar"
-        android:layout_marginLeft = "@dimen/activity_create_text_margin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/historyLength"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
         />
 
     <SeekBar
         android:id="@+id/activity_create_historyLength_seekBar"
         android:layout_below = "@id/activity_create_historyLength_textview"
-        android:layout_width="fill_parent"
+        android:layout_width="300dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:layout_height="wrap_content"
-        android:padding = "@dimen/activity_create_seekbar_padding"
-        android:indeterminate="false" />
+        android:indeterminate="false"
+        android:layout_alignLeft="@id/activity_create_submissionLength_textview"
+        android:layout_marginBottom="8dp" />
 
     <ToggleButton
         android:id="@+id/activity_create_languageFilter_toggleButton"
@@ -66,7 +110,8 @@
         android:text="@string/languageFilter"
         android:layout_below = "@id/activity_create_historyLength_seekBar"
         android:checked="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/activity_create_languageFilter_textview"
@@ -76,24 +121,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/languageFilter"/>
+        android:text="@string/languageFilter"
+        android:fontFamily="sans-serif-light"
+        android:visibility="gone"
+        />
+
+
+    <TextView
+        android:id="@+id/activity_create_starterText_textview"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="First Post"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/activity_create_historyLength_seekBar"
+        android:gravity="center"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        />
 
     <EditText
         android:id="@+id/activity_create_starterText_textfield"
-        android:layout_below = "@id/activity_create_languageFilter_toggleButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/starterText"/>
+        android:layout_below = "@id/activity_create_starterText_textview"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/white_background"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:singleLine="true"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/starterText"
+        />
+
 
     <Button
         android:id="@+id/activity_create_create_button"
-        android:background = "@android:color/holo_blue_bright"
-        android:textColor = "@android:color/primary_text_light"
-        android:padding = "10dp"
         android:layout_below = "@id/activity_create_starterText_textfield"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create"
-        android:layout_margin = "@dimen/activity_story_button_padding"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:background = "@drawable/white_background"
+        android:textColor = "@android:color/primary_text_light"
+        android:text="Submit"
+        android:layout_marginTop="8dp"
+        android:layout_alignRight="@id/activity_create_starterText_textfield"
+        android:fontFamily="sans-serif-light"
+        />
 </RelativeLayout>
