@@ -35,17 +35,29 @@
         </activity>
         <activity
             android:name=".ActivityCreateStory"
-            android:label="Create a Story!" >
+            android:label="Create a Story!"
+            android:parentActivityName="com.roomates.storyquilt.ActivityMainTab" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.roomates.storyquilt.ActivityMainTab" />
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ActivityStoryView"
-            android:label="StoryQuilt" >
+            android:label="StoryQuilt"
+
+            android:parentActivityName="com.roomates.storyquilt.ActivityMainTab" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.roomates.storyquilt.ActivityMainTab" />
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
 
