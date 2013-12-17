@@ -36,7 +36,8 @@
         <activity
             android:name=".ActivityCreateStory"
             android:label="Create a Story!"
-            android:parentActivityName="com.roomates.storyquilt.ActivityMainTab" >
+            android:parentActivityName="com.roomates.storyquilt.ActivityMainTab"
+            android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

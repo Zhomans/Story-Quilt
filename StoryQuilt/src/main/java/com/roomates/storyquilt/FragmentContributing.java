@@ -49,6 +49,8 @@ public class FragmentContributing extends Fragment {
     //Search Text
     String searchQueryText = "";
 
+    //Search Bar
+    MenuItem searchItem;
     //UserHandler
     UserHandler userHandler;
 
@@ -124,6 +126,7 @@ public class FragmentContributing extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
+        if (searchItem != null) {searchItem.collapseActionView();}
         contributingAdapter.cleanup();
     }
 
@@ -142,7 +145,7 @@ public class FragmentContributing extends Fragment {
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final MenuItem searchItem =  menu.findItem(R.id.search);
+        searchItem =  menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         if (searchView != null){
             searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
