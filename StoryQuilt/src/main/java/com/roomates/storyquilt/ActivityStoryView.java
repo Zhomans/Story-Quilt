@@ -39,6 +39,7 @@ public class ActivityStoryView  extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_story);
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
@@ -197,6 +198,10 @@ public class ActivityStoryView  extends Activity {
             case R.id.join_story: //Join an Existing Story
                 curStory.writers.add(userHandler.user.email);
                 break;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
