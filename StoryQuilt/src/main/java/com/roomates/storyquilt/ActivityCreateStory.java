@@ -178,9 +178,10 @@ public class ActivityCreateStory extends Activity {
                                     );
                     if (userHandler.user.email.equals("readonly")){
                         Toast.makeText(ActivityCreateStory.this, "Sign in to create a story!", Toast.LENGTH_SHORT).show();
-                    }
+                    } else {
                     //Push to Firebase
                     userHandler.becomeWriter(FireHandler.pushStoryToList(curStory));
+                    }
                     //End Activity
                     finish();
                 }

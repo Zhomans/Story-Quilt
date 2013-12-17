@@ -47,6 +47,9 @@ public class ActivityMainTab extends ActivityGooglePlus {
         userHandler.updateUserFromFirebase();
 
         Boolean connected = mPlusClient.isConnected();
+        if (!connected) {
+            userHandler.setEmail("readonly");
+        }
         //Update Handler
         userHandler.setConnected(connected);
 
