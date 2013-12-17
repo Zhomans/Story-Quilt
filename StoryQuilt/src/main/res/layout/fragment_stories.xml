@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id = "@+id/fragment_parent"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
 
+    <TextView
+        android:id="@+id/no_stories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No stories..."
+        android:visibility="gone"/>
 
     <ListView
         android:id = "@+id/fragment_stories_listview"

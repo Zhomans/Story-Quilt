@@ -71,14 +71,14 @@ public class FragmentFollowing extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        setListAdapters();
+        setListAdapters(getView());
     }
 
     //MyStory views
     private void setUpMainPageViews(View v){
         setListViews(v);
         setFireBaseRefs();
-        setListAdapters();
+        setListAdapters(getView());
     }
 
 
@@ -96,7 +96,7 @@ public class FragmentFollowing extends Fragment {
         storyRef = FireHandler.create("stories");
     }
     //Create and Set ArrayAdapters for the ListViews
-    private void setListAdapters(){
+    private void setListAdapters(final View v){
         followingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
@@ -107,6 +107,19 @@ public class FragmentFollowing extends Fragment {
                     }
                 }
                 stories = filtered_stories;
+
+//                // May work on this a bit later -- not currently functioning
+//                if (v != null) {
+//                    TextView no_stories = (TextView) v.findViewById(R.id.no_stories);
+//                    if (stories.size() == 0) {
+//                        no_stories.setVisibility(View.VISIBLE);
+//                    } else {
+//                        no_stories.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    Log.d("Null View", "is null");
+//                }
+
                 List<Story> readingStories = new ArrayList<Story>();
                 Log.i("UserHandler Readers", userHandler.user.reading.toString());
                 for (Story tempStory: stories){
@@ -162,7 +175,7 @@ public class FragmentFollowing extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     //should narrow again from filtered list on update
                     searchQueryText = newText;
-                    setListAdapters();
+                    setListAdapters(getView());
                     return false;
                 }
 

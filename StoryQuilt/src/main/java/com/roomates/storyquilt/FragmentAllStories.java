@@ -114,7 +114,7 @@ public class FragmentAllStories extends Fragment {
         });
     }
     //Setting up the view and bindings
-    public void setupListView(View v){
+    public void setupListView(final View v){
         String modeText;
         switch (mode) {case SORTBY_NEW: modeText = "new"; break; case SORTBY_POPULAR: modeText = "popular"; break; case SORTBY_RANDOM: modeText = "random"; break; default: modeText = "random"; break;}
         ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
@@ -137,6 +137,19 @@ public class FragmentAllStories extends Fragment {
                     }
                 }
                 stories = filtered_stories;
+
+//                // May work on this a bit later -- not currently functioning
+//                if (v != null) {
+//                    TextView no_stories = (TextView) v.findViewById(R.id.no_stories);
+//                    if (stories.size() == 0) {
+//                        no_stories.setVisibility(View.VISIBLE);
+//                    } else {
+//                        no_stories.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    Log.d("Null View", "is null");
+//                }
+
                 switch (mode){
                     case SORTBY_NEW:
                         original = new ArrayList<Story>();
