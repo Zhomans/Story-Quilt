@@ -15,7 +15,7 @@ import android.widget.EditText;
 public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
     Menu menu;
-
+    static MenuItem searchBar;
     //Current User
     public FragmentContributing contributingFragment = new FragmentContributing();
     public FragmentFollowing followingFragment = new FragmentFollowing();
@@ -100,6 +100,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
         Boolean connected = userHandler.isConnected();
         (menu.findItem(R.id.gPlusSignOut)).setVisible(connected);
         (menu.findItem(R.id.gPlusSignIn)).setVisible(!connected);
+        searchBar = menu.findItem(R.id.search);
         return true;
     }
     @Override
@@ -130,6 +131,9 @@ public class ActivityMainTab extends ActivityGooglePlus {
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {
                     hideKeyboard(ActivityMainTab.this);
+                    if (searchBar!=null && searchBar.isActionViewExpanded()){
+                        searchBar.collapseActionView();
+                    }
                     return false;
                 }
             });
@@ -146,6 +150,8 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        if (activity.getCurrentFocus()!=null){
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }
