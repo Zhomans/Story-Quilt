@@ -37,8 +37,10 @@ public class ActivityMainTab extends ActivityGooglePlus {
         previousEmail = userHandler.getEmail();
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
-
-        signIn();
+        if (previousEmail.equals("first")) {
+            userHandler.setEmail("readonly");
+            signIn();
+        }
         //Set Up Fragments
         setUpFragments();
     }
