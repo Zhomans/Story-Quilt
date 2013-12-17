@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -215,19 +216,20 @@ public class FragmentAllStories extends Fragment {
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
-        item.setIcon(R.drawable.dice);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        final MenuItem randomItem = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
+        final ImageView randomView = (ImageView) randomItem.getActionView();
+        randomItem.setIcon(R.drawable.dice);
+        randomItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        randomItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 numStories = original.size();
                 Random num = new Random(System.currentTimeMillis());
                 mode = SORTBY_RANDOM;
-                ((TextView)getView().findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: random");
+                ((TextView) getView().findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: random");
                 random = new HashSet<String>();
                 if (NUM_RANDOM_STORIES > numStories) NUM_RANDOM_STORIES = numStories;
-                while (random.size() < NUM_RANDOM_STORIES){
+                while (random.size() < NUM_RANDOM_STORIES) {
                     random.add((original.get(num.nextInt(numStories))).id);
                 }
                 setupListView(getView());
@@ -236,6 +238,10 @@ public class FragmentAllStories extends Fragment {
         });
         final MenuItem searchItem =  menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        final MenuItem addItem = menu.findItem(R.id.create_story);
+        final ImageView addView = (ImageView) addItem.getActionView();
+
         if (searchView != null){
             searchView.setOnClickListener(new View.OnClickListener() {
                 @Override
