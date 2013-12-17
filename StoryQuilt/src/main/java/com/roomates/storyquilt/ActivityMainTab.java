@@ -87,9 +87,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
         actionBar.addTab(following);
         actionBar.addTab(allStories);
     }
-    public void setUpSearchBar(){
-
-    }
 
     //Options Menu Setup
     @Override
