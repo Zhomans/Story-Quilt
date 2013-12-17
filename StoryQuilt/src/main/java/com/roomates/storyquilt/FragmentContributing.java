@@ -93,7 +93,7 @@ public class FragmentContributing extends Fragment {
     //Grab ListViews from the XML
     private void setListViews(View v){
         contributing = (ListView) v.findViewById(R.id.fragment_stories_listview);
-        contributing.setBackground(new BitmapDrawable(getResources(), getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
+        //contributing.setBackground(new BitmapDrawable(getResources(), getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         contributing.setOnItemClickListener(goToStoryActivity());
     }
     //Get Firebase Refs for Reading and Writing
@@ -177,7 +177,7 @@ public class FragmentContributing extends Fragment {
         }
     }
 
-    public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+/*    public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -197,5 +197,5 @@ public class FragmentContributing extends Fragment {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
-    }
+    }*/
 }

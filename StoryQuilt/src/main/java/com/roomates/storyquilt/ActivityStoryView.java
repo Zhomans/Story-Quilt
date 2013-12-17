@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -82,7 +83,32 @@ public class ActivityStoryView  extends Activity {
      */
     private void bindViewsAsWriter(){
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
+        final TextView remaining = (TextView) findViewById(R.id.activity_story_text_remaining);
+        remaining.setText(curStory.textLimit + " words left");
+        //Text Watcher
+        newPost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int wordCount = s.toString().trim().split(" ").length;
+                if ((curStory.textLimit - wordCount) == 0){
+                    remaining.setText("No words left.");
+                } else if (curStory.textLimit - wordCount < 0) {
+                    remaining.setText(Math.abs(curStory.textLimit - wordCount) + " words over");
+                } else {
+                    remaining.setText((curStory.textLimit - wordCount) + " words left");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         addButton = (Button)findViewById(R.id.activity_story_button);
         quitButton = (TextView)findViewById(R.id.activity_story_postsLater_textview);
 

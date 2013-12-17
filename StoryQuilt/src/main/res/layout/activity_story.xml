@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_parent"
+    android:focusable="true" android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+<ScrollView
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
@@ -8,11 +17,11 @@
     android:id="@+id/parent"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:gravity="center"
         android:textSize="@dimen/activity_story_title_font"
@@ -21,18 +30,31 @@
         android:text="Once Upon A Time..."
         android:layout_centerHorizontal="true"
         android:background="@drawable/white_background"
-        android:layout_margin="8dp"
+        android:fontFamily="sans-serif-light"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:gravity="center"
+        android:textSize="@dimen/activity_story_title_font"
+        android:id="@+id/activity_story_title_underline"
+        android:layout_below = "@id/activity_story_title_textview"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/holo_blue_dark"
         android:fontFamily="sans-serif-light"/>
 
     <TextView
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:paddingRight = "10dp"
+        android:paddingLeft = "10dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:textSize="@dimen/activity_story_postsLater_font"
         android:id="@+id/activity_story_postsLater_textview"
         android:layout_below="@id/activity_story_title_textview"
         android:text="...56 Posts Later..."
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@android:color/holo_blue_dark"
         android:background="@drawable/white_background"
         android:layout_centerHorizontal="true"
@@ -49,17 +71,14 @@
         android:gravity="center"
         android:paddingTop="8dp"
         android:background="@drawable/white_background"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textSize="@dimen/activity_story_title_font"
         android:fontFamily="sans-serif-light"/>
-
-    <EditText
+    <View
         android:layout_width="250dp"
         android:layout_height="70dp"
-        android:id="@+id/activity_story_edittext"
         android:layout_below="@id/activity_story_recentPosts_textview"
         android:layout_alignRight="@id/activity_story_recentPosts_textview"
         android:layout_marginTop="8dp"
@@ -68,17 +87,47 @@
         android:fontFamily="sans-serif-light"
         android:padding="8dp"/>
 
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/activity_story_recentPosts_textview"
+        android:layout_alignRight="@id/activity_story_recentPosts_textview"
+        android:id="@+id/activity_story_edittext"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-light"
+        android:padding="8dp"/>
+    <TextView
+        android:id="@+id/activity_story_text_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:text = "10 words left"
+        android:gravity = "center"
+        android:layout_marginRight = "5dp"
+        android:background = "@drawable/white_background"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/activity_story_recentPosts_textview"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/activity_story_edittext"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-light"
+        android:padding="8dp"/>
     <Button
-        android:layout_width="70dp"
-        android:layout_height="30dp"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop = "15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below = "@id/activity_story_edittext"
         android:id="@+id/activity_story_button"
-        android:layout_below="@+id/activity_story_edittext"
         android:background = "@drawable/white_background"
         android:textColor = "@android:color/primary_text_light"
         android:text="Submit"
-        android:layout_marginTop="8dp"
-        android:layout_alignRight="@id/activity_story_edittext"
         android:fontFamily="sans-serif-light"/>
-    
+
 </RelativeLayout>
 </ScrollView>
+
+
+</RelativeLayout>

@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/submissionLength"
+            android:text="Post length"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="left"

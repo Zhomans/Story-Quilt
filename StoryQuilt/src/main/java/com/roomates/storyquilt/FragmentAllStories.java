@@ -100,7 +100,7 @@ public class FragmentAllStories extends Fragment {
     //Set Up the button
     public void setUpSortBy(final View v) {
         sortBy = (TextView) v.findViewById(R.id.fragment_stories_sortby_text);
-        sortBy.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
+        //sortBy.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         sortBy.setClickable(true);
         sortBy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class FragmentAllStories extends Fragment {
         ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
 
         stories = (ListView) v.findViewById(R.id.fragment_stories_listview);
-        stories.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
+        //stories.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         stories.setOnItemClickListener(goToStoryActivity());
 
         //Firebase
@@ -276,7 +276,7 @@ public class FragmentAllStories extends Fragment {
             });
         }
     }
-
+/*
     public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -297,5 +297,5 @@ public class FragmentAllStories extends Fragment {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
-    }
+    }*/
 }
