@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/quilt_background">
+
+<RelativeLayout
+    android:id="@+id/parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:textSize="@dimen/activity_story_title_font"
+        android:id="@+id/activity_story_title_textview"
+        android:layout_alignParentTop="true"
+        android:text="Once Upon A Time..."
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/white_background"
+        android:layout_margin="8dp"
+        android:fontFamily="sans-serif-light"/>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars = "vertical"
+        android:id="@+id/activity_story_recentPosts_textview"
+        android:layout_below="@id/activity_story_title_textview"
+        android:text="...And then everyone died..."
+        android:gravity="center"
+        android:padding="8dp"
+        android:background="@drawable/white_background"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-light"/>
+
+
+</RelativeLayout>
+</ScrollView>

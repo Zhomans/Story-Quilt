@@ -47,9 +47,6 @@ public class ActivityStoryView  extends Activity {
         //Create the User Handler
         userHandler = new UserHandler(this);
 
-        //Bind Activity Views
-        bindViews();
-
         //Create the Story Firebase Connection
         FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,9 +54,12 @@ public class ActivityStoryView  extends Activity {
                 curStory = dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)) {
                     Log.i("reader?","true");
+                    setContentView(R.layout.activity_story_following);
+                    bindViewsAsReader();
                     populateViewsAsReader();
                 } else {
                     Log.i("writer?","true");
+                    bindViewsAsWriter();
                     populateViewsAsWriter();
                 }
                 if (menu!=null){
@@ -80,12 +80,20 @@ public class ActivityStoryView  extends Activity {
     /**
      Binding Views for StoryView from XML
      */
-    private void bindViews(){
+    private void bindViewsAsWriter(){
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
 
         addButton = (Button)findViewById(R.id.activity_story_button);
         quitButton = (TextView)findViewById(R.id.activity_story_postsLater_textview);
 
+        storyTitle = (TextView)findViewById(R.id.activity_story_title_textview);
+        recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
+        recentPosts.setMovementMethod(new ScrollingMovementMethod());
+    }
+    /**
+     Binding Views for StoryView from XML
+     */
+    private void bindViewsAsReader(){
         storyTitle = (TextView)findViewById(R.id.activity_story_title_textview);
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
         recentPosts.setMovementMethod(new ScrollingMovementMethod());
@@ -105,10 +113,6 @@ public class ActivityStoryView  extends Activity {
     private void populateViewsAsReader(){
         storyTitle.setText(this.getTitle());
         recentPosts.setText(curStory.fullStory());
-
-        quitButton.setVisibility(View.INVISIBLE);
-        newPost.setVisibility(View.INVISIBLE);
-        addButton.setVisibility(View.INVISIBLE);
     }
     private void setAddButton(){
         //Add Button
@@ -183,8 +187,6 @@ public class ActivityStoryView  extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
         this.menu = menu;
-        menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
-        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         return true;
     }
 

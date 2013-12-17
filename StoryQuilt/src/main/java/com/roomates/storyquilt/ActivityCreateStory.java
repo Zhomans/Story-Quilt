@@ -89,7 +89,7 @@ public class ActivityCreateStory extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress += SUBMISSION_MIN;
-                submissionDisplay.setText("Submission Length: " + progress + " words ");
+                submissionDisplay.setText("Word Limit: " + progress + " words ");
                 updateHistorySeekBar();
             }
 
@@ -136,7 +136,7 @@ public class ActivityCreateStory extends Activity {
             postDisplay += "." + posts[1].substring(0,1);
         } else {
             postDisplay =  String.valueOf(numPosts);}
-        historyDisplay.setText("History Length: " + postDisplay + " posts (" + value + " words)");
+        historyDisplay.setText("Posts Visible: " + postDisplay + " posts (" + value + " words)");
     }
 
     /**
@@ -178,9 +178,10 @@ public class ActivityCreateStory extends Activity {
                                     );
                     if (userHandler.user.email.equals("readonly")){
                         Toast.makeText(ActivityCreateStory.this, "Sign in to create a story!", Toast.LENGTH_SHORT).show();
-                    }
+                    } else {
                     //Push to Firebase
                     userHandler.becomeWriter(FireHandler.pushStoryToList(curStory));
+                    }
                     //End Activity
                     finish();
                 }

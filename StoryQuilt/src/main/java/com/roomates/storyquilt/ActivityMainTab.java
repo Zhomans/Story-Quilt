@@ -37,8 +37,10 @@ public class ActivityMainTab extends ActivityGooglePlus {
         previousEmail = userHandler.getEmail();
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
-
-        signIn();
+        if (previousEmail.equals("first")) {
+            userHandler.setEmail("readonly");
+            signIn();
+        }
         //Set Up Fragments
         setUpFragments();
     }
@@ -47,6 +49,9 @@ public class ActivityMainTab extends ActivityGooglePlus {
         userHandler.updateUserFromFirebase();
 
         Boolean connected = mPlusClient.isConnected();
+        if (!connected) {
+            userHandler.setEmail("readonly");
+        }
         //Update Handler
         userHandler.setConnected(connected);
 
