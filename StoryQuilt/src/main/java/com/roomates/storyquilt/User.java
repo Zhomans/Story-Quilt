@@ -5,14 +5,13 @@ import java.util.ArrayList;
 
 /**
  * Created by chris on 12/4/13.
+ * Clean: 12/18/2013
  */
 public class User implements Serializable{
     String email, name;
     int age, reports, posts;
     boolean isBanned;
     ArrayList<String> writing, reading, removed;
-
-
 
     public User(){} //Firebase required constructor
 
@@ -52,10 +51,6 @@ public class User implements Serializable{
     public ArrayList<String> getReading(){ return this.reading; }
     public ArrayList<String> getRemoved(){ return this.removed; }
 
-    //Setting the id from Firebase
-    public void setEmail(String value){
-        this.email = value;
-    }
 
     //Format Email to Firebase Friendly format
     public static String formatEmail(String email){

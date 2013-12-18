@@ -44,7 +44,6 @@ public class UserHandler {
     /**
      * Firebase Information
      */
-
     public User newUser(){
         return this.user = new User(
                 getEmail(),
@@ -100,25 +99,12 @@ public class UserHandler {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putInt("personAge", value).commit();
     }
 
-    /**
-     * Get Connectivity
-     */
-    public void setConnected(Boolean value) {
-        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
-    }
-    public Boolean isConnected() {
-        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
-    }
 
     /**
      * Change User Status
      */
     public void becomeWriter(String id){
         this.user.writing.add(id);
-        FireHandler.pushUserToList(this.user);
-    }
-    public void becomeReader(String id){
-        this.user.reading.add(id);
         FireHandler.pushUserToList(this.user);
     }
     public void becomeReaderFromWriter(String id){
@@ -140,10 +126,15 @@ public class UserHandler {
         return user != null && user.writing != null && user.writing.contains(id);
     }
 
-
     /**
-     * Network Connectivity
+     * Get Connectivity
      */
+    public void setConnected(Boolean value) {
+        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
+    }
+    public Boolean isConnected() {
+        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("connected", false);
+    }
     private boolean isNetworkAvailable() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;

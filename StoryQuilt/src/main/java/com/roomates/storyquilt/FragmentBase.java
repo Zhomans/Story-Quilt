@@ -102,7 +102,7 @@ public abstract class FragmentBase extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
-                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase()) && !userHandler.user.removed.contains(story.id)) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase()) && !userHandler.isRemoved(story.id)) {
                         filtered_stories.add(story);
                     }
                 }
