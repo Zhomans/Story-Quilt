@@ -245,6 +245,9 @@ public class ActivityStoryView  extends Activity {
                 break;
 
             case R.id.join_story: //Join an Existing Story
+                if (userHandler.user.email.equals("readonly")){
+                    Toast.makeText(ActivityStoryView.this, "Sign in to join a story!", Toast.LENGTH_SHORT).show();
+                } else
                 if (!userHandler.isReader(curStory.id)){
                     curStory.writers.add(userHandler.user.email);
                     Toast.makeText(ActivityStoryView.this, "You have become a writer for this story!",Toast.LENGTH_SHORT).show();
