@@ -75,7 +75,7 @@ public class ActivityStoryView  extends Activity {
                 } else {
                     findViewById(R.id.activity_story_button).setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
                 }
-                if (posts!=null && posts != curStory.pieces.size()){
+                if (posts!=null && posts != curStory.pieces.size() && !curStory.checkMostRecentPoster(userHandler.user)){
                     Toast.makeText(ActivityStoryView.this, "Someone just posted!", Toast.LENGTH_SHORT).show();
                     
                 }
