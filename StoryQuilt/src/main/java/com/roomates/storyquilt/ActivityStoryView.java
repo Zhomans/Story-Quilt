@@ -38,7 +38,7 @@ public class ActivityStoryView  extends Activity {
     //Views
     EditText newPost;
     Button addButton;
-    TextView storyTitle, recentPosts, quitButton;
+    TextView storyTitle, recentPosts, quitButton, remaining;
 
     UserHandler userHandler;
     Story curStory;
@@ -92,7 +92,6 @@ public class ActivityStoryView  extends Activity {
                     populateViewsAsReader();
                 } else {
                     Log.i("writer?","true");
-                    curStory = dataSnapshot.getValue(Story.class);
                     bindViewsAsWriter();
                     populateViewsAsWriter();
                 }
@@ -116,8 +115,8 @@ public class ActivityStoryView  extends Activity {
      */
     private void bindViewsAsWriter(){
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
-        final TextView remaining = (TextView) findViewById(R.id.activity_story_text_remaining);
-        remaining.setText(curStory.textLimit);
+        remaining = (TextView) findViewById(R.id.activity_story_text_remaining);
+        remaining.setText(String.valueOf(curStory.textLimit));
         //Text Watcher
         newPost.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,10 +127,10 @@ public class ActivityStoryView  extends Activity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")){
-                    remaining.setText(curStory.textLimit);
+                    remaining.setText(String.valueOf(curStory.textLimit));
                 } else {
                     int wordCount = s.toString().trim().split(" ").length;
-                    remaining.setText(curStory.textLimit - wordCount);
+                    remaining.setText(String.valueOf(curStory.textLimit - wordCount));
                     if ((curStory.textLimit - wordCount) >= 0){
                         remaining.setTextColor(Color.BLACK);
                     } else {
