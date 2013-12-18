@@ -42,6 +42,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
         setupUI(findViewById(R.id.parent));
         if (previousEmail.equals("first")) {
             previousEmail = "readonly";
+            userHandler.setEmail("readonly");
             signIn();
         }
         //Set Up Fragments

@@ -170,7 +170,7 @@ public class ActivityStoryView  extends Activity {
                     Toast.makeText(ActivityStoryView.this, "Sign in to post to a story!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    if (newPostText != null || !newPostText.toString().equals("")){
+                    if (newPostText != null && !newPostText.toString().equals("")){
                         if (curStory.checkWordCount(newPostText.toString())){
                             //Add new Piece
                             Piece newPiece = new Piece(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", ""), String.valueOf(System.currentTimeMillis()), newPostText.toString());
@@ -184,7 +184,7 @@ public class ActivityStoryView  extends Activity {
                             FireHandler.updateStoryInFirebase(curStory);
 
                         } else {
-                            Toast.makeText(ActivityStoryView.this, getString(R.string.activity_story_overWordLimit).concat(String.valueOf(curStory.getTextLimit())), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityStoryView.this, "Please make sure your post is of appropriate length!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

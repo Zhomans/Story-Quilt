@@ -64,6 +64,7 @@ public class UserHandler {
                     Toast.makeText(activity, "Network is currently unavailable!", Toast.LENGTH_SHORT).show();
                 }
                 User curUser = snapshot.getValue(User.class);
+                if (getEmail().equals("first")){setEmail("readonly");}
                 if (curUser == null) {FireHandler.pushUserToList(UserHandler.this.user);} else {UserHandler.this.user = curUser;}
                 if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
                 else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
