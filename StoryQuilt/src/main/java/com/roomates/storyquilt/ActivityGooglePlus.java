@@ -93,20 +93,15 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
         getUserInformation();
-/*        if (!previousEmail.equals(mPlusClient.getAccountName())) {
-            Toast.makeText(this, mPlusClient.getCurrentPerson().getName().getGivenName() + ", you connected!", Toast.LENGTH_LONG).show();
-        }*/
         onConnectionStatusChanged();
     }
     //Google+ Connection Disconnected
     public void onDisconnected() {
-        Log.d("ActivityGooglePlus", "disconnected");
         onConnectionStatusChanged();
     }
     //Google+ Connection Failed
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i("GooglePlusAcitivity Connection Failed",result.toString());
         if (mConnectionProgressDialog.isShowing()) {
             // The user clicked the sign-in button already. Start to resolve
             // connection errors. Wait until onConnected() to dismiss the
@@ -155,7 +150,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     }
     //Signing Out of Google+
     public void signOut() {
-        Log.i("isConnected", Boolean.toString(mPlusClient.isConnected()));
         if (mPlusClient.isConnected()) {
             mPlusClient.clearDefaultAccount();
             mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
@@ -167,7 +161,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
             });
 
             mPlusClient.disconnect();
-            //mPlusClient.connect();
             Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
         }
         onConnectionStatusChanged();
