@@ -121,7 +121,6 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
         android:capitalize="none"
-        android:inputType="text|textEmailAddress"
         android:padding="8dp"/>
 
 
