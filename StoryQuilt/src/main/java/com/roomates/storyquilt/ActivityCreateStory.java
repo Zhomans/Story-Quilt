@@ -2,6 +2,7 @@ package com.roomates.storyquilt;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,7 +23,7 @@ import java.util.HashSet;
  * Created by chris on 12/4/13.
  */
 public class ActivityCreateStory extends Activity {
-    //Views
+    //Views From XML
     TextView historyDisplay, submissionDisplay;
     EditText storyTitle, starterText;
     SeekBar historyLength, submissionLength;
@@ -31,7 +32,7 @@ public class ActivityCreateStory extends Activity {
 
     //SeekBar Constants
     int SUBMISSION_MAX = 25; //Words
-    int SUBMISSION_MIN = 1;
+    int SUBMISSION_MIN = 1; //Offsetting the Seekbar
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
     double HISTORY_TICK = 0.2;
@@ -44,10 +45,11 @@ public class ActivityCreateStory extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar()!=null){getActionBar().setDisplayHomeAsUpEnabled(true);}else{Log.d("NullPointerException", "ActivityCreateStory - ActionBar is null");}
+        //Setting the XML
         setContentView(R.layout.activity_create);
-        //Touch off keyboard
-        setupUI(findViewById(R.id.parent));
+        //Keyboard AutoHide
+        autoHideKeyboard(findViewById(R.id.parent));
         //setup user handler
         userHandler = new UserHandler(this);
 
@@ -147,25 +149,25 @@ public class ActivityCreateStory extends Activity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Create Firebase Ref
-                //Grab Text
-                String title =String.valueOf(storyTitle.getText());
+                //Get user input
                 String starter = String.valueOf(starterText.getText());
+                String title = String.valueOf(storyTitle.getText()).equals("")? (String.valueOf(storyTitle.getText())):starter;
 
-                //Check if title exists
-                if (title.equals("")) title = starter;
-                if (starter.equals("") || starter.split(" ").length > (submissionLength.getProgress() + 1)) {
-                    Toast.makeText(ActivityCreateStory.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
+                //Check for validity of post.
+                if (userHandler.user.email.equals("readonly")){
+                    Toast.makeText(ActivityCreateStory.this, "Sign in to create a story!", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else if (starter.equals("") || starter.split(" ").length > (submissionLength.getProgress() + 1)) {
+                        Toast.makeText(ActivityCreateStory.this, "Please give the story an initial post or appropriate length!", Toast.LENGTH_SHORT).show();
+                } else {
                     ArrayList<Piece> curPieces = new ArrayList<Piece>();
                     curPieces.add(new Piece(
-                            getSharedPreferences("StoryQuilt",MODE_PRIVATE).getString("email","Anonymous"),
+                            userHandler.getEmail(),
                             String.valueOf(System.currentTimeMillis()),
                             String.valueOf(starterText.getText())
                     ));
                     HashSet<String> writers = new HashSet<String>();
-                    writers.add(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email","Anonymous"));
+                    writers.add(userHandler.getEmail());
 
                     //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
                     Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
@@ -176,12 +178,9 @@ public class ActivityCreateStory extends Activity {
                                     curPieces,
                                     writers
                                     );
-                    if (userHandler.user.email.equals("readonly")){
-                        Toast.makeText(ActivityCreateStory.this, "Sign in to create a story!", Toast.LENGTH_SHORT).show();
-                    } else {
-                    //Push to Firebase
-                    userHandler.becomeWriter(FireHandler.pushStoryToList(curStory));
-                    }
+
+                        userHandler.becomeWriter(FireHandler.pushStoryToList(curStory));
+
                     //End Activity
                     finish();
                 }
@@ -189,17 +188,21 @@ public class ActivityCreateStory extends Activity {
         });
     }
 
+    /**
+     * Methods Setting up Options Menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        //hide/show menu items
+        //Possible Null Pointer when setting the signIn and signOut button
         (menu.findItem(R.id.gPlusSignOut)).setVisible(userHandler.isConnected());
         (menu.findItem(R.id.gPlusSignIn)).setVisible(!userHandler.isConnected());
         return true;
     }
 
-    //Options Menu Actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -213,7 +216,11 @@ public class ActivityCreateStory extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setupUI(View view) {
+    /**
+     * Methods for auto-hiding the keyboard
+     * @param view
+     */
+    public void autoHideKeyboard(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if(!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
@@ -228,11 +235,10 @@ public class ActivityCreateStory extends Activity {
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View innerView = ((ViewGroup) view).getChildAt(i);
-                setupUI(innerView);
+                autoHideKeyboard(innerView);
             }
         }
     }
-
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (activity.getCurrentFocus()!=null){

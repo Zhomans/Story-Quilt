@@ -94,13 +94,17 @@ public class ActivityStoryView  extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int wordCount = s.toString().trim().split(" ").length;
-                if ((curStory.textLimit - wordCount) == 0){
-                    remaining.setText("No words left.");
-                } else if (curStory.textLimit - wordCount < 0) {
-                    remaining.setText(Math.abs(curStory.textLimit - wordCount) + " words over");
+                if (s.toString().equals("")){
+                    remaining.setText(curStory.textLimit + " words left.");
                 } else {
-                    remaining.setText((curStory.textLimit - wordCount) + " words left");
+                    int wordCount = s.toString().trim().split(" ").length;
+                    if ((curStory.textLimit - wordCount) == 0){
+                        remaining.setText("No words left.");
+                    } else if (curStory.textLimit - wordCount < 0) {
+                        remaining.setText(Math.abs(curStory.textLimit - wordCount) + " words over");
+                    } else {
+                        remaining.setText((curStory.textLimit - wordCount) + " words left");
+                    }
                 }
             }
 

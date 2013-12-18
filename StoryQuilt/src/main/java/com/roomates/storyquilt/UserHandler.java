@@ -22,15 +22,16 @@ public class UserHandler {
     //Handling the User
     User user;
 
-    //Passing the activity for context
+    //Passing the activity for Context
     Activity activity;
 
-    //Firebase
+    //Firebase Reference
     Firebase firebase;
 
+    //Constructor
     public UserHandler(Activity activity){
         this.activity = activity;
-
+        //Base Case User
         this.user = new User(
                 getEmail(),
                 getPersonFirstName(),
@@ -40,14 +41,15 @@ public class UserHandler {
                 false,
                 new ArrayList<String>(),
                 new ArrayList<String>());
+        //Get User Information From Firebase
         updateUserFromFirebase();
     }
 
     /**
      * Firebase Information
      */
-    public void addUserToFirebase(){
-        this.user = new User(
+    public User newUser(){
+        return this.user = new User(
                 getEmail(),
                 getPersonFirstName(),
                 getPersonAge(),
@@ -56,14 +58,13 @@ public class UserHandler {
                 false,
                 new ArrayList<String>(),
                 new ArrayList<String>());
-        FireHandler.pushUserToList(this.user);
     }
     public void updateUserFromFirebase(){
         FireHandler.create("users", User.formatEmail(getEmail())).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 UserHandler.this.user = snapshot.getValue(User.class);
-                if (user == null) addUserToFirebase();
+                if (user == null) FireHandler.pushUserToList(newUser());
                 if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
                 else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
                 if (user.reading == null) user.reading = new ArrayList<String>();
@@ -75,23 +76,20 @@ public class UserHandler {
         });
     }
 
-
-    public void stopConnection(){
-        Firebase.goOffline();
-    }
-
-
    /**
      * Manage User Information
      */
     public String getEmail(){
-        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "first");
+        this.user.email = this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "first");
+        return this.user.email;
     }
     public void setEmail(String value){
-        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("email", User.formatEmail(value)).commit();
+        this.user.email = User.formatEmail(value);
+        this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("email", this.user.email).commit();
     }
     public String getPersonFirstName(){
-        return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
+        this.user.name = this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("personFirstName", "");
+        return this.user.name;
     }
     public void setPersonFirstName(String value){
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putString("personFirstName", value).commit();
@@ -102,6 +100,10 @@ public class UserHandler {
     public void setPersonAge(Integer value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putInt("personAge", value).commit();
     }
+
+    /**
+     * Get Connectivity
+     */
     public void setConnected(Boolean value) {
         this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("connected", value).commit();
     }
