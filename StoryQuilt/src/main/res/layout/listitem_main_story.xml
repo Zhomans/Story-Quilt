@@ -56,45 +56,25 @@
 
     <TextView
         android:id = "@+id/story_limit_textview"
-        android:text = "4"
-        android:layout_marginRight = "15dp"
+        android:text = "400"
         android:textSize = "20sp"
         android:gravity = "center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/story_history_textview"
-        android:layout_alignRight = "@id/story_limit_icon" />
+        android:layout_alignRight = "@id/story_limit_icon"
+        android:layout_alignLeft = "@id/story_limit_icon"/>
 
     <TextView
         android:id = "@+id/story_history_textview"
-        android:text = "4"
-        android:layout_marginRight = "3dp"
+        android:text = "10"
         android:textSize = "20sp"
         android:gravity = "center"
-        android:layout_width="wrap_content"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/story_posts_textview"
-        android:layout_alignRight = "@id/story_history_icon"/>
+        android:layout_alignRight = "@id/story_history_icon"
+        />
 
-<!--    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/posts"
-        android:layout_alignParentRight="true"
-        android:id="@+id/posts_icon"
-        android:paddingTop="0dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/story_posts_textview"
-        android:layout_toLeftOf="@id/posts_icon"
-        android:text = "99"
-        android:textSize="30dp"
-        android:paddingBottom = "@dimen/activity_divider_height"
-        android:gravity="center_vertical"
-        android:fontFamily="sans-serif-light"
-        android:paddingTop="4dp"
-        android:height="47dp"
-        />-->
 
 </RelativeLayout>
