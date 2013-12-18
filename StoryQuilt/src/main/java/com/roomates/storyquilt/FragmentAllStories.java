@@ -1,5 +1,6 @@
 package com.roomates.storyquilt;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -47,9 +50,12 @@ public class FragmentAllStories extends Fragment {
     final int SORTBY_POPULAR = 1;
     final int SORTBY_RANDOM = 2;
     String searchQueryText = "";
-
-
     int mode = SORTBY_POPULAR;
+
+    //Context Menu
+    final int REMOVE_STORY = 0;
+    String[] menuItems = {"Never see this again"};
+
     //List View
     ListView stories;
     TextView sortBy;
@@ -63,6 +69,8 @@ public class FragmentAllStories extends Fragment {
     //Search Item
     MenuItem searchItem;
 
+    //UserHandler
+    UserHandler userHandler;
 
     //Random List of Stories
     int NUM_RANDOM_STORIES = 6;
@@ -75,6 +83,7 @@ public class FragmentAllStories extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userHandler = new UserHandler(getActivity());
     }
 
     @Override
@@ -126,6 +135,7 @@ public class FragmentAllStories extends Fragment {
         stories = (ListView) v.findViewById(R.id.fragment_stories_listview);
         //stories.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         stories.setOnItemClickListener(goToStoryActivity());
+        registerForContextMenu(stories);
 
         //Firebase
         storyRef = FireHandler.create("stories");
@@ -136,13 +146,13 @@ public class FragmentAllStories extends Fragment {
             protected List<Story> modifyArrayAdapter(List<Story> stories){
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
-                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase()) && !userHandler.user.removed.contains(story.id)) {
                         filtered_stories.add(story);
                     }
                 }
                 stories = filtered_stories;
 
-                if (FragmentAllStories.this.getView() != null && stories.size() != 0) {
+                if (FragmentAllStories.this.getView() != null) {
                     TextView no_stories = (TextView) (FragmentAllStories.this.getView()).findViewById(R.id.no_stories);
                     if (stories.size() == 0) {
                         Log.d("Stories", "None");
@@ -229,7 +239,6 @@ public class FragmentAllStories extends Fragment {
             }
         };
     }
-
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -288,4 +297,33 @@ public class FragmentAllStories extends Fragment {
             });
         }
     }
+
+    /**
+     * Context Menu for LongClickListener
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+           if (v.getId()==R.id.fragment_stories_listview) {
+               AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+               menu.setHeaderTitle(((Story) stories.getItemAtPosition(info.position)).title);
+               for (int i = 0; i<menuItems.length; i++) {
+                   menu.add(Menu.NONE, i, i, menuItems[i]);
+               }
+           }
+       }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        switch (item.getItemId()){
+            case REMOVE_STORY:
+                userHandler.removeStory(((Story) stories.getItemAtPosition(info.position)).id);
+                Toast.makeText(getActivity(), "You have removed \"" + ((Story) stories.getItemAtPosition(info.position)).title + "\" from your app", Toast.LENGTH_SHORT).show();
+                setupListView(getView());
+                break;
+        }
+
+        return true;
+    }
+
 }

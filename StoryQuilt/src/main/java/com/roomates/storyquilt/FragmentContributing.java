@@ -14,6 +14,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -39,6 +41,11 @@ import java.util.Random;
 public class FragmentContributing extends Fragment {
     //MainActivity Views
     ListView contributing;
+
+    //Context Menu
+    final int REMOVE_STORY = 0;
+    String[] menuItems = {"Never see this again"};
+
 
     //ListAdapters
     AdapterStoryList contributingAdapter;
@@ -94,8 +101,8 @@ public class FragmentContributing extends Fragment {
     //Grab ListViews from the XML
     private void setListViews(View v){
         contributing = (ListView) v.findViewById(R.id.fragment_stories_listview);
-        //contributing.setBackground(new BitmapDrawable(getResources(), getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         contributing.setOnItemClickListener(goToStoryActivity());
+        registerForContextMenu(contributing);
     }
     //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
@@ -109,12 +116,12 @@ public class FragmentContributing extends Fragment {
                 int orig_size = stories.size();
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
-                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
+                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase()) && !userHandler.user.removed.contains(story.id)) {
                         filtered_stories.add(story);
                     }
                 }
                 stories = filtered_stories;
-                if (FragmentContributing.this.getView() != null && orig_size != 0) {
+                if (FragmentContributing.this.getView() != null) {
                     TextView no_stories = (TextView) (FragmentContributing.this.getView()).findViewById(R.id.other_no_stories);
                     if (stories.size() == 0) {
                         Log.d("Stories", "None");
@@ -190,25 +197,31 @@ public class FragmentContributing extends Fragment {
         }
     }
 
-/*    public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
+    /**
+     * Context Menu for LongClickListener
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.fragment_stories_listview) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(((Story) contributing.getItemAtPosition(info.position)).title);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        switch (item.getItemId()){
+            case REMOVE_STORY:
+                userHandler.removeStory(((Story) contributing.getItemAtPosition(info.position)).id);
+                Toast.makeText(getActivity(), "You have removed \"" + ((Story) contributing.getItemAtPosition(info.position)).title + "\" from your app", Toast.LENGTH_SHORT).show();
+                setUpMainPageViews(getView());
+                break;
+        }
 
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 15;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }*/
+        return true;
+    }
 }

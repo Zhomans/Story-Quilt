@@ -54,6 +54,7 @@ public class UserHandler {
                 0,
                 false,
                 new ArrayList<String>(),
+                new ArrayList<String>(),
                 new ArrayList<String>());
     }
     public void updateUserFromFirebase(){
@@ -65,6 +66,7 @@ public class UserHandler {
                 if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
                 else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
                 if (user.reading == null) user.reading = new ArrayList<String>();
+                if (user.removed== null) user.removed = new ArrayList<String>();
 
             }
 
@@ -120,6 +122,13 @@ public class UserHandler {
         this.user.writing.remove(id);
         this.user.reading.add(id);
         FireHandler.pushUserToList(this.user);
+    }
+    public void removeStory(String id){
+        this.user.removed.add(id);
+        FireHandler.pushUserToList(this.user);
+    }
+    public boolean isRemoved(String id){
+        return user != null && user.removed != null && user.removed.contains(id);
     }
     public boolean isReader(String id) {
         return user != null && user.reading != null && user.reading.contains(id);

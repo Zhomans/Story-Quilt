@@ -10,13 +10,14 @@ public class User implements Serializable{
     String email, name;
     int age, reports, posts;
     boolean isBanned;
-    ArrayList<String> writing, reading;
+    ArrayList<String> writing, reading, removed;
+
 
 
     public User(){} //Firebase required constructor
 
     public User(String email, String name, int age, int reports, int posts, boolean isBanned,
-                ArrayList<String> writing, ArrayList<String> reading){
+                ArrayList<String> writing, ArrayList<String> reading, ArrayList<String> removed){
         this.email = email;
         this.name = name;
         this.age = age;
@@ -25,6 +26,7 @@ public class User implements Serializable{
         this.isBanned = isBanned;
         this.writing = writing;
         this.reading = reading;
+        this.removed = removed;
     }
 
     //Firebase Get Methods
@@ -48,6 +50,7 @@ public class User implements Serializable{
         return this.writing;
     }
     public ArrayList<String> getReading(){ return this.reading; }
+    public ArrayList<String> getRemoved(){ return this.removed; }
 
     //Setting the id from Firebase
     public void setEmail(String value){

@@ -97,7 +97,7 @@ public class ActivityStoryView  extends Activity {
                 }
                 if (menu!=null){
                     Log.i("Debugger", "here");
-                    menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
+                    menu.findItem(R.id.join_story).setVisible((!userHandler.isReader(curStory.id))&&(!userHandler.isWriter(curStory.id)));
                     menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
                 }
             }
@@ -216,21 +216,15 @@ public class ActivityStoryView  extends Activity {
     private void leaveStory() {
         //Makes you a reader in the story, instead of a writer
         new AlertDialog.Builder(ActivityStoryView.this)
-                .setTitle("Are you sure you want to see the whole story?")
-                .setMessage("If you click okay, you will no longer be able to post, but you will be able to see the whole story.")
+                .setTitle("Become a Follower!")
+                .setMessage("If you click okay, you will start following the whole story as it grows but will no longer be able to post.")
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         userHandler.becomeReaderFromWriter(curStory.id);
                         curStory.writers.remove(userHandler.user.email);
-                        //ActivityStoryView.this.bindViewsAsReader();
-                        //ActivityStoryView.this.populateViewsAsReader();
 
                         setup();
-                       //breaks the back button
-//                        Intent goToStory = new Intent(ActivityStoryView.this, ActivityStoryView.class);
-//                        goToStory.putExtra("story",passStory);
-//                        startActivity(goToStory);
                         dialog.dismiss();
                     }
                 })
@@ -255,9 +249,8 @@ public class ActivityStoryView  extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.story, menu);
-        if (!userHandler.isReader(curStory.id) && !userHandler.isWriter(curStory.id)) {
-            menu.findItem(R.id.join_story).setVisible(true);
-        }
+        menu.findItem(R.id.join_story).setVisible((!userHandler.isReader(curStory.id))&&(!userHandler.isWriter(curStory.id)));
+        menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
         this.menu = menu;
         return true;
     }
@@ -270,8 +263,10 @@ public class ActivityStoryView  extends Activity {
                 break;
 
             case R.id.join_story: //Join an Existing Story
-                curStory.writers.add(userHandler.user.email);
-                menu.findItem(R.id.join_story).setVisible(false);
+                if (!userHandler.isReader(curStory.id)){
+                    curStory.writers.add(userHandler.user.email);
+                    Toast.makeText(ActivityStoryView.this, "You have become a writer for this story!",Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case android.R.id.home:

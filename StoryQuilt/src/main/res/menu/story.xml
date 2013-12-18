@@ -6,12 +6,12 @@
         android:title="@string/leave_story"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:visible="false"/>
+        android:visible="true"/>
 
     <item android:id="@+id/join_story"
         android:title="@string/join_story"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:visible="false"/>
+        android:visible="true"/>
 
 </menu>

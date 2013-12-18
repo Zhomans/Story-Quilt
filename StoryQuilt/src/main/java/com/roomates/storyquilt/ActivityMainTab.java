@@ -105,7 +105,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         //My Stories
-        ActionBar.Tab contributing = actionBar.newTab().setText("Contributing");
+        ActionBar.Tab contributing = actionBar.newTab().setText("Writing");
         contributing.setTabListener(new ListenerNavTab(contributingFragment));
 
         //Popular Stories
