@@ -33,8 +33,8 @@ public class ActivityMainTab extends ActivityGooglePlus {
      */
     public void onCreateExtended(Bundle savedInstanceState) {
         //Setting the Button Id for both ActivityGooglePlus and MainActivity
-
         setContentView(R.layout.activity_main_tab);
+
         //Setting User Handler
         userHandler = new UserHandler(this);
 
@@ -45,6 +45,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
             getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("firsttime",true);
             signIn();
         }
+        
         //Set Up Fragments
         setUpFragments();
     }
