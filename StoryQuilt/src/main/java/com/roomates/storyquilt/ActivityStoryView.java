@@ -46,6 +46,11 @@ public class ActivityStoryView  extends Activity {
     UserHandler userHandler;
     Story curStory;
 
+    /**
+     * Number of previous posts
+     */
+    Integer posts;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -70,6 +75,11 @@ public class ActivityStoryView  extends Activity {
                 } else {
                     findViewById(R.id.activity_story_button).setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
                 }
+                if (posts!=null && posts != curStory.pieces.size()){
+                    Toast.makeText(ActivityStoryView.this, "Someone just posted!", Toast.LENGTH_SHORT).show();
+                    
+                }
+                posts = curStory.pieces.size();
                 if (userHandler.isReader(curStory.id)) {
                     setContentView(R.layout.activity_story_following);
                     bindViewsAsReader();
