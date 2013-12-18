@@ -68,9 +68,7 @@ public class UserHandler {
 
             }
 
-            public void onCancelled(FirebaseError error) {
-
-            }
+            public void onCancelled(FirebaseError error) {}
         });
     }
 

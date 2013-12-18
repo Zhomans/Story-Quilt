@@ -115,8 +115,8 @@ public class FragmentContributing extends Fragment {
                 }
                 stories = filtered_stories;
 
-                if (v != null && orig_size != 0) {
-                    TextView no_stories = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.other_no_stories);
+                if (FragmentContributing.this.getView() != null && orig_size != 0) {
+                    TextView no_stories = (TextView) (FragmentContributing.this.getView()).findViewById(R.id.other_no_stories);
                     if (stories.size() == 0) {
                         Log.d("Stories", "None");
                         no_stories.setVisibility(View.VISIBLE);
