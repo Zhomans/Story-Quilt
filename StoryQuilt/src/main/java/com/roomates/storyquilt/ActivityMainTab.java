@@ -168,7 +168,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
     @Override
     public void refreshViewOnConnection() {
-        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.fragmentContainer)).add(R.id.fragmentContainer,allStoriesFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, allStoriesFragment).commit();
         getActionBar().setSelectedNavigationItem(2);
     }
 }
