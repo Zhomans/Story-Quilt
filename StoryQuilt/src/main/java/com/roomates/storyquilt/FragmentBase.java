@@ -107,6 +107,7 @@ public abstract class FragmentBase extends Fragment {
                     }
                 }
                 stories = filtered_stories;
+                stories = filterAdapterArray(stories);
                 if (FragmentBase.this.getView() != null) {
                     TextView no_stories = (TextView) (FragmentBase.this.getView()).findViewById(R.id.no_stories);
                     if (stories.size() == 0) {
@@ -114,11 +115,11 @@ public abstract class FragmentBase extends Fragment {
                         no_stories.setVisibility(View.VISIBLE);
                     } else {
                         Log.d("Stories", "Some");
+                        Log.d("Stories", stories.get(0).title);
                         no_stories.setVisibility(View.GONE);
                     }
                 }
-
-                return filterAdapterArray(stories);
+                return stories;
             }
         };
         listView.setAdapter(listAdapter);
