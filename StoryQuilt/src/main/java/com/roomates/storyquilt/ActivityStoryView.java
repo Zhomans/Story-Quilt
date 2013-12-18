@@ -65,17 +65,15 @@ public class ActivityStoryView  extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory = dataSnapshot.getValue(Story.class);
                 if (userHandler.isReader(curStory.id)) {
-                    Log.i("reader?","true");
                     setContentView(R.layout.activity_story_following);
                     bindViewsAsReader();
                     populateViewsAsReader();
                 } else {
-                    Log.i("writer?","true");
                     bindViewsAsWriter();
                     populateViewsAsWriter();
                 }
                 if (menu!=null){
-                    Log.i("Debugger", "here");
+                    //Menu has been created, set visibility of join/leave
                     menu.findItem(R.id.join_story).setVisible((!userHandler.isReader(curStory.id))&&(!userHandler.isWriter(curStory.id)));
                     menu.findItem(R.id.leave_story).setVisible(userHandler.isWriter(curStory.id));
                 }
@@ -83,7 +81,7 @@ public class ActivityStoryView  extends Activity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.i("Firebase", "Story connection failed:" + firebaseError.getMessage());
+
             }
         });
     }
@@ -96,7 +94,7 @@ public class ActivityStoryView  extends Activity {
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
         remaining = (TextView) findViewById(R.id.activity_story_text_remaining);
         remaining.setText(String.valueOf(curStory.textLimit));
-        //Text Watcher
+
         newPost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -105,6 +103,8 @@ public class ActivityStoryView  extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //display number of words left
                 if (s.toString().equals("")){
                     remaining.setText(String.valueOf(curStory.textLimit));
                 } else {
