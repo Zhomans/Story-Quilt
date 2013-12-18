@@ -146,6 +146,10 @@ public class FragmentAllStories extends FragmentBase {
                     sortBy.setText("sorted by: new");
                     mode = SORTBY_NEW;
                     FragmentAllStories.this.setUpMainPageViews(v);
+                } else if (sortBy.getText().toString().split(": ")[1].equals("new")) {
+                    mode = SORTBY_RANDOM;
+                    sortBy.setText("sorted by: random");
+                    FragmentAllStories.this.setUpMainPageViews(v);
                 } else {
                     mode = SORTBY_POPULAR;
                     sortBy.setText("sorted by: popular");
