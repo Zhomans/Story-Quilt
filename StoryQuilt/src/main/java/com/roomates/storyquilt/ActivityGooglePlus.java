@@ -89,7 +89,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     //Google+ Connection successful
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
-        getUserInformation();
         onConnectionStatusChanged();
         //refreshViewOnConnection();
     }
@@ -159,7 +158,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
             });
 
             mPlusClient.disconnect();
-            refreshViewOnConnection();
+            //refreshViewOnConnection();
             Toast.makeText(this, "Successfully signed out of StoryQuilt", Toast.LENGTH_LONG).show();
         }
         onConnectionStatusChanged();

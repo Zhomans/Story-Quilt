@@ -40,9 +40,8 @@ public class ActivityMainTab extends ActivityGooglePlus {
         previousEmail = userHandler.getEmail();
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
-        Log.i("PreviousEmail", previousEmail);
         if (previousEmail.equals("first")) {
-            Log.i("PreviousEmail", "here");
+            previousEmail = "readonly";
             signIn();
         }
         //Set Up Fragments
@@ -58,6 +57,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
             userHandler.setEmail("readonly");
         } else {
             userHandler.setEmail(mPlusClient.getAccountName());
+            getUserInformation();
         }
         //Update Handler
         userHandler.setConnected(connected);
@@ -168,7 +168,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
     @Override
     public void refreshViewOnConnection() {
-        getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, allStoriesFragment);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.fragmentContainer)).add(R.id.fragmentContainer,allStoriesFragment).commit();
         getActionBar().setSelectedNavigationItem(2);
     }
 }

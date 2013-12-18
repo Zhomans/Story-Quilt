@@ -109,6 +109,7 @@ public abstract class FragmentBase extends Fragment {
         listRef = getFirebaseListReference();
     }
     private void setListAdapters(){
+        Log.i("HII'MRUN", "running ... .. .. .. .. ..");
         listAdapter = new AdapterStoryList(listRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
