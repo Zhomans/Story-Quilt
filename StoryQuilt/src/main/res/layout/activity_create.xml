@@ -43,7 +43,6 @@
             android:fontFamily="sans-serif-light"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-
             />
 
 
@@ -52,7 +51,7 @@
             android:background = "@drawable/abc"
             android:contentDescription="history_limit_icon"
             android:layout_width = "40dp"
-            android:layout_height = "20dp"
+            android:layout_height = "22dp"
             android:layout_marginLeft="7dp"
             android:layout_marginRight = "1dp"
             android:layout_marginTop="8dp"
