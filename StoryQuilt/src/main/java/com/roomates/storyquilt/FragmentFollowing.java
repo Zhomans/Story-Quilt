@@ -111,8 +111,8 @@ public class FragmentFollowing extends Fragment {
                 }
                 stories = filtered_stories;
 
-                if (v != null) {
-                    TextView no_stories = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.other_no_stories);
+                if (FragmentFollowing.this.getView() != null && stories.size() != 0) {
+                    TextView no_stories = (TextView) (FragmentFollowing.this.getView()).findViewById(R.id.other_no_stories);
                     if (stories.size() == 0) {
                         Log.d("Stories", "None");
                         no_stories.setVisibility(View.VISIBLE);

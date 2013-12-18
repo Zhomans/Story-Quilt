@@ -114,7 +114,6 @@ public class FragmentContributing extends Fragment {
                     }
                 }
                 stories = filtered_stories;
-
                 if (FragmentContributing.this.getView() != null && orig_size != 0) {
                     TextView no_stories = (TextView) (FragmentContributing.this.getView()).findViewById(R.id.other_no_stories);
                     if (stories.size() == 0) {
