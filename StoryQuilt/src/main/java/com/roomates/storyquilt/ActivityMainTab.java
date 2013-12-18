@@ -27,6 +27,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
     UserHandler userHandler;
 
+
     /**
      * Required by ActivityGooglePlus
      */
@@ -36,13 +37,12 @@ public class ActivityMainTab extends ActivityGooglePlus {
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler
         userHandler = new UserHandler(this);
-        //Get Person Email (previously logged in)
-        previousEmail = userHandler.getEmail();
+
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
-        if (previousEmail.equals("first")) {
-            previousEmail = "readonly";
+        if (getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("firsttime", false)) {
             userHandler.setEmail("readonly");
+            getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("firsttime",true);
             signIn();
         }
         //Set Up Fragments

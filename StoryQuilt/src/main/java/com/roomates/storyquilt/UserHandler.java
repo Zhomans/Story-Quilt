@@ -80,7 +80,7 @@ public class UserHandler {
      * Manage User Information
      */
     public String getEmail(){
-       return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "first");
+       return this.activity.getSharedPreferences("StoryQuilt", MODE_PRIVATE).getString("email", "readonly");
     }
     public void setEmail(String value){
         this.user.email = User.formatEmail(value);
