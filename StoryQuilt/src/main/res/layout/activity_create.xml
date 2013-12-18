@@ -54,12 +54,21 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Post length"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:gravity="left"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-light"
             android:singleLine="true"
+            />
+
+        <ImageView
+            android:background = "@drawable/abc"
+            android:contentDescription="word_limit_icon"
+            android:layout_width = "40dp"
+            android:layout_height = "20dp"
+            android:layout_alignBottom = "@id/activity_create_submissionLength_textview"
+            android:layout_toRightOf="@id/activity_create_submissionLength_textview"
             />
 
         <SeekBar
@@ -77,17 +86,26 @@
         <TextView
             android:id="@+id/activity_create_historyLength_textview"
             android:layout_below = "@id/activity_create_submissionLength_seekBar"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/historyLength"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:gravity="left"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-light"
             android:singleLine="true"/>
+
+        <ImageView
+            android:background = "@drawable/history"
+            android:contentDescription="history_limit_icon"
+            android:layout_width = "20dp"
+            android:layout_height = "20dp"
+            android:layout_alignBottom = "@id/activity_create_historyLength_textview"
+            android:layout_toRightOf="@id/activity_create_historyLength_textview"
+            />
 
         <SeekBar
             android:id="@+id/activity_create_historyLength_seekBar"

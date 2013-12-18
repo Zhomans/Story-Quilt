@@ -171,7 +171,7 @@ public class ActivityCreateStory extends Activity {
 
                     //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
                     Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
-                                    title,
+                                    toTitleCase(title),
                                     (languageFilter.isChecked())? 13:0,
                                     (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
                                     submissionLength.getProgress(),
@@ -214,6 +214,28 @@ public class ActivityCreateStory extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Title Case Method
+     */
+
+    public String toTitleCase(String input) {
+        StringBuilder titleCase = new StringBuilder();
+        boolean nextTitleCase = true;
+
+        for (char c : input.toCharArray()) {
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
+            }
+
+            titleCase.append(c);
+        }
+
+        return titleCase.toString();
     }
 
     /**
