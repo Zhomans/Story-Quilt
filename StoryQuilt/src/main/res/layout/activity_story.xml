@@ -118,6 +118,7 @@
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
+        android:capitalize="none"
         android:padding="8dp"/>
 
 
