@@ -20,7 +20,7 @@
         android:contentDescription="limit_icon"
         android:layout_height = "22dp"
         android:layout_width = "40dp"
-        android:background = "@drawable/abc"
+        android:background = "@drawable/ic_abc_mono"
         android:layout_toLeftOf="@+id/story_history_icon"
         android:layout_marginRight = "10dp"
         android:layout_marginTop = "10dp"
