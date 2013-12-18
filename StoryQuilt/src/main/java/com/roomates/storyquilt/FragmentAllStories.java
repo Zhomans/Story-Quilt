@@ -134,7 +134,6 @@ public class FragmentAllStories extends Fragment {
         storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
-                int orig_size = stories.size();
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
                     if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
@@ -143,8 +142,8 @@ public class FragmentAllStories extends Fragment {
                 }
                 stories = filtered_stories;
 
-                if (v != null && orig_size != 0) {
-                    TextView no_stories = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.no_stories);
+                if (FragmentAllStories.this.getView() != null && stories.size() != 0) {
+                    TextView no_stories = (TextView) (FragmentAllStories.this.getView()).findViewById(R.id.no_stories);
                     if (stories.size() == 0) {
                         Log.d("Stories", "None");
                         no_stories.setVisibility(View.VISIBLE);
@@ -289,26 +288,4 @@ public class FragmentAllStories extends Fragment {
             });
         }
     }
-/*
-    public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 15;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }*/
 }
