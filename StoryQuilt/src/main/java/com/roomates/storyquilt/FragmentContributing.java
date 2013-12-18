@@ -84,7 +84,7 @@ public class FragmentContributing extends Fragment {
     private void setUpMainPageViews(View v){
         setListViews(v);
         setFireBaseRefs();
-        setListAdapters(getView());
+        setListAdapters(v);
     }
 
     
@@ -106,6 +106,7 @@ public class FragmentContributing extends Fragment {
         contributingAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
             @Override
             protected List<Story> modifyArrayAdapter(List<Story> stories){
+                int orig_size = stories.size();
                 ArrayList<Story> filtered_stories = new ArrayList<Story>();
                 for (Story story : stories) {
                     if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase())) {
@@ -114,17 +115,16 @@ public class FragmentContributing extends Fragment {
                 }
                 stories = filtered_stories;
 
-//                // May work on this a bit later -- not currently functioning
-//                if (v != null) {
-//                    TextView no_stories = (TextView) v.findViewById(R.id.no_stories);
-//                    if (stories.size() == 0) {
-//                        no_stories.setVisibility(View.VISIBLE);
-//                    } else {
-//                        no_stories.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    Log.d("Null View", "is null");
-//                }
+                if (v != null && orig_size != 0) {
+                    TextView no_stories = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.other_no_stories);
+                    if (stories.size() == 0) {
+                        Log.d("Stories", "None");
+                        no_stories.setVisibility(View.VISIBLE);
+                    } else {
+                        Log.d("Stories", "Some");
+                        no_stories.setVisibility(View.GONE);
+                    }
+                }
 
                 List<Story> writingStories = new ArrayList<Story>();
                 for (Story tempStory: stories){

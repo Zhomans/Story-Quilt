@@ -5,12 +5,20 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/quilt_background">
 
+
     <TextView
-        android:id="@+id/no_stories"
+        android:id = "@+id/other_no_stories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No stories..."
-        android:visibility="gone"/>
+        android:layout_height="50dp"
+        android:layout_below="@+id/fragment_stories_listview"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/white_background"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="No Stories"/>
+
 
     <ListView
         android:id = "@+id/fragment_stories_listview"

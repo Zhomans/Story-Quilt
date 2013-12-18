@@ -81,7 +81,7 @@ public class FragmentFollowing extends Fragment {
     private void setUpMainPageViews(View v){
         setListViews(v);
         setFireBaseRefs();
-        setListAdapters(getView());
+        setListAdapters(v);
     }
 
 
@@ -111,17 +111,16 @@ public class FragmentFollowing extends Fragment {
                 }
                 stories = filtered_stories;
 
-//                // May work on this a bit later -- not currently functioning
-//                if (v != null) {
-//                    TextView no_stories = (TextView) v.findViewById(R.id.no_stories);
-//                    if (stories.size() == 0) {
-//                        no_stories.setVisibility(View.VISIBLE);
-//                    } else {
-//                        no_stories.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    Log.d("Null View", "is null");
-//                }
+                if (v != null) {
+                    TextView no_stories = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.other_no_stories);
+                    if (stories.size() == 0) {
+                        Log.d("Stories", "None");
+                        no_stories.setVisibility(View.VISIBLE);
+                    } else {
+                        Log.d("Stories", "Some");
+                        no_stories.setVisibility(View.GONE);
+                    }
+                }
 
                 List<Story> readingStories = new ArrayList<Story>();
                 Log.i("UserHandler Readers", userHandler.user.reading.toString());

@@ -5,11 +5,18 @@
     android:background="@drawable/quilt_background">
 
     <TextView
-        android:id="@+id/no_stories"
+        android:id = "@+id/no_stories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No stories..."
-        android:visibility="gone"/>
+        android:layout_height="50dp"
+        android:layout_below="@+id/fragment_stories_sortby_text"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/white_background"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="No Stories"/>
+
 
     <TextView
         android:id = "@+id/fragment_stories_sortby_text"
