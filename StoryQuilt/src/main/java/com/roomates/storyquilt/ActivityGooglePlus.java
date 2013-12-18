@@ -90,7 +90,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     public void onConnected(Bundle connectionHint) {
         mConnectionProgressDialog.dismiss();
         onConnectionStatusChanged();
-        //refreshViewOnConnection();
+        refreshViewOnConnection();
     }
     //Google+ Connection Disconnected
     public void onDisconnected() {
@@ -145,6 +145,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
             }
         }
     }
+
     //Signing Out of Google+
     public void signOut() {
         if (mPlusClient.isConnected()) {
@@ -158,12 +159,11 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
             });
 
             mPlusClient.disconnect();
-            //refreshViewOnConnection();
+            refreshViewOnConnection();
             Toast.makeText(this, "Successfully signed out of StoryQuilt", Toast.LENGTH_LONG).show();
         }
         onConnectionStatusChanged();
     }
-
 
     /**
      * Required by View.onClickListener
