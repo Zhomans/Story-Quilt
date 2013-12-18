@@ -177,7 +177,7 @@ public class ActivityCreateStory extends Activity {
             public void onClick(View v) {
                 //Get user input
                 String starter = String.valueOf(starterText.getText());
-                String title = String.valueOf(storyTitle.getText()).equals("")? (String.valueOf(storyTitle.getText())):starter;
+                String title = String.valueOf(storyTitle.getText()).equals("")? starter:(String.valueOf(storyTitle.getText()));
 
                 //Check for validity of post.
                 if (userHandler.user.email.equals("readonly")){
