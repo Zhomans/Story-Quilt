@@ -55,11 +55,13 @@
         android:text="...56 Posts Later..."
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:textColor="@android:color/holo_blue_dark"
-        android:background="@drawable/white_background"
+        android:background = "@android:color/holo_blue_dark"
+        android:textColor = "@android:color/white"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"/>
 
+    <!--android:textColor="@android:color/holo_blue_dark"
+    android:background="@drawable/white_background"-->
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="160dp"
@@ -133,8 +135,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background = "@drawable/white_background"
-        android:textColor = "@android:color/primary_text_light"
+        android:background = "@android:color/holo_blue_dark"
+        android:textColor = "@android:color/white"
         android:text="Post"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-light"

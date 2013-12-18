@@ -186,12 +186,13 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:background = "@drawable/white_background"
-            android:textColor = "@android:color/primary_text_light"
+            android:background = "@android:color/holo_blue_dark"
+            android:textColor = "@android:color/white"
             android:text="Create"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-light"
             android:padding="8dp"
             />
-
+    <!--android:background = "@drawable/white_background"-->
+    <!--android:textColor = "@android:color/primary_text_light"-->
 </RelativeLayout>

@@ -30,7 +30,8 @@
         android:visibility = "gone"
         android:paddingTop = "4dp"
         android:paddingLeft = "4dp"
-        android:textColor = "@android:color/darker_gray"
+        android:background = "@android:color/holo_blue_dark"
+        android:textColor = "@android:color/white"
         android:text = "sorted by: popular"
         android:paddingBottom="4dp"
         android:paddingRight="4dp"
@@ -38,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/white_background"/>
+        />
 
     <ListView
         android:id = "@+id/fragment_stories_listview"
