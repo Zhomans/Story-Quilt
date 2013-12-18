@@ -1,37 +1,16 @@
 package com.roomates.storyquilt;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
@@ -44,33 +23,15 @@ import java.util.Random;
 /**
  * Created by chris 10/13/2013.
  */
-public class FragmentAllStories extends Fragment {
+public class FragmentAllStories extends FragmentBase {
     //Sorting Mode
     final int SORTBY_NEW = 0;
     final int SORTBY_POPULAR = 1;
     final int SORTBY_RANDOM = 2;
-    String searchQueryText = "";
     int mode = SORTBY_POPULAR;
 
-    //Context Menu
-    final int REMOVE_STORY = 0;
-    String[] menuItems = {"Never see this again"};
-
-    //List View
-    ListView stories;
+    //SortBy Text
     TextView sortBy;
-
-    //ListAdapter
-    AdapterStoryList storiesAdapter;
-
-    //Firebase
-    Firebase storyRef;
-
-    //Search Item
-    MenuItem searchItem;
-
-    //UserHandler
-    UserHandler userHandler;
 
     //Random List of Stories
     int NUM_RANDOM_STORIES = 6;
@@ -78,170 +39,69 @@ public class FragmentAllStories extends Fragment {
     ArrayList<Story> original;
     int numStories;
 
-    View v;
 
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userHandler = new UserHandler(getActivity());
+    @Override
+    public int getFragmentLayoutId() {
+        return R.layout.fragment_stories;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public List<Story> filterAdapterArray(List<Story> stories) {
+        switch (mode){
+            case SORTBY_NEW:
+                original = new ArrayList<Story>();
+                original.addAll(stories);
+                Collections.sort(stories, new Comparator<Story>() {
+                    public int compare(Story s1, Story s2) { //#posts/#writers
+                        if (s1.lastUpdated.equals(s2.lastUpdated))
+                            return 0;
+                        return Long.valueOf(s1.lastUpdated) > Long.valueOf(s2.lastUpdated) ? -1 : 1;
+                    }
+                });
+                break;
 
-        v = inflater.inflate(R.layout.fragment_allstories, null);
-        setUpSortBy(v);
-        setupListView(v);
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-
-    /**
-     * Set up List View
-     */
-    //Set Up the button
-    public void setUpSortBy(final View v) {
-        sortBy = (TextView) v.findViewById(R.id.fragment_stories_sortby_text);
-        //sortBy.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
-        sortBy.setClickable(true);
-        sortBy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sortBy.getText().toString().split(": ")[1].equals("popular")){
-                    sortBy.setText("sorted by: new");
-                    mode = SORTBY_NEW;
-                   setupListView(v);
-                } else {
-                    mode = SORTBY_POPULAR;
-                    sortBy.setText("sorted by: popular");
-                    setupListView(v);
-                }
-            }
-        });
-    }
-    //Setting up the view and bindings
-    public void setupListView(final View v){
-        String modeText;
-        switch (mode) {case SORTBY_NEW: modeText = "new"; break; case SORTBY_POPULAR: modeText = "popular"; break; case SORTBY_RANDOM: modeText = "random"; break; default: modeText = "random"; break;}
-        ((TextView) v.findViewById(R.id.fragment_stories_sortby_text)).setText("sorted by: " + modeText);
-
-        stories = (ListView) v.findViewById(R.id.fragment_stories_listview);
-        //stories.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
-        stories.setOnItemClickListener(goToStoryActivity());
-        registerForContextMenu(stories);
-
-        //Firebase
-        storyRef = FireHandler.create("stories");
-
-        //Adapter
-        storiesAdapter = new AdapterStoryList(storyRef, getActivity(), R.layout.listitem_main_story){
-            @Override
-            protected List<Story> modifyArrayAdapter(List<Story> stories){
-                ArrayList<Story> filtered_stories = new ArrayList<Story>();
-                for (Story story : stories) {
-                    if (story.getTitle().toLowerCase().contains(searchQueryText.toLowerCase()) && !userHandler.user.removed.contains(story.id)) {
-                        filtered_stories.add(story);
+            case SORTBY_POPULAR:
+                original = new ArrayList<Story>();
+                original.addAll(stories);
+                Collections.sort(stories, new Comparator<Story>() {
+                    public int compare(Story s1, Story s2) { //#posts/#writers
+                        int s1value = s1.pieces.size()/s1.writers.size();
+                        int s2value = s2.pieces.size()/s2.writers.size();
+                        if (s1value == s2value)
+                            return 0;
+                        return s1value > s2value ? -1 : 1;
+                    }
+                });
+                break;
+            case SORTBY_RANDOM:
+                Collections.sort(stories, new Comparator<Story>() {
+                    public int compare(Story s1, Story s2) { //#posts/#writers
+                        int s1value = s1.pieces.size()/s1.writers.size();
+                        int s2value = s2.pieces.size()/s2.writers.size();
+                        if (s1value == s2value)
+                            return 0;
+                        return s1value > s2value ? -1 : 1;
+                    }
+                });
+                ArrayList<Story> filtered = new ArrayList<Story>();
+                for (Story tempStory: stories){
+                    if (random.contains(tempStory.id)){
+                        filtered.add(tempStory);
                     }
                 }
-                stories = filtered_stories;
-
-                if (FragmentAllStories.this.getView() != null) {
-                    TextView no_stories = (TextView) (FragmentAllStories.this.getView()).findViewById(R.id.no_stories);
-                    if (stories.size() == 0) {
-                        Log.d("Stories", "None");
-                        no_stories.setVisibility(View.VISIBLE);
-                    } else {
-                        Log.d("Stories", "Some");
-                        no_stories.setVisibility(View.GONE);
-                    }
-                }
-
-                switch (mode){
-                    case SORTBY_NEW:
-                        original = new ArrayList<Story>();
-                        original.addAll(stories);
-                        Collections.sort(stories, new Comparator<Story>() {
-                            public int compare(Story s1, Story s2) { //#posts/#writers
-                                if (s1.lastUpdated.equals(s2.lastUpdated))
-                                    return 0;
-                                return Long.valueOf(s1.lastUpdated) > Long.valueOf(s2.lastUpdated) ? -1 : 1;
-                            }
-                        });
-                        break;
-
-                    case SORTBY_POPULAR:
-                        original = new ArrayList<Story>();
-                        original.addAll(stories);
-                        Collections.sort(stories, new Comparator<Story>() {
-                            public int compare(Story s1, Story s2) { //#posts/#writers
-                                int s1value = s1.pieces.size()/s1.writers.size();
-                                int s2value = s2.pieces.size()/s2.writers.size();
-                                if (s1value == s2value)
-                                    return 0;
-                                return s1value > s2value ? -1 : 1;
-                            }
-                        });
-                        break;
-                    case SORTBY_RANDOM:
-                        Collections.sort(stories, new Comparator<Story>() {
-                            public int compare(Story s1, Story s2) { //#posts/#writers
-                                int s1value = s1.pieces.size()/s1.writers.size();
-                                int s2value = s2.pieces.size()/s2.writers.size();
-                                if (s1value == s2value)
-                                    return 0;
-                                return s1value > s2value ? -1 : 1;
-                            }
-                        });
-                        ArrayList<Story> filtered = new ArrayList<Story>();
-                        for (Story tempStory: stories){
-                            if (random.contains(tempStory.id)){
-                                filtered.add(tempStory);
-                            }
-                        }
-                        Collections.shuffle(filtered);
-                        return filtered;
-                }
-                return stories;
-            }
-        };
-        stories.setAdapter(storiesAdapter);
-
-    }
-    @Override
-    public void onPause(){
-        super.onPause();
-        if (searchItem != null) {searchItem.collapseActionView();}
-        storiesAdapter.cleanup();
+                Collections.shuffle(filtered);
+                return filtered;
+        }
+        return stories;
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        setupListView(getView());
+    public Firebase getFirebaseListReference() {
+        return FireHandler.create("stories");
     }
 
-
-    //On Item Click for AdapterStoryList
-    private AdapterView.OnItemClickListener goToStoryActivity() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent goToStory = new Intent(getActivity(), ActivityStoryView.class);
-                goToStory.putExtra("story",((Story) stories.getItemAtPosition(position)).id);
-                startActivity(goToStory);
-            }
-        };
-    }
     @Override
-    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onCreateOptionsMenuExtended(Menu menu, MenuInflater inflater) {
         final MenuItem randomItem = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
         final ImageView randomView = (ImageView) randomItem.getActionView();
         randomItem.setIcon(R.drawable.dice);
@@ -258,72 +118,44 @@ public class FragmentAllStories extends Fragment {
                 while (random.size() < NUM_RANDOM_STORIES) {
                     random.add((original.get(num.nextInt(numStories))).id);
                 }
-                setupListView(getView());
+                FragmentAllStories.this.setUpMainPageViews(FragmentAllStories.this.getView());
                 return false;
             }
         });
-        searchItem =  menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-        final MenuItem addItem = menu.findItem(R.id.create_story);
-        /*final ImageView addView = (ImageView) addItem.getActionView();*/
-
-        if (searchView != null){
-            searchView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (searchItem.isActionViewExpanded()){
-                        searchItem.collapseActionView();
-                        searchView.setQuery("", false);
-                    }
-                }
-            });
-
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    //should narrow again from filtered list on update
-                    searchQueryText = newText;
-                    setupListView(getView());
-                    return false;
-                }
-
-            });
-        }
     }
 
-    /**
-     * Context Menu for LongClickListener
-     */
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-           if (v.getId()==R.id.fragment_stories_listview) {
-               AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-               menu.setHeaderTitle(((Story) stories.getItemAtPosition(info.position)).title);
-               for (int i = 0; i<menuItems.length; i++) {
-                   menu.add(Menu.NONE, i, i, menuItems[i]);
-               }
-           }
-       }
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        switch (item.getItemId()){
-            case REMOVE_STORY:
-                userHandler.removeStory(((Story) stories.getItemAtPosition(info.position)).id);
-                Toast.makeText(getActivity(), "You have removed \"" + ((Story) stories.getItemAtPosition(info.position)).title + "\" from your app", Toast.LENGTH_SHORT).show();
-                setupListView(getView());
-                break;
-        }
-
-        return true;
+    public void onCreateViewExtended(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View v) {
+       setUpSortBy(v);
     }
+
+    //Set Up the button
+    public void setUpSortBy(final View v) {
+        sortBy = (TextView) v.findViewById(R.id.fragment_stories_sortby_text);
+        ListView listView = (ListView) v.findViewById(R.id.fragment_stories_listview);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)listView.getLayoutParams();
+        params.setMargins(20, 5, 20, 20); //substitute parameters for left, top, right, bottom
+        listView.setLayoutParams(params);
+
+        sortBy.setVisibility(View.VISIBLE);
+        //sortBy.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
+        sortBy.setClickable(true);
+        sortBy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sortBy.getText().toString().split(": ")[1].equals("popular")){
+                    sortBy.setText("sorted by: new");
+                    mode = SORTBY_NEW;
+                    FragmentAllStories.this.setUpMainPageViews(v);
+                } else {
+                    mode = SORTBY_POPULAR;
+                    sortBy.setText("sorted by: popular");
+                    FragmentAllStories.this.setUpMainPageViews(v);
+                }
+            }
+        });
+    }
+
+
 
 }

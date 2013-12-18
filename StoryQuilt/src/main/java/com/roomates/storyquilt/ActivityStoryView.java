@@ -69,11 +69,12 @@ public class ActivityStoryView  extends Activity {
         }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_story);
         setup();
     }
 
     private void setup() {
-        setContentView(R.layout.activity_story);
+
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
 
