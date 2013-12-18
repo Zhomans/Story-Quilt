@@ -77,7 +77,6 @@ public class ActivityStoryView  extends Activity {
                 }
                 if (posts!=null && posts != curStory.pieces.size() && !curStory.checkMostRecentPoster(userHandler.user)){
                     Toast.makeText(ActivityStoryView.this, "Someone just posted!", Toast.LENGTH_SHORT).show();
-                    
                 }
                 posts = curStory.pieces.size();
                 if (userHandler.isReader(curStory.id)) {
