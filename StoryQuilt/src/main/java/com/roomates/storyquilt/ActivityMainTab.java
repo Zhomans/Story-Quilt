@@ -32,30 +32,8 @@ public class ActivityMainTab extends ActivityGooglePlus {
     /**
      * Required by ActivityGooglePlus
      */
-
-    private boolean isNetworkAvailable() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
-    }
-
     public void onCreateExtended(Bundle savedInstanceState) {
         //Setting the Button Id for both ActivityGooglePlus and MainActivity
-
-        if (!isNetworkAvailable()) {
-            Toast.makeText(ActivityMainTab.this, "Network Connection Lost!", Toast.LENGTH_SHORT).show();
-        }
 
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler

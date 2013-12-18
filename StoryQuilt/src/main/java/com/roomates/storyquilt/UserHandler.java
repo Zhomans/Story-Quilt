@@ -61,6 +61,9 @@ public class UserHandler {
         FireHandler.create("users", User.formatEmail(getEmail())).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                if (!isNetworkAvailable()){
+                    Toast.makeText(activity, "Network is currently unavailable!", Toast.LENGTH_SHORT).show();
+                }
                 UserHandler.this.user = snapshot.getValue(User.class);
                 if (user == null) {FireHandler.pushUserToList(newUser());  UserHandler.this.user = newUser();}
                 if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
@@ -135,5 +138,26 @@ public class UserHandler {
     }
     public boolean isWriter(String id) {
         return user != null && user.writing != null && user.writing.contains(id);
+    }
+
+
+    /**
+     * Network Connectivity
+     */
+    private boolean isNetworkAvailable() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }

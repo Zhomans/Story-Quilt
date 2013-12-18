@@ -43,30 +43,8 @@ public class ActivityStoryView  extends Activity {
     UserHandler userHandler;
     Story curStory;
 
-
-    private boolean isNetworkAvailable() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
-    }
-    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (!isNetworkAvailable()) {
-            Toast.makeText(ActivityStoryView.this, "Network Connection Lost!", Toast.LENGTH_SHORT).show();
-        }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_story);

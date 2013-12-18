@@ -35,7 +35,7 @@ public class ActivityCreateStory extends Activity {
 
     //SeekBar Constants
     int SUBMISSION_MAX = 25; //Words
-    int SUBMISSION_MIN = 1; //Offsetting the Seekbar
+    int SUBMISSION_MIN = 1; //Offsetting the SeekBar
     int SUBMISSION_DEFAULT = 3;//Word slider default
 
     double HISTORY_TICK = 0.2;
@@ -45,31 +45,9 @@ public class ActivityCreateStory extends Activity {
     //User Information
     UserHandler userHandler;
 
-
-    private boolean isNetworkAvailable() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (!isNetworkAvailable()) {
-            Toast.makeText(ActivityCreateStory.this, "Network Connection Lost!", Toast.LENGTH_SHORT).show();
-        }
 
         if (getActionBar()!=null){getActionBar().setDisplayHomeAsUpEnabled(true);}else{Log.d("NullPointerException", "ActivityCreateStory - ActionBar is null");}
         //Setting the XML

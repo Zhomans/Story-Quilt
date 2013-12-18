@@ -129,7 +129,7 @@ public class FragmentAllStories extends FragmentBase {
        setUpSortBy(v);
     }
 
-    //Set Up the button
+    //Setting Up Sort By TextView Button
     public void setUpSortBy(final View v) {
         sortBy = (TextView) v.findViewById(R.id.fragment_stories_sortby_text);
         ListView listView = (ListView) v.findViewById(R.id.fragment_stories_listview);
