@@ -2,8 +2,11 @@ package com.roomates.storyquilt;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +47,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
      * onCreate, onActivityResult, onStart, onPause, onResume
      * More can be implemented from inheritee
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

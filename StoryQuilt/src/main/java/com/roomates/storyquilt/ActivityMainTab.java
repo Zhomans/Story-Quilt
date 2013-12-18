@@ -2,7 +2,10 @@ package com.roomates.storyquilt;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
@@ -28,8 +32,31 @@ public class ActivityMainTab extends ActivityGooglePlus {
     /**
      * Required by ActivityGooglePlus
      */
+
+    private boolean isNetworkAvailable() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
     public void onCreateExtended(Bundle savedInstanceState) {
         //Setting the Button Id for both ActivityGooglePlus and MainActivity
+
+        if (!isNetworkAvailable()) {
+            Toast.makeText(ActivityMainTab.this, "Network Connection Lost!", Toast.LENGTH_SHORT).show();
+        }
+
         setContentView(R.layout.activity_main_tab);
         //Setting User Handler
         userHandler = new UserHandler(this);
@@ -46,6 +73,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
     }
     public void onConnectionStatusChanged() {
         //These are saved in ActivityGooglePlus. Setting them to our SharedPreferences
+
         userHandler.updateUserFromFirebase();
 
         Boolean connected = mPlusClient.isConnected();
