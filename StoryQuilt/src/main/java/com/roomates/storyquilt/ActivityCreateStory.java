@@ -36,7 +36,7 @@ public class ActivityCreateStory extends Activity {
     //SeekBar Constants
     int SUBMISSION_MAX = 25; //Words
     int SUBMISSION_MIN = 1; //Offsetting the SeekBar
-    int SUBMISSION_DEFAULT = 3;//Word slider default
+    int SUBMISSION_DEFAULT = 4 - SUBMISSION_MIN;//Word slider default
 
     double HISTORY_TICK = 0.2;
     int HISTORY_MAX = (int)(10/HISTORY_TICK);
@@ -49,11 +49,16 @@ public class ActivityCreateStory extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getActionBar()!=null){getActionBar().setDisplayHomeAsUpEnabled(true);}else{Log.d("NullPointerException", "ActivityCreateStory - ActionBar is null");}
+        if (getActionBar() != null){
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         //Setting the XML
         setContentView(R.layout.activity_create);
+
         //Keyboard AutoHide
         autoHideKeyboard(findViewById(R.id.parent));
+
         //setup user handler
         userHandler = new UserHandler(this);
 
@@ -155,7 +160,7 @@ public class ActivityCreateStory extends Activity {
             public void onClick(View v) {
                 //Get user input
                 String starter = String.valueOf(starterText.getText());
-                String title = String.valueOf(storyTitle.getText()).equals("")? starter:(String.valueOf(storyTitle.getText()));
+                String title = String.valueOf(storyTitle.getText()).equals("") ? starter:(String.valueOf(storyTitle.getText()));
 
                 //Check for validity of post.
                 if (userHandler.user.email.equals("readonly")){
@@ -201,7 +206,6 @@ public class ActivityCreateStory extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        //Possible Null Pointer when setting the signIn and signOut button
         (menu.findItem(R.id.gPlusSignOut)).setVisible(userHandler.isConnected());
         (menu.findItem(R.id.gPlusSignIn)).setVisible(!userHandler.isConnected());
         return true;

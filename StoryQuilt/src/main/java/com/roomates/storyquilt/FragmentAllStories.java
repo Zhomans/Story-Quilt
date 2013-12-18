@@ -47,6 +47,8 @@ public class FragmentAllStories extends FragmentBase {
 
     @Override
     public List<Story> filterAdapterArray(List<Story> stories) {
+
+        //different schemas for sorting stories
         switch (mode){
             case SORTBY_NEW:
                 original = new ArrayList<Story>();
@@ -103,7 +105,6 @@ public class FragmentAllStories extends FragmentBase {
     @Override
     public void onCreateOptionsMenuExtended(Menu menu, MenuInflater inflater) {
         final MenuItem randomItem = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
-        final ImageView randomView = (ImageView) randomItem.getActionView();
         randomItem.setIcon(R.drawable.dice);
         randomItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         randomItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -138,7 +139,6 @@ public class FragmentAllStories extends FragmentBase {
         listView.setLayoutParams(params);
 
         sortBy.setVisibility(View.VISIBLE);
-        //sortBy.setBackground(new BitmapDrawable(getResources(),getRoundedCornerBitmap(BitmapFactory.decodeResource(v.getResources(), R.drawable.white_background))));
         sortBy.setClickable(true);
         sortBy.setOnClickListener(new View.OnClickListener() {
             @Override
