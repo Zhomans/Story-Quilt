@@ -45,7 +45,7 @@ public class ActivityMainTab extends ActivityGooglePlus {
             getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("firsttime",true);
             signIn();
         }
-        
+
         //Set Up Fragments
         setUpFragments();
     }

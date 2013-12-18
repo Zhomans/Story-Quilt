@@ -46,6 +46,11 @@ public class ActivityStoryView  extends Activity {
     UserHandler userHandler;
     Story curStory;
 
+    /**
+     * Number of previous posts
+     */
+    Integer posts;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -65,6 +70,11 @@ public class ActivityStoryView  extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory = dataSnapshot.getValue(Story.class);
+                if (posts!=null && posts != curStory.pieces.size()){
+                    Toast.makeText(ActivityStoryView.this, "Someone just posted!", Toast.LENGTH_SHORT).show();
+                    
+                }
+                posts = curStory.pieces.size();
                 if (userHandler.isReader(curStory.id)) {
                     setContentView(R.layout.activity_story_following);
                     bindViewsAsReader();
