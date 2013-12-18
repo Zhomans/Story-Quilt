@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -116,7 +117,7 @@ public class ActivityStoryView  extends Activity {
     private void bindViewsAsWriter(){
         newPost = (EditText)findViewById(R.id.activity_story_edittext);
         final TextView remaining = (TextView) findViewById(R.id.activity_story_text_remaining);
-        remaining.setText(curStory.textLimit + " words left");
+        remaining.setText(curStory.textLimit);
         //Text Watcher
         newPost.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,15 +128,15 @@ public class ActivityStoryView  extends Activity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")){
-                    remaining.setText(curStory.textLimit + " words left.");
+                    remaining.setText(curStory.textLimit);
                 } else {
                     int wordCount = s.toString().trim().split(" ").length;
-                    if ((curStory.textLimit - wordCount) == 0){
-                        remaining.setText("No words left.");
-                    } else if (curStory.textLimit - wordCount < 0) {
-                        remaining.setText(Math.abs(curStory.textLimit - wordCount) + " words over");
+                    remaining.setText(curStory.textLimit - wordCount);
+                    if ((curStory.textLimit - wordCount) >= 0){
+                        remaining.setTextColor(Color.BLACK);
                     } else {
-                        remaining.setText((curStory.textLimit - wordCount) + " words left");
+                        remaining.setTextColor(Color.RED);
+
                     }
                 }
             }
