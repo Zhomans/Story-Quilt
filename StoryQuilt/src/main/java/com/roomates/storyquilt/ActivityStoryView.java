@@ -38,13 +38,11 @@ public class ActivityStoryView  extends Activity {
 
     UserHandler userHandler;
     Story curStory;
-    String passStory;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        passStory = getIntent().getStringExtra("story");
         setup();
     }
 
@@ -56,10 +54,8 @@ public class ActivityStoryView  extends Activity {
         //Create the User Handler
         userHandler = new UserHandler(this);
 
-        passStory = getIntent().getStringExtra("story");
-
         //Create the Story Firebase Connection
-        FireHandler.create("stories", passStory).addValueEventListener(new ValueEventListener() {
+        FireHandler.create("stories", getIntent().getStringExtra("story")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory = dataSnapshot.getValue(Story.class);
@@ -69,10 +65,11 @@ public class ActivityStoryView  extends Activity {
                     bindViewsAsReader();
                     populateViewsAsReader();
                 } else {
-
-                }                    Log.i("writer?","true");
-                bindViewsAsWriter();
-                populateViewsAsWriter();
+                    Log.i("writer?","true");
+                    curStory = dataSnapshot.getValue(Story.class);
+                    bindViewsAsWriter();
+                    populateViewsAsWriter();
+                }
                 if (menu!=null){
                     Log.i("Debugger", "here");
                     menu.findItem(R.id.join_story).setVisible(userHandler.isReader(curStory.id));
