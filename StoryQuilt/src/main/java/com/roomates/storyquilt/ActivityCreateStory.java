@@ -95,6 +95,7 @@ public class ActivityCreateStory extends Activity {
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress += SUBMISSION_MIN;
                 submissionDisplay.setText("Word Limit: " + progress + " words ");
                 updateHistorySeekBar();
             }

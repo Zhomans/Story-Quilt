@@ -97,7 +97,7 @@ public abstract class FragmentBase extends Fragment {
      */
     public void setUpMainPageViews(View v){
         setListViews(v);
-        setFireBaseRefs();
+        setFireBaseRefs(); //must be called before
         setListAdapters();
     }
     private void setListViews(View v){
