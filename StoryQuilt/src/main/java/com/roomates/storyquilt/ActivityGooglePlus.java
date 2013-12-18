@@ -1,14 +1,11 @@
 package com.roomates.storyquilt;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,6 +37,9 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
 
     //Managing Periodic Connection Status and User Info
     String previousEmail = "";
+
+    //User Choice sign in and sign out
+    Boolean signing = false;
 
 
     /**
@@ -94,6 +94,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
         mConnectionProgressDialog.dismiss();
         getUserInformation();
         onConnectionStatusChanged();
+        refreshViewOnConnection();
     }
     //Google+ Connection Disconnected
     public void onDisconnected() {
@@ -131,6 +132,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
      */
     //Signing In to Google+
     public void signIn() {
+        signing = true;
         mPlusClient.disconnect();
         if (!mPlusClient.isConnected()) { //Create a new Story
             if (mConnectionResult == null) {
@@ -150,6 +152,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     }
     //Signing Out of Google+
     public void signOut() {
+        signing = true;
         if (mPlusClient.isConnected()) {
             mPlusClient.clearDefaultAccount();
             mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {
@@ -161,7 +164,8 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
             });
 
             mPlusClient.disconnect();
-            Toast.makeText(this, "Successfully Signed Out", Toast.LENGTH_LONG).show();
+            refreshViewOnConnection();
+            Toast.makeText(this, "Successfully signed out of StoryQuilt", Toast.LENGTH_LONG).show();
         }
         onConnectionStatusChanged();
     }
@@ -184,4 +188,5 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     public abstract void onActivityResultExtended(int requestCode, int resultCode, Intent data);
     public abstract void onCreateExtended(Bundle savedInstanceState);
     public abstract void getUserInformation();
+    public abstract void refreshViewOnConnection();
 }

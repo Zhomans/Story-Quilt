@@ -2,17 +2,12 @@ package com.roomates.storyquilt;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,7 +25,7 @@ import com.firebase.client.ValueEventListener;
 
 
 /**
- * Created by zach on 12/7/13.
+ * Created by Team Roommates
  */
 public class ActivityStoryView  extends Activity {
     /**
@@ -135,6 +130,7 @@ public class ActivityStoryView  extends Activity {
         recentPosts = (TextView)findViewById(R.id.activity_story_recentPosts_textview);
         recentPosts.setMovementMethod(new ScrollingMovementMethod());
     }
+
     /**
      Binding Views for StoryView from XML
      */
@@ -241,7 +237,11 @@ public class ActivityStoryView  extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.leave_story: //Leave a new Story
-                leaveStory();
+                if (userHandler.user.email.equals("readonly")){
+                    Toast.makeText(ActivityStoryView.this, "Sign in to join a story!", Toast.LENGTH_SHORT).show();
+                } else {
+                    leaveStory();
+                }
                 break;
 
             case R.id.join_story: //Join an Existing Story
