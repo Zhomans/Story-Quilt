@@ -16,11 +16,16 @@ import java.util.List;
  * Created by roomates on 9/25/13.
  */
 public class FragmentContributing extends FragmentBase {
+    /**
+     * Required by FragmentBase
+     */
+    //Return the fragment Layout Id
     @Override
     public int getFragmentLayoutId() {
         return R.layout.fragment_stories;
     }
 
+    //Return the fragment Layout Id
     @Override
     public List<Story> filterAdapterArray(List<Story> stories) {
         List<Story> writingStories = new ArrayList<Story>();
@@ -32,6 +37,7 @@ public class FragmentContributing extends FragmentBase {
         return writingStories;
     }
 
+    //The firebase reference for the story
     @Override
     public Firebase getFirebaseListReference() {
         return FireHandler.create("stories");

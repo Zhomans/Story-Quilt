@@ -183,5 +183,5 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
      * @param model The object containing the data used to populate the view
      */
     protected abstract void populateView(View v, T model);
-    protected abstract List<T> modifyArrayAdapter(List<T> models);
+    protected abstract List<T> modifyArrayAdapter(List<T> models); //For filtering and sorting the arrayAdapter because Firebase doesn't do that very well...
 }

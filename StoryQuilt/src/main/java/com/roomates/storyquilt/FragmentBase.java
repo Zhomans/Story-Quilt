@@ -24,30 +24,38 @@ import java.util.List;
 
 /**
  * Created by chris on 12/18/13.
+ * Cleaned: 12/18/13
  */
 public abstract class FragmentBase extends Fragment {
-    //MainActivity Views
+    /**
+     * Variables used for the ListView
+     */
     ListView listView;
+    AdapterStoryList listAdapter;
+    Firebase listRef;
 
-    //Context Menu
+    /**
+     * Variables used for Context Menu
+     * OnLongClickItem
+     */
     final int REMOVE_STORY = 0;
     String[] menuItems = {"Never see this again"};
 
+    /**
+     * Variables used for Searching the List
+     */
+    String searchQueryText = ""; //Search Text
+    MenuItem searchItem; //Search Bar Item
 
-    //ListAdapters
-    AdapterStoryList listAdapter;
-
-    //Firebase
-    Firebase listRef;
-
-    //Search Text
-    String searchQueryText = "";
-
-    //Search Bar
-    MenuItem searchItem;
-    //UserHandler
+    /**
+     * User Information
+     */
     UserHandler userHandler;
 
+    /**
+     * General Fragment Methods
+     */
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userHandler = new UserHandler(getActivity());
@@ -68,34 +76,38 @@ public abstract class FragmentBase extends Fragment {
         return v;
     }
 
+    /**
+     * Methods handling safe-fragment switching
+     */
     @Override
     public void onStart(){
         super.onStart();
-        setListAdapters();
+        setListAdapters(); //Reset the List
     }
 
-    //MyStory views
+    @Override
+    public void onPause(){
+        super.onPause();
+        if (searchItem != null) {searchItem.collapseActionView();}
+        listAdapter.cleanup();
+    }
+
+    /**
+     * Methods for Handling List Views
+     */
     public void setUpMainPageViews(View v){
         setListViews(v);
         setFireBaseRefs();
         setListAdapters();
     }
-
-
-    /**
-     * Methods for Handling List Views
-     */
-    //Grab ListViews from the XML
     private void setListViews(View v){
         listView = (ListView) v.findViewById(R.id.fragment_stories_listview);
         listView.setOnItemClickListener(goToStoryActivity());
         registerForContextMenu(listView);
     }
-    //Get Firebase Refs for Reading and Writing
     private void setFireBaseRefs(){
         listRef = getFirebaseListReference();
     }
-    //Create and Set ArrayAdapters for the ListViews
     private void setListAdapters(){
         listAdapter = new AdapterStoryList(listRef, getActivity(), R.layout.listitem_main_story){
             @Override
@@ -106,8 +118,8 @@ public abstract class FragmentBase extends Fragment {
                         filtered_stories.add(story);
                     }
                 }
-                stories = filtered_stories;
-                stories = filterAdapterArray(stories);
+                stories = filterAdapterArray(filtered_stories);
+                //Visibility of the No Stories TextBox.
                 if (FragmentBase.this.getView() != null) {
                     TextView no_stories = (TextView) (FragmentBase.this.getView()).findViewById(R.id.no_stories);
                     if (stories.size() == 0) {
@@ -124,14 +136,6 @@ public abstract class FragmentBase extends Fragment {
         };
         listView.setAdapter(listAdapter);
     }
-    @Override
-    public void onPause(){
-        super.onPause();
-        if (searchItem != null) {searchItem.collapseActionView();}
-        listAdapter.cleanup();
-    }
-
-    //On Item Click for AdapterStoryList
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -143,6 +147,9 @@ public abstract class FragmentBase extends Fragment {
         };
     }
 
+    /**
+     * Adding OptionsMenu Items
+     */
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -183,8 +190,7 @@ public abstract class FragmentBase extends Fragment {
      * Context Menu for LongClickListener
      */
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId()==R.id.fragment_stories_listview) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle(((Story) listView.getItemAtPosition(info.position)).title);

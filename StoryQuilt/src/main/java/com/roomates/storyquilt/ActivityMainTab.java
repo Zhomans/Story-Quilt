@@ -133,6 +133,9 @@ public class ActivityMainTab extends ActivityGooglePlus {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Methods for handling soft-keyboard behavior
+     */
     public void setupUI(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if(!(view instanceof EditText)) {
@@ -155,7 +158,6 @@ public class ActivityMainTab extends ActivityGooglePlus {
             }
         }
     }
-
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (activity.getCurrentFocus()!=null){

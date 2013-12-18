@@ -26,6 +26,7 @@ public class FireHandler {
         ref.setValue(value);
         return value.id;
     }
+
     //Pushes User to List
     public static void pushUserToList(User value){
         create("users", User.formatEmail(value.email)).setValue(value);

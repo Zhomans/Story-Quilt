@@ -19,11 +19,16 @@ import java.util.List;
  * Created by roomates on 9/25/13.
  */
 public class FragmentFollowing extends FragmentBase {
+    /**
+     * Required by FragmentBase
+     */
+    //Return the fragment Layout Id
     @Override
     public int getFragmentLayoutId() {
         return R.layout.fragment_stories;
     }
 
+    //Any Filtering on top of the search filtering
     @Override
     public List<Story> filterAdapterArray(List<Story> stories) {
         List<Story> readingStories = new ArrayList<Story>();
@@ -35,6 +40,7 @@ public class FragmentFollowing extends FragmentBase {
         return readingStories;
     }
 
+    //The firebase reference for the story
     @Override
     public Firebase getFirebaseListReference() {
         return FireHandler.create("stories");

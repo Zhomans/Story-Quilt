@@ -33,13 +33,21 @@ import com.firebase.client.ValueEventListener;
  * Created by zach on 12/7/13.
  */
 public class ActivityStoryView  extends Activity {
-    //Menu
+    /**
+     * Options Menu
+     */
     Menu menu;
-    //Views
+
+    /**
+     * XML Views
+     */
     EditText newPost;
     Button addButton;
     TextView storyTitle, recentPosts, quitButton, remaining;
 
+    /**
+     * User and Story Information
+     */
     UserHandler userHandler;
     Story curStory;
 
@@ -50,9 +58,7 @@ public class ActivityStoryView  extends Activity {
         setContentView(R.layout.activity_story);
         setup();
     }
-
     private void setup() {
-
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
 
@@ -191,7 +197,6 @@ public class ActivityStoryView  extends Activity {
             }
         });
     }
-
     private void leaveStory() {
         //Makes you a reader in the story, instead of a writer
         new AlertDialog.Builder(ActivityStoryView.this)
@@ -212,7 +217,6 @@ public class ActivityStoryView  extends Activity {
                     public void onClick(DialogInterface dialog, int which) {}
                 }).show();
     }
-
     private void setQuitButton(){
         quitButton.setClickable(true);
         quitButton.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +227,9 @@ public class ActivityStoryView  extends Activity {
         });
     }
 
-    //Options Menu Setup
+    /**
+     * Methods for handling the Options Menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -233,7 +239,6 @@ public class ActivityStoryView  extends Activity {
         this.menu = menu;
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -255,6 +260,9 @@ public class ActivityStoryView  extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Methods for handling soft-keyboard behavior
+     */
     public void setupUI(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if(!(view instanceof EditText)) {
@@ -274,7 +282,6 @@ public class ActivityStoryView  extends Activity {
             }
         }
     }
-
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (activity.getCurrentFocus()!=null){

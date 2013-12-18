@@ -243,8 +243,7 @@ public class ActivityCreateStory extends Activity {
     }
 
     /**
-     * Methods for auto-hiding the keyboard
-     * @param view
+     * Methods for handling soft-keyboard behavior
      */
     public void autoHideKeyboard(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
