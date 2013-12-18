@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,13 +40,15 @@ public class ActivityMainTab extends ActivityGooglePlus {
         previousEmail = userHandler.getEmail();
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
+        Log.i("PreviousEmail", previousEmail);
         if (previousEmail.equals("first")) {
-            userHandler.setEmail("readonly");
+            Log.i("PreviousEmail", "here");
             signIn();
         }
         //Set Up Fragments
         setUpFragments();
     }
+
     public void onConnectionStatusChanged() {
         //These are saved in ActivityGooglePlus. Setting them to our SharedPreferences
 
@@ -53,6 +56,8 @@ public class ActivityMainTab extends ActivityGooglePlus {
         Boolean connected = mPlusClient.isConnected();
         if (!connected) {
             userHandler.setEmail("readonly");
+        } else {
+            userHandler.setEmail(mPlusClient.getAccountName());
         }
         //Update Handler
         userHandler.setConnected(connected);

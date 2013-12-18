@@ -82,7 +82,7 @@ public abstract class FragmentBase extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        setListAdapters(); //Reset the List
+        setUpMainPageViews(getView()); //Reset the List
     }
 
     @Override

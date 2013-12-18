@@ -38,9 +38,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     //Managing Periodic Connection Status and User Info
     String previousEmail = "";
 
-    //User Choice sign in and sign out
-    Boolean signing = false;
-
 
     /**
      * Methods for Activity
@@ -94,7 +91,7 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
         mConnectionProgressDialog.dismiss();
         getUserInformation();
         onConnectionStatusChanged();
-        refreshViewOnConnection();
+        //refreshViewOnConnection();
     }
     //Google+ Connection Disconnected
     public void onDisconnected() {
@@ -132,7 +129,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
      */
     //Signing In to Google+
     public void signIn() {
-        signing = true;
         mPlusClient.disconnect();
         if (!mPlusClient.isConnected()) { //Create a new Story
             if (mConnectionResult == null) {
@@ -152,7 +148,6 @@ public abstract class ActivityGooglePlus extends Activity implements GooglePlayS
     }
     //Signing Out of Google+
     public void signOut() {
-        signing = true;
         if (mPlusClient.isConnected()) {
             mPlusClient.clearDefaultAccount();
             mPlusClient.revokeAccessAndDisconnect(new PlusClient.OnAccessRevokedListener() {

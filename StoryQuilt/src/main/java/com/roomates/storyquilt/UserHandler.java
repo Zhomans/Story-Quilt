@@ -32,8 +32,6 @@ public class UserHandler {
     //Firebase Reference
     Firebase firebase;
 
-    //Signing in and Signing Out
-    String previousUser = "readonly";
     //Constructor
     public UserHandler(Activity activity){
         this.activity = activity;
@@ -48,9 +46,9 @@ public class UserHandler {
      */
     public User newUser(){
         return this.user = new User(
-                "readonly",
-                "readonly",
-                18,
+                getEmail(),
+                getPersonFirstName(),
+                getPersonAge(),
                 0,
                 0,
                 false,
@@ -65,9 +63,9 @@ public class UserHandler {
                 if (!isNetworkAvailable()){
                     Toast.makeText(activity, "Network is currently unavailable!", Toast.LENGTH_SHORT).show();
                 }
-                UserHandler.this.user = snapshot.getValue(User.class);
-                if (user == null) {FireHandler.pushUserToList(newUser());  UserHandler.this.user = newUser();}
-                if (user.writing == null) {user.writing = new ArrayList<String>();}
+                User curUser = snapshot.getValue(User.class);
+                if (curUser == null) {FireHandler.pushUserToList(UserHandler.this.user);} else {UserHandler.this.user = curUser;}
+                if (user.writing == null) {user.writing = new ArrayList<String>(); Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + 0);}
                 else {Log.i("UserHandlerActivity", activity.getLocalClassName() + " " + user.writing.size());}
                 if (user.reading == null) user.reading = new ArrayList<String>();
                 if (user.removed== null) user.removed = new ArrayList<String>();
@@ -76,10 +74,7 @@ public class UserHandler {
             public void onCancelled(FirebaseError error) {}
         });
     }
-    //Clean up remaining connections
-    public void cleanUp(){
-        Firebase.goOffline();
-    }
+
    /**
      * Manage User Information
      */
