@@ -97,6 +97,7 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
         android:padding="8dp"/>
+
     <TextView
         android:id="@+id/activity_story_text_remaining"
         android:layout_width="wrap_content"
@@ -113,21 +114,23 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
         android:padding="8dp"/>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop = "15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_below = "@id/activity_story_edittext"
-        android:id="@+id/activity_story_button"
-        android:background = "@drawable/white_background"
-        android:textColor = "@android:color/primary_text_light"
-        android:text="Submit"
-        android:fontFamily="sans-serif-light"/>
+
 
 </RelativeLayout>
-</ScrollView>
 
+</ScrollView>
+    <Button
+        android:id="@+id/activity_story_button"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background = "@drawable/white_background"
+        android:textColor = "@android:color/primary_text_light"
+        android:text="Post"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-light"
+        android:padding="8dp"
+        />
 
 </RelativeLayout>

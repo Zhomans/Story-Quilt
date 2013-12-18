@@ -22,6 +22,6 @@ public abstract class AdapterStoryList extends AdapterFirebaseList<Story> {
         ((TextView) view.findViewById(R.id.story_title_textview)).setText(story.title);
         ((TextView) view.findViewById(R.id.story_posts_textview)).setText(String.valueOf(story.pieces.size()) + " total posts");
         ((TextView) view.findViewById(R.id.story_limit_textview)).setText(String.valueOf(story.textLimit));
-        ((TextView) view.findViewById(R.id.story_history_textview)).setText(String.valueOf(story.historyLimit));
+        ((TextView) view.findViewById(R.id.story_history_textview)).setText(String.valueOf(story.historyLimit/story.textLimit));
     }
 }

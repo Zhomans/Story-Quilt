@@ -50,7 +50,7 @@
         <activity
             android:name=".ActivityStoryView"
             android:label="StoryQuilt"
-
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName="com.roomates.storyquilt.ActivityMainTab" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
