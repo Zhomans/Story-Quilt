@@ -86,9 +86,7 @@ public class ActivityStoryView  extends Activity {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         });
     }
 
