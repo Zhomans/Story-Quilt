@@ -134,7 +134,7 @@ public class ActivityCreateStory extends Activity {
     }
     public void updateHistorySeekBar(){
         int numPosts = (int) (historyLength.getProgress() * HISTORY_TICK);
-        long value = Math.round(numPosts * (submissionLength.getProgress() + SUBMISSION_MIN));
+        long value = Math.round(numPosts * (submissionLength.getProgress()));
 
         String postDisplay = String.valueOf(value);
         if (postDisplay.contains(".")){
