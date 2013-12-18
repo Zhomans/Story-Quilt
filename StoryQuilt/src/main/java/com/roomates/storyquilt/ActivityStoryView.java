@@ -65,6 +65,11 @@ public class ActivityStoryView  extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { //Every time the story is updated
                 curStory = dataSnapshot.getValue(Story.class);
+                if (curStory.checkMostRecentPoster(userHandler.user)){
+                    findViewById(R.id.activity_story_button).setBackgroundColor(Color.GRAY);
+                } else {
+                    findViewById(R.id.activity_story_button).setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                }
                 if (userHandler.isReader(curStory.id)) {
                     setContentView(R.layout.activity_story_following);
                     bindViewsAsReader();
