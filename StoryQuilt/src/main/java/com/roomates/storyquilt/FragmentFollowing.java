@@ -2,7 +2,6 @@ package com.roomates.storyquilt;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +31,6 @@ public class FragmentFollowing extends FragmentBase {
     @Override
     public List<Story> filterAdapterArray(List<Story> stories) {
         List<Story> readingStories = new ArrayList<Story>();
-        Log.i("UserHandler Readers", userHandler.user.reading.toString());
         for (Story tempStory: stories){
             if (userHandler.isReader(tempStory.id))
                 readingStories.add(tempStory);

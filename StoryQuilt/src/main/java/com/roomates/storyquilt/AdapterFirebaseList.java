@@ -1,7 +1,6 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,6 @@ public abstract class AdapterFirebaseList<T> extends BaseAdapter {
 
             @Override
             public void onCancelled(FirebaseError e) {
-                Log.e("AdapterFirebaseList", "Listen was cancelled, no more updates will occur");
             }
         });
     }
