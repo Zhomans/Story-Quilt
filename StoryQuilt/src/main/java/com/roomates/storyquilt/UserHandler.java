@@ -2,7 +2,11 @@ package com.roomates.storyquilt;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -40,6 +44,7 @@ public class UserHandler {
     /**
      * Firebase Information
      */
+
     public User newUser(){
         return this.user = new User(
                 getEmail(),
@@ -64,6 +69,7 @@ public class UserHandler {
             }
 
             public void onCancelled(FirebaseError error) {
+
             }
         });
     }
