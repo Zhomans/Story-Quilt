@@ -36,7 +36,7 @@ public class ActivityCreateStory extends Activity {
     //SeekBar Constants
     int SUBMISSION_MAX = 25; //Words
     int SUBMISSION_MIN = 1; //Offsetting the SeekBar
-    int SUBMISSION_DEFAULT = 4 - SUBMISSION_MIN;//Word slider default
+    int SUBMISSION_DEFAULT = 3;//Word slider default
 
     double HISTORY_TICK = 0.2;
     int HISTORY_MAX = (int)(10/HISTORY_TICK);
@@ -99,7 +99,6 @@ public class ActivityCreateStory extends Activity {
         submissionLength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress += SUBMISSION_MIN;
                 submissionDisplay.setText("Word Limit: " + progress + " words ");
                 updateHistorySeekBar();
             }
