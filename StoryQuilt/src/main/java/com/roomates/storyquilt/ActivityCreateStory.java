@@ -1,11 +1,7 @@
 package com.roomates.storyquilt;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -222,7 +218,6 @@ public class ActivityCreateStory extends Activity {
     /**
      * Title Case Method
      */
-
     public String toTitleCase(String input) {
         StringBuilder titleCase = new StringBuilder();
         boolean nextTitleCase = true;

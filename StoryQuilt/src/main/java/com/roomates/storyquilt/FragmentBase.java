@@ -136,6 +136,7 @@ public abstract class FragmentBase extends Fragment {
         };
         listView.setAdapter(listAdapter);
     }
+
     private AdapterView.OnItemClickListener goToStoryActivity() {
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -212,6 +213,7 @@ public abstract class FragmentBase extends Fragment {
 
         return true;
     }
+
 
     /**
      * Abstract need to be implemented classes
