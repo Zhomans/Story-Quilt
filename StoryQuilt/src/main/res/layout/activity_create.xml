@@ -46,18 +46,29 @@
 
             />
 
+
+        <ImageView
+            android:id = "@+id/limit_icon"
+            android:background = "@drawable/abc"
+            android:contentDescription="history_limit_icon"
+            android:layout_width = "40dp"
+            android:layout_height = "20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight = "1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below = "@id/activity_create_storyTitle_textfield"/>
         <TextView
             android:id="@+id/activity_create_submissionLength_textview"
-            android:layout_below = "@id/activity_create_storyTitle_textfield"
+            android:layout_alignBottom = "@id/limit_icon"
+            android:layout_toRightOf="@id/limit_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Post length"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:gravity="left"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-light"
             android:singleLine="true"
             />
@@ -65,38 +76,49 @@
         <SeekBar
             android:id="@+id/activity_create_submissionLength_seekBar"
             android:layout_width="fill_parent"
-
             android:layout_below = "@id/activity_create_submissionLength_textview"
             android:layout_height="wrap_content"
             android:indeterminate="false"
-            android:layout_alignLeft="@id/activity_create_submissionLength_textview"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop = "10dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="8dp"
             />
 
+        <ImageView
+            android:id = "@+id/history_icon"
+            android:background = "@drawable/history"
+            android:contentDescription="history_limit_icon"
+            android:layout_width = "20dp"
+            android:layout_height = "20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below = "@id/activity_create_submissionLength_seekBar"/>
+
         <TextView
             android:id="@+id/activity_create_historyLength_textview"
             android:layout_below = "@id/activity_create_submissionLength_seekBar"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/historyLength"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="left"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:text="Posts Visible"
+            android:layout_alignBottom = "@id/history_icon"
+            android:layout_toRightOf="@id/history_icon"
             android:fontFamily="sans-serif-light"
             android:singleLine="true"/>
 
         <SeekBar
             android:id="@+id/activity_create_historyLength_seekBar"
-            android:layout_below = "@id/activity_create_historyLength_textview"
+            android:layout_below = "@id/history_icon"
             android:layout_width="fill_parent"
-
             android:layout_height="wrap_content"
             android:indeterminate="false"
-            android:layout_alignLeft="@id/activity_create_submissionLength_textview"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="20dp"/>
 
