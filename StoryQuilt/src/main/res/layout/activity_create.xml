@@ -48,7 +48,7 @@
 
         <ImageView
             android:id = "@+id/limit_icon"
-            android:background = "@drawable/abc"
+            android:background = "@drawable/ic_abc_mono"
             android:contentDescription="history_limit_icon"
             android:layout_width = "40dp"
             android:layout_height = "22dp"
