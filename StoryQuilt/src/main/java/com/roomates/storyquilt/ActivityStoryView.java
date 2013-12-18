@@ -108,12 +108,12 @@ public class ActivityStoryView  extends Activity {
                     remaining.setText(String.valueOf(curStory.textLimit));
                 } else {
                     int wordCount = s.toString().trim().split(" ").length;
-                    remaining.setText(String.valueOf(curStory.textLimit - wordCount));
                     if ((curStory.textLimit - wordCount) >= 0){
+                        remaining.setText(String.valueOf(curStory.textLimit - wordCount) + " words left");
                         remaining.setTextColor(Color.BLACK);
                     } else {
+                        remaining.setText(String.valueOf(curStory.textLimit - wordCount) + " words over!");
                         remaining.setTextColor(Color.RED);
-
                     }
                 }
             }
