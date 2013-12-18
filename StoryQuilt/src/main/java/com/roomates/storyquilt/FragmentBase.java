@@ -123,11 +123,8 @@ public abstract class FragmentBase extends Fragment {
                 if (FragmentBase.this.getView() != null) {
                     TextView no_stories = (TextView) (FragmentBase.this.getView()).findViewById(R.id.no_stories);
                     if (stories.size() == 0) {
-                        Log.d("Stories", "None");
                         no_stories.setVisibility(View.VISIBLE);
                     } else {
-                        Log.d("Stories", "Some");
-                        Log.d("Stories", stories.get(0).title);
                         no_stories.setVisibility(View.GONE);
                     }
                 }
@@ -162,7 +159,6 @@ public abstract class FragmentBase extends Fragment {
                 @Override
                 public void onFocusChange(View view, boolean queryTextFocused) {
                     if (!queryTextFocused) {
-                        Log.i("COLLAPSESEARCH","here");
                         searchItem.collapseActionView();
                         searchView.setQuery("", false);
                     }

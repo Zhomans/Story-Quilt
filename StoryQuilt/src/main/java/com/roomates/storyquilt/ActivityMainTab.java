@@ -10,7 +10,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+<<<<<<< HEAD
 import android.widget.EditText;;
+=======
+import android.widget.EditText;
+>>>>>>> 16853c854eb2684ccd6ad73021978fd831a3a816
 
 public class ActivityMainTab extends ActivityGooglePlus {
     //Passing Menu from onCreateOptionsMenu to edit in onConnectionStatusChanged
