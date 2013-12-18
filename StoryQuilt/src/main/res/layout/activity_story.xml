@@ -76,40 +76,45 @@
         android:layout_marginRight="20dp"
         android:textSize="@dimen/activity_story_title_font"
         android:fontFamily="sans-serif-light"/>
+
+
+    <TextView
+        android:id="@+id/activity_story_text_remaining"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
+        android:text = "10 words left"
+        android:gravity = "center"
+        android:layout_marginRight = "10dp"
+        android:background = "@drawable/white_background"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/activity_story_recentPosts_textview"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-light"
+        android:padding="8dp"/>
+
     <View
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_below="@id/activity_story_recentPosts_textview"
-        android:layout_alignRight="@id/activity_story_recentPosts_textview"
+        android:layout_toRightOf="@id/activity_story_text_remaining"
         android:layout_marginTop="8dp"
+        android:layout_marginRight = "20dp"
+        android:layout_alignParentRight="true"
         android:background="@drawable/white_background"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
         android:padding="8dp"/>
 
     <EditText
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_below="@id/activity_story_recentPosts_textview"
-        android:layout_alignRight="@id/activity_story_recentPosts_textview"
-        android:id="@+id/activity_story_edittext"
-        android:layout_marginTop="8dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif-light"
-        android:padding="8dp"/>
-
-    <TextView
-        android:id="@+id/activity_story_text_remaining"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:text = "10 words left"
-        android:gravity = "center"
-        android:layout_marginRight = "5dp"
-        android:background = "@drawable/white_background"
-        android:layout_marginLeft="20dp"
+        android:layout_marginRight = "20dp"
         android:layout_below="@id/activity_story_recentPosts_textview"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/activity_story_edittext"
+        android:layout_toRightOf="@id/activity_story_text_remaining"
+        android:layout_alignParentRight="true"
+        android:id="@+id/activity_story_edittext"
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
