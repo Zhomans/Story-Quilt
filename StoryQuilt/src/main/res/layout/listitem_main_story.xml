@@ -4,34 +4,6 @@
     android:padding = "5dp"
     android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft = "20dp">
 
-    <TextView
-        android:id="@+id/story_title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text = "Sample Title"
-        android:textSize="26sp"
-        android:maxWidth="10dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingTop="4dp"
-        android:fontFamily="sans-serif-light"/>
-
-    <TextView
-        android:id = "@+id/story_posts_textview"
-        android:layout_below = "@id/story_title_textview"
-        android:layout_alignLeft = "@id/story_title_textview"
-        android:text = "10 total posts"
-        android:textColor = "@android:color/darker_gray"
-        android:textSize="16sp"
-        android:paddingLeft="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"/>
-
     <ImageView
         android:id = "@+id/story_history_icon"
         android:contentDescription="history_icon"
@@ -75,6 +47,36 @@
         android:layout_alignBottom="@+id/story_posts_textview"
         android:layout_alignRight = "@id/story_history_icon"
         />
+    <TextView
+        android:id="@+id/story_title_textview"
+        android:layout_width="wrap_content"
+        android:ellipsize="end"
+        android:layout_height="wrap_content"
+        android:maxLines = "1"
+        android:maxWidth = "16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf = "@id/story_limit_icon"
+        android:text = "Sample Title"
+        android:textSize="23sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id = "@+id/story_posts_textview"
+        android:layout_below = "@id/story_title_textview"
+        android:layout_alignLeft = "@id/story_title_textview"
+        android:text = "10 total posts"
+        android:textColor = "@android:color/darker_gray"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"/>
+
+
 
 
 </RelativeLayout>
