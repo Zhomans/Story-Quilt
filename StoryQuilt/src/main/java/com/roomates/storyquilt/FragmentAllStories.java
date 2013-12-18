@@ -106,7 +106,7 @@ public class FragmentAllStories extends FragmentBase {
     public void onCreateOptionsMenuExtended(Menu menu, MenuInflater inflater) {
         final MenuItem randomItem = menu.add(Menu.NONE, R.id.action_random, 100, "Random");
         randomItem.setIcon(R.drawable.dice);
-        randomItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        randomItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         randomItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
