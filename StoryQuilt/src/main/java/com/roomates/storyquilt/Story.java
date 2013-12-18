@@ -11,6 +11,9 @@ import java.util.HashSet;
  * Created by chris on 12/4/13.
  */
 public class Story implements Serializable{
+    /**
+     * Fields into Firebase
+     */
     String id, lastUpdated, title;
     int ageLimit, historyLimit, textLimit;
     long priority;
@@ -55,20 +58,18 @@ public class Story implements Serializable{
     }
     public HashSet<String> getWriters(){return this.writers;}
 
-    //Setting the priority based on viewers and posters
-    public void setPriority(int num_viewers, int num_posters){
-        this.priority = num_posters + num_viewers;
-    }
-
-    //Setting the id from Firebase
+    /**
+     * Editing the Story
+     */
     public void setId(String value){
         this.id = value;
     }
-
-    //Get Length of Story (by Posts)
-    public int length() { return this.pieces.size(); }
-
-    //Get Full Text of a Story
+    public void addPiece(Piece newPiece) {
+        this.pieces.add(newPiece);
+    }
+    /**
+     * Getting Story Text
+     */
     public String fullStory() {
         StringBuilder sb = new StringBuilder();
         for (Piece tempPiece: this.pieces){
@@ -77,8 +78,6 @@ public class Story implements Serializable{
         }
         return sb.toString();
     }
-
-    //Get Recent Posts of Story
     public String recentPosts() {
         StringBuilder sb = new StringBuilder();
         int wordCount = 0;
@@ -100,19 +99,15 @@ public class Story implements Serializable{
         return sb.toString();
     }
 
-    //Add Piece to Story
-    public void addPiece(Piece newPiece) {
-        this.pieces.add(newPiece);
-    }
-    //Check Most Recent Post for Given User
+    /**
+     * Check Posting Validity
+     */
     public boolean checkMostRecentPoster(User user){
         Log.d("Last poster", this.pieces.get(this.pieces.size()-1).getPoster());
         Log.d("User email", user.getEmail());
         Log.d("Equal: ", String.valueOf(this.pieces.get(this.pieces.size() - 1).getPoster().equals(user.getEmail())));
         return this.pieces.get(this.pieces.size()-1).getPoster().equals(user.getEmail());
     }
-
-    //Check Word Count
     public boolean checkWordCount(String str){
         str = str.replaceAll("^[ ]+", "").replaceAll("[ ]+$", "");
         return this.textLimit >= (str.length() - str.replaceAll(" ", "").length()+1);
