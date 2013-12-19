@@ -147,8 +147,16 @@ public class FragmentAllStories extends FragmentBase {
                     mode = SORTBY_NEW;
                     FragmentAllStories.this.setUpMainPageViews(v);
                 } else if (sortBy.getText().toString().split(": ")[1].equals("new")) {
+                    numStories = original.size();
+                    Random num = new Random(System.currentTimeMillis());
                     mode = SORTBY_RANDOM;
                     sortBy.setText("sorted by: random");
+                    random = new HashSet<String>();
+                    if (NUM_RANDOM_STORIES > numStories) NUM_RANDOM_STORIES = numStories;
+                    while (random.size() < NUM_RANDOM_STORIES) {
+                        random.add((original.get(num.nextInt(numStories))).id);
+                    }
+
                     FragmentAllStories.this.setUpMainPageViews(v);
                 } else {
                     mode = SORTBY_POPULAR;
