@@ -134,7 +134,7 @@ public class ActivityCreateStory extends Activity {
     }
     public void updateHistorySeekBar(){
         int numPosts = (int) (historyLength.getProgress() * HISTORY_TICK);
-        long value = Math.round(numPosts * (submissionLength.getProgress()));
+        long value = Math.round(numPosts * (submissionLength.getProgress() + SUBMISSION_MIN));
 
         String postDisplay = String.valueOf(value);
         if (postDisplay.contains(".")){
@@ -176,10 +176,10 @@ public class ActivityCreateStory extends Activity {
 
                     //String lastUpdated, String title, int ageLimit, int historyLimit, int textLimit, Piece[] pieces
                     Story curStory = new Story(String.valueOf(System.currentTimeMillis()),
-                                    toTitleCase(title),
+                                    toTitleCase(title.length() > 24? title.substring(0,20) + "...": title),
                                     (languageFilter.isChecked())? 13:0,
-                                    (int) Math.round(historyLength.getProgress() * HISTORY_TICK * submissionLength.getProgress()),
-                                    submissionLength.getProgress(),
+                                    (int) Math.round(historyLength.getProgress() * HISTORY_TICK * (submissionLength.getProgress() + SUBMISSION_MIN)),
+                                    submissionLength.getProgress() + SUBMISSION_MIN,
                                     curPieces,
                                     writers
                                     );

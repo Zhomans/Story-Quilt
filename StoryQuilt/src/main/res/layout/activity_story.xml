@@ -23,6 +23,9 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="45dp"
+        android:maxLines = "1"
+        android:lines = "1"
+        android:ellipsize="end"
         android:gravity="center"
         android:textSize="@dimen/activity_story_title_font"
         android:id="@+id/activity_story_title_textview"
