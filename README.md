@@ -3,6 +3,8 @@ Story-Quilt
 
 Mobile Prototyping Final Sprint: Android App based off of "3-word story"
 
+On GooglePlay @ https://play.google.com/store/apps/details?id=com.roomates.storyquilt
+
 ###Importing Project
 We are importing via gradle (which is why gradle files are here).
 See STANDARDS.md
