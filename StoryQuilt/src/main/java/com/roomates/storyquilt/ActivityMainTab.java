@@ -37,12 +37,13 @@ public class ActivityMainTab extends ActivityGooglePlus {
 
         //Setting User Handler
         userHandler = new UserHandler(this);
-
+        Log.i("firsttime",Boolean.toString(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("firsttime", true)));
         //Touch off keyboard
         setupUI(findViewById(R.id.parent));
-        if (getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("firsttime", false)) {
+        if (getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("firsttime", true)) {
             userHandler.setEmail("readonly");
-            getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("firsttime",true);
+            getSharedPreferences("StoryQuilt", MODE_PRIVATE).edit().putBoolean("firsttime",false).commit();
+            Log.i("firsttime1",Boolean.toString(getSharedPreferences("StoryQuilt", MODE_PRIVATE).getBoolean("firsttime", true)));
             signIn();
         }
 
